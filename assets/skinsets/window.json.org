@@ -1,0 +1,74 @@
+{
+com.badlogic.gdx.graphics.g2d.BitmapFont: { 
+	font12: 		{ file: fonts/font12.fnt },
+	font16:			{ file: fonts/font16.fnt },
+	font24: 		{ file: fonts/font24.fnt },
+	font32: 		{ file: fonts/font32.fnt },
+	font48: 		{ file: fonts/font48.fnt },
+	font56: 		{ file: fonts/font56.fnt },
+	font72: 		{ file: fonts/font72.fnt },
+	default-font: 	{ file: fonts/font16.fnt }
+},
+com.badlogic.gdx.graphics.Color: {
+	green: 			{ a: 1, b: 0, g: 1, r: 0 },
+	white: 			{ a: 1, b: 1, g: 1, r: 1 },
+	red: 			{ a: 1, b: 0, g: 0, r: 1 },
+	black: 			{ a: 1, b: 0, g: 0, r: 0 }
+},
+com.badlogic.gdx.scenes.scene2d.ui.Button$ButtonStyle: {
+	default: 		{ down: btnEmpty, up: btnEmpty},
+	blue:			{ down: btnEmpty120, up: btnEmpty120 },
+	pause:			{ down: pause, up: pause},
+	pausePlay:		{ down: pause, up: pause, checked: play},
+	play:			{ down: play, up: play}
+},
+com.badlogic.gdx.scenes.scene2d.ui.Image: {
+	background1:		{ drawable: background1 },
+	background2:		{ drawable: frog },
+	background3:		{ drawable: background3 },
+	background4:		{ drawable: background4 },
+	background5:		{ drawable: background5 },
+	background6:		{ drawable: background6 },
+	butterfly:			{ drawable: butterfly },	
+	frog:				{ drawable: frog },
+	elephant:			{ drawable: elephant },
+	imgGLeaderboards: 	{ drawable: imgGoogleLeaderboardsWhite },		
+	imgGAchievements:	{ drawable: imgGoogleAchievementsWhite },		
+	imgGSignIn:			{ drawable: imgGoogleSignIn },		
+	imgGSignOut:		{ drawable: imgGoogleSignOut }		
+},
+com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle: {
+	default: 		{ 	font: default-font, 
+						fontColor: white
+					}
+},
+com.badlogic.gdx.scenes.scene2d.ui.CheckBox$CheckBoxStyle: {
+	default:		{	checkboxOn: checkBoxOn, 
+						checkboxOff: checkBoxOff, 
+						font: default-font, 
+						fontColor: white 
+					}
+},
+com.badlogic.gdx.scenes.scene2d.ui.Slider$SliderStyle: {
+	default-horizontal:	
+					{ 
+						background: slider, 
+						knob: slider-knob 
+					}
+},
+com.badlogic.gdx.scenes.scene2d.ui.ScrollPane$ScrollPaneStyle: {
+    default: 		{ 	vScroll: 		scroll, 
+    					hScrollKnob: 	roundLarge, 
+    					hScroll:		scroll, 
+    					vScrollKnob: 	roundLarge 
+    				}
+},
+com.badlogic.gdx.scenes.scene2d.ui.TextField$TextFieldStyle: {
+	default: 		{ 	selection: 		selection, 
+						font: 			default-font, 
+						fontColor: 		white, 
+						cursor: 		cursor 
+					}
+}
+
+}

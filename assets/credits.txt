@@ -1,0 +1,223 @@
+
+
+
+
+
+
+
+
+
+ C H A N G   M E M O R Y II
+(c) 2015 - 2026 by Lustenauer Net
+
+app.lustenauer.net
+
+
+Patric Hollenstein
+Bildgasse 18
+6890 Lustenau Austria
+
+
+-----
+
+Software:
+=========
+Name: LIBGDX
+Author: Mario Zechner
+License: http://www.apache.org/licenses/LICENSE-2.0.html
+Source: http://libgdx.badlogicgames.com/
+
+-----
+
+Graphics:
+========
+Author: Martin Berube
+License: http://www.how-to-draw-funny-cartoons.com/support-files/license-all-images.txt
+Source: http://www.how-to-draw-funny-cartoons.com/
+
+Name: checkbox_empty.png
+Author: Janik Baumgartner
+License: http://creativecommons.org/licenses/by/3.0/
+Source: http://findicons.com/icon/455107/checkbox_empty?id=455107
+
+Name: checkbox_full.png
+Author: Janik Baumgartner
+License: http://creativecommons.org/licenses/by/3.0/
+Source: http://findicons.com/icon/455204/checkbox_full?id=455437
+
+Name: button_pause.png
+Author: Janik Baumgartner
+License: http://creativecommons.org/licenses/by/3.0/
+Source: http://findicons.com/icon/455147/button_pause
+
+Name: button_play.png
+Author: Janik Baumgartner
+License: http://creativecommons.org/licenses/by/3.0/
+Source: http://findicons.com/icon/455276/button_play
+
+-----
+
+Music:
+======
+Title: PerZZ/Viklund: A.L.W
+Author: Andreas Viklund
+License: http://creativecommons.org/licenses/by/3.0/
+Source: http://modarchive.org/module.php?134597
+
+Title: Theme of Njals saga
+Author: Andreas Viklund, TSEC
+License: http://creativecommons.org/licenses/by/3.0/
+Source: http://modarchive.org/module.php?34312
+
+Title: beefeater
+Author: Zilly Mike
+License: http://creativecommons.org/licenses/by/3.0/
+Source: http://modarchive.org/module.php?170004
+
+Title: The forgotten one
+Author: Zilly Mike
+License: http://creativecommons.org/licenses/by/3.0/
+Source: http://modarchive.org/module.php?43235
+
+Title: Mind Traveler
+Author: Zilly Mike
+License: http://creativecommons.org/licenses/by/3.0/
+Source: http://modarchive.org/module.php?51825
+
+Title: the hunt for lars
+Author:	Zilly Mike
+License: http://creativecommons.org/licenses/by/3.0/
+Source: http://modarchive.org/module.php?=170003
+
+
+-----
+
+Sounds:
+=======
+
+Letter and Number Sounds
+Author: Corsica_S
+License: http://creativecommons.org/licenses/by/3.0/
+Source: http://www.freesound.org/people/Corsica_S/
+
+Title: achievement.ogg
+Original title: 162482__kastenfrosch__achievement.mp3
+Author: Kastenfrosch
+License: http://creativecommons.org/publicdomain/zero/1.0/
+Source: http://www.freesound.org/people/Kastenfrosch/sounds/162482/
+
+Title: beep.ogg
+Original title: 259702__kwahmah-02__beepping1.flac
+Author: kwahmah_02
+License: http://creativecommons.org/licenses/by/3.0/
+Source: http://www.freesound.org/people/kwahmah_02/sounds/259702
+
+Title: bird.ogg
+Original title: ???
+Author: ???
+License: ???
+Source: ???
+
+Title: bubbles.ogg
+Original title: 263945__audiolarx__water-bubbles-03.wav
+Author: audiolarx
+License: http://creativecommons.org/licenses/by/3.0/
+Source: http://www.freesound.org/people/audiolarx/sounds/263945
+
+Title: click.ogg
+Original title: 256455__hunter4708__mouse-click.wav
+Author: HunteR4708
+License: http://creativecommons.org/publicdomain/zero/1.0/
+Source: http://www.freesound.org/people/HunteR4708/sounds/256455/
+
+Title: cow.ogg
+Original title: 242492__klankbeeld__mooing-cow-170713-0299.wav
+Author: klankbeeld
+License: http://creativecommons.org/licenses/by/3.0/
+Source: http://www.freesound.org/people/klankbeeld/sounds/242492/
+
+Title: ding.ogg
+Original title: 91926__corsica-s__ding.wav
+Author: Corsica_S
+License: http://creativecommons.org/licenses/by/3.0/
+Source: http://www.freesound.org/people/Corsica_S/sounds/91926/
+
+Title: ding2
+Original title: 162481__kastenfrosch__sound3.mp3
+Author: Kastenfrosch
+License: http://creativecommons.org/publicdomain/zero/1.0/
+Source: http://www.freesound.org/people/Kastenfrosch/sounds/162481/
+
+Title: dog.ogg
+Original title: 254192__exuberate__dog-bark.wav
+Author: exuberate
+License: http://creativecommons.org/licenses/by/3.0/
+Source: http://www.freesound.org/people/exuberate/sounds/254192/
+
+Title: done.ogg
+Original title: 162473__kastenfrosch__successful.mp3
+Author: Kastenfrosch
+License: http://creativecommons.org/publicdomain/zero/1.0/
+Source: http://www.freesound.org/people/Kastenfrosch/sounds/162473/
+
+Title: elephant.ogg
+Original title: 139875__y89312__44.wav
+Author: y89312
+License: http://creativecommons.org/licenses/by/3.0/
+Source: http://www.freesound.org/people/y89312/sounds/139875/
+
+Title: flip.ogg
+Original title: 82378__gynation__paper-flip-2.wav
+Author: gynation
+License: http://creativecommons.org/publicdomain/zero/1.0/
+Source: http://www.freesound.org/people/gynation/sounds/82378/
+
+Title: gameOver.ogg
+Original title: 173859__jivatma07__j1game-over-mono.wav
+Author: jivatma07
+License: http://creativecommons.org/publicdomain/zero/1.0/
+Source: http://www.freesound.org/people/jivatma07/sounds/173859/
+
+Title: levelCompleted
+Original title: 122255__jivatma07__level-complete.wav
+Author: jivatma07
+License: http://creativecommons.org/licenses/by/3.0/
+Source: http://www.freesound.org/people/jivatma07/sounds/122255/
+
+Title: luckyTry.ogg
+Original title: 162476__kastenfrosch__gotitem.mp3
+Author: Kastenfrosch
+License: http://creativecommons.org/publicdomain/zero/1.0/
+Source: http://www.freesound.org/people/Kastenfrosch/sounds/162476/
+
+Title: pig.ogg
+Original title: ???
+Author: ???
+License: ???
+Source: ???
+
+Title: toManyTry.ogg
+Original title: 67454__splashdust__negativebeep.wav
+Author: Splashdust
+License: http://creativecommons.org/publicdomain/zero/1.0/
+Source: http://www.freesound.org/people/splashdust/sounds/67454/
+
+Title: zombie.ogg
+Original title: zombie.ogg
+Author: Patric Hollenstein
+License: none
+Source: none
+
+
+
+
+
+
+
+
+
+
+
+
+
+

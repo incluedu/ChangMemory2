@@ -1,0 +1,271 @@
+
+window.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+background4
+  rotate: false
+  xy: 1, 221
+  size: 480, 800
+  orig: 480, 800
+  offset: 0, 0
+  index: -1
+background3
+  rotate: false
+  xy: 483, 771
+  size: 400, 250
+  orig: 400, 250
+  offset: 0, 0
+  index: -1
+background6
+  rotate: false
+  xy: 483, 519
+  size: 250, 250
+  orig: 250, 250
+  offset: 0, 0
+  index: -1
+butterfly
+  rotate: false
+  xy: 1, 52
+  size: 150, 167
+  orig: 150, 167
+  offset: 0, 0
+  index: -1
+frog
+  rotate: false
+  xy: 483, 384
+  size: 150, 133
+  orig: 150, 133
+  offset: 0, 0
+  index: -1
+btnEmpty
+  rotate: false
+  xy: 153, 144
+  size: 206, 75
+  orig: 206, 75
+  offset: 0, 0
+  index: -1
+elephant
+  rotate: false
+  xy: 483, 259
+  size: 150, 123
+  orig: 150, 123
+  offset: 0, 0
+  index: -1
+imgGoogleSignOut
+  rotate: false
+  xy: 153, 94
+  size: 164, 48
+  orig: 164, 48
+  offset: 0, 0
+  index: -1
+imgGoogleSignIn
+  rotate: false
+  xy: 153, 44
+  size: 164, 48
+  orig: 164, 48
+  offset: 0, 0
+  index: -1
+btnEmpty120
+  rotate: false
+  xy: 885, 977
+  size: 120, 44
+  orig: 120, 44
+  offset: 0, 0
+  index: -1
+imgGooglePlay
+  rotate: false
+  xy: 735, 721
+  size: 111, 48
+  orig: 111, 48
+  offset: 0, 0
+  index: -1
+btnResume
+  rotate: false
+  xy: 635, 473
+  size: 56, 44
+  orig: 56, 44
+  offset: 0, 0
+  index: -1
+btnSettings
+  rotate: false
+  xy: 361, 175
+  size: 56, 44
+  orig: 56, 44
+  offset: 0, 0
+  index: -1
+btnEmptySmall
+  rotate: false
+  xy: 1, 6
+  size: 56, 44
+  orig: 56, 44
+  offset: 0, 0
+  index: -1
+btnHome
+  rotate: false
+  xy: 885, 931
+  size: 56, 44
+  orig: 56, 44
+  offset: 0, 0
+  index: -1
+symResume
+  rotate: false
+  xy: 735, 675
+  size: 56, 44
+  orig: 56, 44
+  offset: 0, 0
+  index: -1
+symSettings
+  rotate: false
+  xy: 635, 427
+  size: 56, 44
+  orig: 56, 44
+  offset: 0, 0
+  index: -1
+symHome
+  rotate: false
+  xy: 419, 175
+  size: 56, 44
+  orig: 56, 44
+  offset: 0, 0
+  index: -1
+btnSmall
+  rotate: false
+  xy: 59, 6
+  size: 56, 44
+  orig: 56, 44
+  offset: 0, 0
+  index: -1
+btnBack
+  rotate: false
+  xy: 59, 6
+  size: 56, 44
+  orig: 56, 44
+  offset: 0, 0
+  index: -1
+symBack
+  rotate: false
+  xy: 885, 885
+  size: 56, 44
+  orig: 56, 44
+  offset: 0, 0
+  index: -1
+imgGoogleLeaderboardsWhite
+  rotate: false
+  xy: 943, 927
+  size: 48, 48
+  orig: 48, 48
+  offset: 0, 0
+  index: -1
+imgGoogleAchievementsWhite
+  rotate: false
+  xy: 735, 625
+  size: 48, 48
+  orig: 48, 48
+  offset: 0, 0
+  index: -1
+imgGooglePlay1
+  rotate: false
+  xy: 635, 377
+  size: 48, 48
+  orig: 48, 48
+  offset: 0, 0
+  index: -1
+imgGooglePlay3
+  rotate: false
+  xy: 319, 94
+  size: 32, 48
+  orig: 32, 48
+  offset: 0, 0
+  index: -1
+imgGooglePlay2
+  rotate: false
+  xy: 848, 721
+  size: 31, 48
+  orig: 31, 48
+  offset: 0, 0
+  index: -1
+pause
+  rotate: false
+  xy: 483, 225
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+checkBoxOff
+  rotate: false
+  xy: 693, 485
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+play
+  rotate: false
+  xy: 793, 687
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+checkBoxOn
+  rotate: false
+  xy: 117, 18
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+slider-knob
+  rotate: false
+  xy: 885, 847
+  size: 18, 36
+  orig: 18, 36
+  offset: 0, 0
+  index: -1
+slider
+  rotate: false
+  xy: 1007, 1005
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+scroll
+  rotate: false
+  xy: 361, 153
+  size: 20, 20
+  orig: 20, 20
+  offset: 0, 0
+  index: -1
+roundLarge
+  rotate: false
+  xy: 943, 905
+  size: 20, 20
+  orig: 20, 20
+  offset: 0, 0
+  index: -1
+textfield
+  rotate: false
+  xy: 735, 609
+  size: 14, 14
+  orig: 14, 14
+  offset: 0, 0
+  index: -1
+rect
+  rotate: false
+  xy: 1, 1
+  size: 3, 3
+  orig: 3, 3
+  offset: 0, 0
+  index: -1
+cursor
+  rotate: false
+  xy: 477, 216
+  size: 3, 3
+  orig: 3, 3
+  offset: 0, 0
+  index: -1
+selection
+  rotate: false
+  xy: 993, 974
+  size: 1, 1
+  orig: 1, 1
+  offset: 0, 0
+  index: -1
