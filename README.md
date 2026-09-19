@@ -2,7 +2,9 @@
 
 A [libGDX](https://libgdx.com/) project generated with [gdx-liftoff](https://github.com/libgdx/gdx-liftoff).
 
-This project was generated with a template including simple application launchers and an `ApplicationAdapter` extension that draws libGDX logo.
+A game I wrote in Java for my son in 2015 using Lib GDX. I've now updated it to the latest version of Lib GDX and converted it to Kotlin.
+
+The code is open source, and if anyone is interested, they're welcome to help me with the game. 
 
 ## Platforms
 
