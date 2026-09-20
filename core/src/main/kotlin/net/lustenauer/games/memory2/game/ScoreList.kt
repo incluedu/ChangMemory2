@@ -1,207 +1,181 @@
 package net.lustenauer.games.memory2.game
 
-import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.Preferences
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.scenes.scene2d.Actor
-import com.badlogic.gdx.scenes.scene2d.ui.Label
-import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.utils.Align
-import com.badlogic.gdx.utils.Array
+import ktx.log.logger
+import ktx.scene2d.KTable
+import ktx.scene2d.label
+import ktx.scene2d.scene2d
+import ktx.scene2d.table
+import net.lustenauer.games.memory2.utils.Constants.Skins
 import net.lustenauer.games.memory2.utils.GamePreferences
 import net.lustenauer.utils.Time
-import java.text.DateFormat
-import java.text.ParseException
-import java.text.SimpleDateFormat
+import java.time.Instant
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
 import java.util.*
+import com.badlogic.gdx.utils.Array as GdxArray
 
-class ScoreList  // constructor for singleton
-private constructor() {
-    val TAG: String = this.javaClass.getName()
 
-    private var scores: Array<ScoreEntry>? = null
+/**
+ * Manages the highscore list of the game. Handles loading, saving, and
+ * ranking calculations of highscore records using modern time structures.
+ *
+ * @author Patric Hollenstein
+ */
+class ScoreList private constructor() {
 
+    private val log = logger<ScoreList>()
+
+    /**
+     * The continuous container storing the top ranking score records.
+     */
+    private val scores = GdxArray<ScoreEntry>()
+
+    /**
+     * Initializes the score list by reading saved entries from the local game preferences.
+     * Automatically populates fallback configurations if profile configurations are empty.
+     */
     fun init() {
-        Gdx.app.debug(TAG, "init()")
+        log.debug { "init()" }
+        scores.clear()
 
-        scores = Array<ScoreEntry>()
-        val prefs: Preferences = GamePreferences.instance.prefs
+        val prefs = GamePreferences.instance.prefs
 
         for (i in 0..9) {
-            try {
-                val name = prefs.getString("Rank" + (i + 1) + ".Name", "Changnoi")
-                val score = prefs.getInteger("Rank" + (i + 1) + ".Score", 0)
-                val level = prefs.getInteger("Rank" + (i + 1) + ".Level", 0)
-                val time = prefs.getFloat("Rank" + (i + 1) + ".Time", 0f)
-                val dateString = prefs.getString("Rank" + (i + 1) + ".Date", "07-Apr-2015 07:44")
+            val name = prefs.getString("Rank${i + 1}.Name", FALLBACK_NAME)
+            val score = prefs.getInteger("Rank${i + 1}.Score", 0)
+            val level = prefs.getInteger("Rank${i + 1}.Level", 0)
+            val time = prefs.getFloat("Rank${i + 1}.Time", 0f)
+            val dateString = prefs.getString("Rank${i + 1}.Date", "07-Apr-2015 07:44")
 
-                val format: DateFormat = SimpleDateFormat("dd-MMM-yyyy HH:mm", Locale.ENGLISH)
-
-                val date: Date? = format.parse(dateString)
-
-                scores!!.add(ScoreEntry(name, score, level, time, date))
-            } catch (e: ParseException) {
-                // TODO Auto-generated catch block
-                e.printStackTrace()
+            val date = try {
+                Instant.from(DATE_FORMATTER.parse(dateString))
+            } catch (_: Exception) {
+                Instant.now()
             }
+
+            scores.add(ScoreEntry(name, score, level, time, date))
         }
     }
 
     /**
-     * Add an entry to the score list and remove the last entry.
+     * Appends a newly achieved gameplay record onto the ranking array, sorts the pool,
+     * and limits entries strictly down to the top 10 positions.
      *
-     * @param score the score as an int
-     * @return Returns the ranking of the user or -1 when the user is not under top 10 ranking
+     * @param score The point value achieved.
+     * @param level The milestone level index reached.
+     * @param time The elapsed game timer value.
+     * @return The absolute leaderboard ranking index (1-10), or -1 if outside the top tier.
      */
     fun addScore(score: Int, level: Int, time: Float): Int {
-        Gdx.app.debug(TAG, " addScore($score) ")
+        log.debug { "addScore($score)" }
 
-        val date = Date()
+        val safeName = GamePreferences.instance.userName ?: ScoreEntry.DEFAULT_NAME
+        val entry = ScoreEntry(safeName, score, level, time, Instant.now())
 
-        val entry = ScoreEntry(GamePreferences.instance.userName, score, level, time, date)
+        scores.add(entry)
+        scores.sort()
 
-        scores!!.add(entry)
-        scores!!.sort()
-
-        while (scores!!.size > 10) {
-            scores!!.removeIndex(10)
+        while (scores.size > 10) {
+            scores.removeIndex(10)
         }
 
-        var rank = scores!!.indexOf(entry, true)
-
-        if (rank != -1) rank++ // add one because the array index start at 0
-
+        var rank = scores.indexOf(entry, true)
+        if (rank != -1) rank++
 
         return rank
     }
 
+    /**
+     * Compiles and layout-structures the highscore leaderboard visual representation
+     * into a scene2d [Table] actor.
+     */
     val scorePane: Actor
         get() {
-            val skinWindow: Skin = Assets.instance.skinWindow
-            val tbl = Table(skinWindow)
-            tbl.setBackground("background6")
-            tbl.setSize(460f, 450f)
-            tbl.setPosition(10f, 200f)
-            tbl.align(Align.topLeft)
-            tbl.pad(20f)
+            return scene2d.table(Assets.instance.skinWindow) {
+                background = skin.getDrawable(Skins.BACKGROUND_6)
+                setSize(460f, 450f)
+                setPosition(10f, 200f)
+                align(Align.topLeft)
+                pad(20f)
 
-            tbl.add(
-                Label(
-                    "Highscore",
-                    skinWindow,
-                    "font32",
-                    Color.ORANGE
-                )
-            ).colspan(5).padBottom(25f).row()
+                label("Highscore", Skins.DEFAULT_FONT) {
+                    color = Color.ORANGE
+                }.cell(colspan = 5, padBottom = 25f)
+                row()
 
-            tbl.add(
-                Label(
-                    "Rank",
-                    skinWindow,
-                    "font16",
-                    Color.ORANGE
-                )
-            ).left().pad(0f, 0f, 15f, 10f)
-            tbl.add(
-                Label(
-                    "Score",
-                    skinWindow,
-                    "font16",
-                    Color.ORANGE
-                )
-            ).left().pad(0f, 0f, 15f, 10f)
-            tbl.add(
-                Label(
-                    "Level",
-                    skinWindow,
-                    "font16",
-                    Color.ORANGE
-                )
-            ).left().pad(0f, 0f, 15f, 10f)
-            tbl.add(
-                Label(
-                    "Gametime",
-                    skinWindow,
-                    "font16",
-                    Color.ORANGE
-                )
-            ).left().pad(0f, 0f, 15f, 10f)
-            tbl.add(
-                Label(
-                    "Date",
-                    skinWindow,
-                    "font16",
-                    Color.ORANGE
-                )
-            ).left().pad(0f, 0f, 15f, 10f).row()
+                arrayOf("Rank", "Score", "Level", "Game-Time", "Date").forEach { header ->
+                    label(header, Skins.DEFAULT_FONT) {
+                        color = Color.ORANGE
+                    }.cell(align = Align.left, padRight = 10f, padBottom = 15f)
+                }
+                row()
 
-            for (i in 0..<scores!!.size) {
-                val e = scores!!.get(i)
-                if (e.score > 0) {
-                    val df: DateFormat = SimpleDateFormat("dd-MMM-yyyy HH:mm", Locale.ENGLISH)
+                for (i in 0..<scores.size) {
+                    val e = scores[i]
+                    if (e.score > 0) {
+                        val formattedDate = DATE_FORMATTER.format(e.date)
 
-                    tbl.add(
-                        Label(
-                            "#" + (i + 1),
-                            skinWindow,
-                            "font16",
-                            Color.WHITE
-                        )
-                    ).left().pad(0f, 0f, 5f, 10f)
-                    tbl.add(
-                        Label(
-                            "" + e.score,
-                            skinWindow,
-                            "font16",
-                            Color.WHITE
-                        )
-                    ).left().pad(0f, 0f, 5f, 10f)
-                    tbl.add(
-                        Label(
-                            "" + e.level,
-                            skinWindow,
-                            "font16",
-                            Color.WHITE
-                        )
-                    ).left().pad(0f, 0f, 5f, 10f)
-                    tbl.add(
-                        Label(
-                            "" + Time.formatSeconds(
-                                e.time
-                            ), skinWindow, "font16", Color.WHITE
-                        )
-                    ).left().pad(0f, 0f, 5f, 10f)
-                    tbl.add(
-                        Label(
-                            df.format(
-                                e.date
-                            ), skinWindow, "font16", Color.WHITE
-                        )
-                    ).left().pad(0f, 0f, 5f, 10f).row()
+                        addCell("#${i + 1}")
+                        addCell("${e.score}")
+                        addCell("${e.level}")
+                        addCell(Time.formatSeconds(e.time))
+                        addCell(formattedDate)
+                        row()
+                    }
                 }
             }
-
-            return tbl
         }
 
+    /**
+     * Helper extension function to uniformly add a formatted text cell to a libGDX layout table.
+     * Tied to KTable to enable native KTX-Scene2D layout DSL behavior.
+     */
+    private fun KTable.addCell(text: String) {
+        label(text, Skins.DEFAULT_FONT) {
+            color = Color.WHITE
+        }.cell(align = Align.left, padRight = 10f, padBottom = 5f)
+    }
+
+    /**
+     * Commits all current active score entries back into the encrypted local preferences storage node.
+     */
     fun save() {
-        Gdx.app.debug(TAG, "save()")
+        log.debug { "save()" }
 
-        val prefs: Preferences = GamePreferences.instance.prefs
-        val format: DateFormat = SimpleDateFormat("dd-MMM-yyyy HH:mm", Locale.ENGLISH)
+        val prefs = GamePreferences.instance.prefs
 
-        for ((index, entry) in scores!!.withIndex()) {
+        for ((index, entry) in scores.withIndex()) {
             prefs.putString("Rank${index + 1}.Name", entry.name)
             prefs.putInteger("Rank${index + 1}.Score", entry.score)
             prefs.putInteger("Rank${index + 1}.Level", entry.level)
             prefs.putFloat("Rank${index + 1}.Time", entry.time)
-            prefs.putString("Rank${index + 1}.Date", format.format(entry.date))
+
+            prefs.putString("Rank${index + 1}.Date", DATE_FORMATTER.format(entry.date))
         }
+        prefs.flush()
+
+        log.debug { "save() -> flush preferences success." }
     }
 
     companion object {
-        val instance: ScoreList = ScoreList() // Initialize class as a singleton
+        /**
+         * The default fallback score name if no record configuration matches.
+         */
+        private const val FALLBACK_NAME = "Changnoi"
+
+        /**
+         * Thread-safe date layout engine replacing old Java SimpleDateFormat.
+         */
+        private val DATE_FORMATTER = DateTimeFormatter.ofPattern("dd-MMM-yyyy HH:mm", Locale.ENGLISH)
+            .withZone(ZoneId.systemDefault())
+
+        /**
+         * Global singleton instance locator.
+         */
+        val instance = ScoreList()
     }
 }
-

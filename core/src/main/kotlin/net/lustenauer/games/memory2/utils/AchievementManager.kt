@@ -88,8 +88,8 @@ protected constructor() {
         val entry = find(id)
         if (entry != null) {
             if (!entry.isUnlocked) {
-                InfoList.instance.add("CONGRATULATIONS", true, InfoList.SIZE_XL)
-                InfoList.instance.add(entry.name, InfoList.SIZE_L)
+                InfoList.instance.add("CONGRATULATIONS", flash = true, size = InfoList.SIZE_XL)
+                InfoList.instance.add(entry.name, size = InfoList.SIZE_L)
 
                 AudioManager.instance.add(Assets.instance.soundAchievement)
 
@@ -103,7 +103,6 @@ protected constructor() {
         }
         return false
     }
-
 
 
     /**

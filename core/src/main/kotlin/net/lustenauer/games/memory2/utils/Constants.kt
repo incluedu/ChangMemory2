@@ -28,14 +28,13 @@ object Constants {
 
     // ---- BITMAP FONTS ----
     object Font {
-        const val UBUNTU48 = "fonts/ubuntu48"
-        const val FONT12 = "fonts/ubuntu12"
-        const val FONT16 = "fonts/ubuntu16"
-        const val FONT24 = "fonts/ubuntu24"
-        const val FONT32 = "fonts/ubuntu32"
-        const val FONT48 = "fonts/ubuntu48"
-        const val FONT56 = "fonts/ubuntu56"
-        const val FONT72 = "fonts/ubuntu72"
+        const val FONT12 = "fonts/font12"
+        const val FONT16 = "fonts/font16"
+        const val FONT24 = "fonts/font24"
+        const val FONT32 = "fonts/font32"
+        const val FONT48 = "fonts/font48"
+        const val FONT56 = "fonts/font56"
+        const val FONT72 = "fonts/font72"
     }
 
     // ---- MUSIC FILES ----
@@ -51,11 +50,18 @@ object Constants {
     // ---- DRAWABLE NAMES INSIDE SKINS ----
     object Skins {
         const val BACKGROUND_3 = "background3"
+        const val BACKGROUND_4 = "background4"
+        const val BACKGROUND_6 = "background6"
         const val BTN_BACK = "btnBack"
         const val BTN_BLUE = "blue"
         const val BTN_BLUE_BIG = "blueBig"
+        const val DEFAULT_FONT = "font16"
         const val FONT_16 = "font16"
+        const val FONT_24 = "font24"
         const val FONT_32 = "font32"
+        const val FONT_48 = "font48"
+        const val FONT_56 = "font56"
+        const val FONT_72 = "font72"
         const val IMG_BUTTERFLY = "butterfly"
         const val IMG_FROG = "frog"
         const val IMG_GOOGLE_ACHIEVEMENTS = "imgGoogleAchievementsWhite"

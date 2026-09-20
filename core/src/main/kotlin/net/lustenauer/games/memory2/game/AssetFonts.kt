@@ -1,38 +1,37 @@
 package net.lustenauer.games.memory2.game
 
-
 import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.graphics.Texture
+import com.badlogic.gdx.graphics.Texture.TextureFilter.Linear
 import com.badlogic.gdx.graphics.g2d.BitmapFont
+import com.badlogic.gdx.utils.Array
 import com.badlogic.gdx.utils.Disposable
+import ktx.assets.dispose
+import net.lustenauer.games.memory2.utils.Constants.Font.FONT12
+import net.lustenauer.games.memory2.utils.Constants.Font.FONT16
+import net.lustenauer.games.memory2.utils.Constants.Font.FONT24
+import net.lustenauer.games.memory2.utils.Constants.Font.FONT32
+import net.lustenauer.games.memory2.utils.Constants.Font.FONT48
+import net.lustenauer.games.memory2.utils.Constants.Font.FONT56
+import net.lustenauer.games.memory2.utils.Constants.Font.FONT72
 
 class AssetFonts : Disposable {
-    val font12: BitmapFont = BitmapFont(Gdx.files.internal("fonts/font12.fnt"), false)
-    val font16: BitmapFont = BitmapFont(Gdx.files.internal("fonts/font16.fnt"), false)
-    val font24: BitmapFont = BitmapFont(Gdx.files.internal("fonts/font24.fnt"), false)
-    val font32: BitmapFont = BitmapFont(Gdx.files.internal("fonts/font32.fnt"), false)
-    val font48: BitmapFont = BitmapFont(Gdx.files.internal("fonts/font48.fnt"), false)
-    val font56: BitmapFont = BitmapFont(Gdx.files.internal("fonts/font56.fnt"), false)
-    val font72: BitmapFont = BitmapFont(Gdx.files.internal("fonts/font72.fnt"), false)
+    val font12 = BitmapFont(Gdx.files.internal("$FONT12.fnt"), false)
+    val font16 = BitmapFont(Gdx.files.internal("$FONT16.fnt"), false)
+    val font24 = BitmapFont(Gdx.files.internal("$FONT24.fnt"), false)
+    val font32 = BitmapFont(Gdx.files.internal("$FONT32.fnt"), false)
+    val font48 = BitmapFont(Gdx.files.internal("$FONT48.fnt"), false)
+    val font56 = BitmapFont(Gdx.files.internal("$FONT56.fnt"), false)
+    val font72 = BitmapFont(Gdx.files.internal("$FONT72.fnt"), false)
+
+    private val allFonts = Array<BitmapFont>().apply {
+        addAll(font12, font16, font24, font32, font48, font56, font72)
+    }
 
     init {
-        val filter = Texture.TextureFilter.Linear
-        font12.region.texture.setFilter(filter, filter)
-        font16.region.texture.setFilter(filter, filter)
-        font24.region.texture.setFilter(filter, filter)
-        font32.region.texture.setFilter(filter, filter)
-        font48.region.texture.setFilter(filter, filter)
-        font56.region.texture.setFilter(filter, filter)
-        font72.region.texture.setFilter(filter, filter)
+        allFonts.forEach { it.region.texture.setFilter(Linear, Linear) }
     }
 
     override fun dispose() {
-        font12.dispose()
-        font16.dispose()
-        font24.dispose()
-        font32.dispose()
-        font48.dispose()
-        font56.dispose()
-        font72.dispose()
+        allFonts.dispose()
     }
 }

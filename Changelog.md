@@ -18,6 +18,9 @@ All notable changes and version milestones of this project will be documented in
 * `[+]` Refactored interactive game buttons (`BtnBack`, Google Play services UI) into minimalist, crash-safe KTX **`onClick`** lambda listeners [ktx-actors-docs].
 * `[+]` Cleaned up and modularized complex layout containers (`WindowGameOver`, `WindowPause`) using specialized Kotlin scope functions (`.apply`) and localized string constants.
 * `[+]` Fully overhauled the global asset management (`Assets.kt` & `AssetCard.kt`), implementing type-safe generic resource loading (`manager.load<T>`), automated array disposers (`cardAssetList.dispose`), and central companion object configurations for all game sounds [ktx-assets-docs].
+* `[+]` Integrated **ktx-log** inline lambdas to eliminate legacy `Gdx.app.debug` string allocation overhead and companion object tags.
+* `[c]` Refactored core gameplay buttons inside `CardScreen` into type-safe KTX **`onClick`** lambda listeners.
+* `[f]` Fixed deep Z-index rendering bugs where the interactive pause button was obscured by background image swaps during difficulty increments.
 
 ### Changed
 * `[c]` Rebranded the project from *ChangMemory* to **ChangMemory II**.

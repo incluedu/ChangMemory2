@@ -1,16 +1,37 @@
 package net.lustenauer.games.memory2.game
 
-import java.util.Date
+import java.time.Instant
 
+/**
+ * Represents a immutable highscore entry within the game.
+ * Implements [Comparable] to automatically sort scores in descending order (highest score first).
+ *
+ * @property name The profile name of the player. Defaults to [DEFAULT_NAME].
+ * @property score The total point value achieved during the game session.
+ * @property level The maximum level reached by the player.
+ * @property time The total gameplay duration measured in elapsed seconds.
+ * @property date The exact modern timestamp when this highscore entry was locked in.
+ * @author Patric Hollenstein
+ */
 data class ScoreEntry(
-    val name: String?,
+    val name: String = DEFAULT_NAME,
     val score: Int,
     val level: Int,
     val time: Float,
-    val date: Date?
+    val date: Instant = Instant.now()
 ) : Comparable<ScoreEntry> {
 
-    override fun compareTo(other: ScoreEntry): Int {
-        return other.score.compareTo(this.score)
+    /**
+     * Compares this highscore entry with another entry for sorting purposes.
+     * Elements are ordered descending based on the numerical [score] value.
+     */
+    override fun compareTo(other: ScoreEntry): Int =
+        compareByDescending<ScoreEntry> { it.score }.compare(this, other)
+
+    companion object {
+        /**
+         * The default fallback name used when a player profile name is blank or missing.
+         */
+        const val DEFAULT_NAME = "Player"
     }
 }

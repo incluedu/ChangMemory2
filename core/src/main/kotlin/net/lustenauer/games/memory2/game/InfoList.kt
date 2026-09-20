@@ -6,162 +6,130 @@ import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.actions.Actions
 import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.ui.Table
-import com.badlogic.gdx.utils.Array
+import net.lustenauer.games.memory2.utils.Constants.Skins
+import com.badlogic.gdx.utils.Array as GdxArray
 
-class InfoList {
-    private val FLASHTIME = 0.4f
-
-    private val list: Array<Actor?>
-
-    // Constructor for singleton class
-    init {
-        list = Array<Actor?>()
-    }
-
-    fun add(text: String?) {
-        list.add(buildLabel(text, false, SIZE_DEFAULT, null))
-    }
-
-    fun add(text: String?, size: Int) {
-        list.add(buildLabel(text, false, size, null))
-    }
-
-    fun add(text: String?, color: Color?) {
-        list.add(buildLabel(text, false, SIZE_DEFAULT, color))
-    }
-
-    fun add(text: String?, size: Int, color: Color?) {
-        list.add(buildLabel(text, false, size, color))
-    }
-
-    fun add(text: String?, flash: Boolean) {
-        list.add(buildLabel(text, flash, SIZE_DEFAULT, null))
-    }
-
-    fun add(text: String?, flash: Boolean, size: Int) {
-        list.add(buildLabel(text, flash, size, null))
-    }
+/**
+ * A singleton container that holds floating or flashing text elements (Labels).
+ * Collects message entries and compiles them into an animated, scrolling libGDX [Table] overlay.
+ *
+ * @author Patric Hollenstein
+ */
+class InfoList private constructor() {
 
     /**
-     * Remove all items from the list
+     * The internal collection holding all queued message [Actor] items before layout compilation.
      */
-    fun clear() {
-        list.clear()
-    }
-
-    fun addInfoTable(stage: Stage): Actor? {
-        // only add an actor when entrys in the list
-        if (list.size == 0) return null
-
-        val tbl = Table()
-        val width = stage.getWidth()
-        val height = stage.getHeight()
-        val x = width / 2 - (tbl.getWidth() / 2)
-        val y = height / 2 - (tbl.getHeight() / 2)
-
-        for (a in list) {
-            tbl.add<Actor?>(a).row()
-        }
-
-        tbl.setPosition(x, y)
-        //		tbl.addAction(Actions.sequence(Actions.moveTo(x, y + 250, 2f), Actions.fadeOut(0.3f), Actions.removeActor()));
-        tbl.addAction(
-            Actions.sequence(
-                Actions.parallel(Actions.moveBy(0f, 350f, 2f), Actions.fadeOut(2f)),
-                Actions.removeActor()
-            )
-        )
-
-
-        stage.addActor(tbl)
-        list.clear()
-
-        return tbl
-    }
+    private val list = GdxArray<Actor?>()
 
     /**
+     * Appends a new text message to the floating layout pool.
+     * Uses Kotlin default parameters to replace six heavily overloaded legacy Java methods.
      *
-     * @param text
-     * @param flash
-     * @param size
-     * @param color
-     * @return
+     * @param text The string characters to display inside the label.
+     * @param flash If true, forces the label to cycle through an animated light/dark color loop.
+     * @param size The targeted font sizing constant from the [Companion] object.
+     * @param color The font base tinting structure. Overridden by [Color.WHITE] if flashing is active.
      */
-    private fun buildLabel(text: String?, flash: Boolean, size: Int, color: Color?): Label {
-        var color = color
-        val lbl: Label
-        if (flash) color = WHITE // on flashing every time use white color as base
+    fun add(
+        text: String?,
+        flash: Boolean = false,
+        size: Int = SIZE_DEFAULT,
+        color: Color? = null
+    ) {
+        list.add(buildLabel(text, flash, size, color))
+    }
 
-        if (color == null) color = WHITE
+    /**
+     * Compiles all active message elements into a single scrolling [Table] container, centers it,
+     * injects a fade-out movement animation sequence, and attaches the overlay onto the game stage.
+     * Automatically clears the item pool upon execution.
+     *
+     * @param stage The active libGDX rendering platform [Stage] context to attach the overlay onto.
+     * @return The fully built, animated [Table] actor, or null if no message elements were queued.
+     */
+    fun addInfoTable(stage: Stage): Actor? {
+        if (list.isEmpty) return null
 
-        when (size) {
-            SIZE_XS -> lbl = Label(text, Assets.Companion.instance.skinWindow, "font12", color)
-            SIZE_S -> lbl = Label(text, Assets.Companion.instance.skinWindow, "font16", color)
-            SIZE_M -> lbl = Label(text, Assets.Companion.instance.skinWindow, "font24", color)
-            SIZE_L -> lbl = Label(text, Assets.Companion.instance.skinWindow, "font32", color)
-            SIZE_XL -> lbl = Label(text, Assets.Companion.instance.skinWindow, "font48", color)
-            SIZE_XXL -> lbl = Label(text, Assets.Companion.instance.skinWindow, "font56", color)
-            SIZE_XXXL -> lbl = Label(text, Assets.Companion.instance.skinWindow, "font72", color)
-            SIZE_DEFAULT -> lbl = Label(text, Assets.Companion.instance.skinWindow, "default-font", color)
-            else -> lbl = Label(text, Assets.Companion.instance.skinWindow, "default-font", color)
-        }
+        val table = Table().apply {
+            for (actor in list) {
+                add(actor).row()
+            }
 
-        if (flash) lbl.addAction(
-            Actions.forever(
+            pack()
+
+            setPosition(
+                stage.width / 2f - (width / 2f),
+                stage.height / 2f - (height / 2f)
+            )
+
+            addAction(
                 Actions.sequence(
-                    Actions.color(YELLOW, FLASHTIME),
-                    Actions.color(DARK_GRAY, FLASHTIME)
+                    Actions.parallel(
+                        Actions.moveBy(0f, 350f, 2f),
+                        Actions.fadeOut(2f)
+                    ),
+                    Actions.removeActor()
                 )
             )
-        )
-        return lbl
-    } // public class InfoListElement {
-    // private String text;
-    // private Actor actor;
-    //
-    // public InfoListElement(String text, Actor actor) {
-    // super();
-    // this.text = text;
-    // this.actor = actor;
-    // System.out.println();
-    // }
-    //
-    // public String getText() {
-    // return text;
-    // }
-    //
-    // public void setText(String text) {
-    // this.text = text;
-    // }
-    //
-    // public Actor getActor() {
-    // return actor;
-    // }
-    //
-    // public void setActor(Actor actor) {
-    // this.actor = actor;
-    // }
-    //
-    // }
-    //
+        }
+
+        stage.addActor(table)
+        list.clear()
+
+        return table
+    }
+
+    /**
+     * Helper factory that instantiates a libGDX [Label] with specified styling rules
+     * and optional endless flickering effects.
+     */
+    private fun buildLabel(text: String?, flash: Boolean, size: Int, color: Color?): Label {
+        val baseColor = if (flash) Color.WHITE else (color ?: Color.WHITE)
+
+        val styleName = when (size) {
+            SIZE_XS -> Skins.FONT_16
+            SIZE_S -> Skins.FONT_16
+            SIZE_M -> Skins.FONT_24
+            SIZE_L -> Skins.FONT_32
+            SIZE_XL -> Skins.FONT_48
+            SIZE_XXL -> Skins.FONT_56
+            SIZE_XXXL -> Skins.FONT_72
+            else -> Skins.DEFAULT_FONT
+        }
+
+        return Label(text, Assets.instance.skinWindow, styleName, baseColor).apply {
+            if (flash) {
+                addAction(
+                    Actions.forever(
+                        Actions.sequence(
+                            Actions.color(Color.YELLOW, FLASHTIME),
+                            Actions.color(Color.DARK_GRAY, FLASHTIME)
+                        )
+                    )
+                )
+            }
+        }
+    }
 
     companion object {
-        val TAG: String = Assets::class.java.getName()
-        val instance: InfoList = InfoList() // Initialize class as a singleton
+        /**
+         * Floating speed constant determining how fast flash color changes loop.
+         */
+        private const val FLASHTIME = 0.4f
 
-        const val SIZE_XS: Int = 7000
-        const val SIZE_S: Int = 7001
-        const val SIZE_M: Int = 7002
-        const val SIZE_L: Int = 7003
-        const val SIZE_XL: Int = 7004
-        const val SIZE_XXL: Int = 7005
-        const val SIZE_XXXL: Int = 7006
+        /**
+         * The central global singleton access node.
+         */
+        val instance = InfoList()
+
+        const val SIZE_XS = 7000
+        const val SIZE_S = 7001
+        const val SIZE_M = 7002
+        const val SIZE_L = 7003
+        const val SIZE_XL = 7004
+        const val SIZE_XXL = 7005
+        const val SIZE_XXXL = 7006
         private const val SIZE_DEFAULT = 0
-
-        private val YELLOW: Color = Color.YELLOW
-        private val BLUE: Color = Color.BLUE
-        private val RED: Color = Color.RED
-        private val WHITE: Color = Color.WHITE
-        private val DARK_GRAY: Color = Color.DARK_GRAY
     }
 }

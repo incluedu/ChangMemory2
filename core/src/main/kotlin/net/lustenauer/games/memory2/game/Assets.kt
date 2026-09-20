@@ -52,6 +52,8 @@ class Assets private constructor() : Disposable, AssetErrorListener {
             Gdx.files.internal(SkinConfig.WINDOW),
             TextureAtlas(Atlas.WINDOWS)
         )
+
+        ktx.scene2d.Scene2DSkin.defaultSkin = skinWindow
     }
 
     /**
