@@ -86,6 +86,10 @@ private constructor() : Game() {
     companion object {
         private val TAG: String = ChangMemory::class.java.name
 
+        @get:JvmName("getKotlinInstance")
+        val instance: ChangMemory get() = getInstance()
+
+        @JvmStatic
         var actionResolver: ActionResolver? = null
 
         var musicOnCompletionCounter: Int = 0

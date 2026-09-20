@@ -10,6 +10,9 @@ import com.badlogic.gdx.utils.viewport.StretchViewport
 import net.lustenauer.games.memory2.ChangMemory
 import net.lustenauer.games.memory2.game.Assets
 import net.lustenauer.games.memory2.utils.Constants
+import net.lustenauer.games.memory2.utils.Constants.Atlas
+import net.lustenauer.games.memory2.utils.Constants.SkinConfig
+import net.lustenauer.games.memory2.utils.Constants.Viewport
 
 class LoadingScreen(game: ChangMemory) : AbstractScreen(game) {
     private val TAG: String = this.javaClass.name
@@ -44,8 +47,8 @@ class LoadingScreen(game: ChangMemory) : AbstractScreen(game) {
 
         stage = Stage(
             StretchViewport(
-                Constants.VIEWPORT_GUI_WIDTH,
-                Constants.VIEWPORT_GUI_HEIGHT
+                Viewport.GUI_WIDTH,
+                Viewport.GUI_HEIGHT
             )
         )
         Gdx.input.inputProcessor = stage
@@ -68,8 +71,8 @@ class LoadingScreen(game: ChangMemory) : AbstractScreen(game) {
         Gdx.app.debug(TAG, "init() ")
 
         windowSkin = Skin(
-            Gdx.files.internal(Constants.SKIN_WINDOW),
-            TextureAtlas(Constants.TEXTURE_ATLAS_WINDOS)
+            Gdx.files.internal(SkinConfig.WINDOW),
+            TextureAtlas(Atlas.WINDOWS)
         )
 
         val layerBackground = buildLayerBackground()
@@ -79,7 +82,7 @@ class LoadingScreen(game: ChangMemory) : AbstractScreen(game) {
         stage.clear()
         val stack = Stack()
         stage.addActor(stack)
-        stack.setSize(Constants.VIEWPORT_GUI_WIDTH, Constants.VIEWPORT_GUI_HEIGHT)
+        stack.setSize(Viewport.GUI_WIDTH, Viewport.GUI_HEIGHT)
         stack.add(layerBackground)
         stack.add(layerLogo)
         stack.add(layerControls)
@@ -111,7 +114,7 @@ class LoadingScreen(game: ChangMemory) : AbstractScreen(game) {
             "font48",
             com.badlogic.gdx.graphics.Color.YELLOW
         )
-        lbl.setPosition((Constants.VIEWPORT_GUI_WIDTH - lbl.getWidth()) / 2, 700f)
+        lbl.setPosition((Viewport.GUI_WIDTH - lbl.getWidth()) / 2, 700f)
         layer.addActor(lbl)
 
         lbl = Label(
@@ -120,7 +123,7 @@ class LoadingScreen(game: ChangMemory) : AbstractScreen(game) {
             "font24",
             com.badlogic.gdx.graphics.Color.YELLOW
         )
-        lbl.setPosition((Constants.VIEWPORT_GUI_WIDTH - lbl.getWidth()) / 2, 660f)
+        lbl.setPosition((Viewport.GUI_WIDTH - lbl.getWidth()) / 2, 660f)
         layer.addActor(lbl)
 
         lblLoading = Label(
@@ -129,7 +132,7 @@ class LoadingScreen(game: ChangMemory) : AbstractScreen(game) {
             "font48",
             com.badlogic.gdx.graphics.Color.WHITE
         )
-        lblLoading.setPosition((Constants.VIEWPORT_GUI_WIDTH - lblLoading.getWidth()) / 2, 400f)
+        lblLoading.setPosition((Viewport.GUI_WIDTH - lblLoading.getWidth()) / 2, 400f)
         layer.addActor(lblLoading)
 
         lbl = Label(

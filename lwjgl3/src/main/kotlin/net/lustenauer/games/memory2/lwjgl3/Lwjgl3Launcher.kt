@@ -4,6 +4,7 @@ import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration
 import net.lustenauer.games.memory2.ChangMemory
 import net.lustenauer.games.memory2.utils.Constants
+import net.lustenauer.games.memory2.utils.Constants.Viewport
 
 object Lwjgl3Launcher {
     @JvmStatic
@@ -22,8 +23,8 @@ object Lwjgl3Launcher {
             configuration.setTitle("ChangMemory2")
             configuration.useVsync(true)
 
-            val width = Constants.VIEWPORT_GUI_WIDTH.toInt()
-            val height = Constants.VIEWPORT_GUI_HEIGHT.toInt()
+            val width = Viewport.GUI_WIDTH.toInt()
+            val height = Viewport.GUI_HEIGHT.toInt()
 
             configuration.setWindowedMode(width, height)
 

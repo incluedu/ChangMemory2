@@ -18,14 +18,16 @@ import com.badlogic.gdx.utils.Array
 import com.badlogic.gdx.utils.viewport.StretchViewport
 import net.lustenauer.games.memory2.ChangMemory
 import net.lustenauer.games.memory2.game.*
-import net.lustenauer.games.memory2.game.actors.WindowGameOver
-import net.lustenauer.games.memory2.game.actors.WindowPause
+import net.lustenauer.games.memory2.game.windows.WindowGameOver
+import net.lustenauer.games.memory2.game.windows.WindowPause
 import net.lustenauer.games.memory2.game.objects.Card
 import net.lustenauer.games.memory2.game.objects.FlashLabel
 import net.lustenauer.games.memory2.utils.AchievementEntry
 import net.lustenauer.games.memory2.utils.AchievementManager
 import net.lustenauer.games.memory2.utils.AudioManager
-import net.lustenauer.games.memory2.utils.Constants
+import net.lustenauer.games.memory2.utils.Constants.Atlas
+import net.lustenauer.games.memory2.utils.Constants.SkinConfig
+import net.lustenauer.games.memory2.utils.Constants.Viewport
 import net.lustenauer.gdx.scenes.scene2d.Command.Companion.CMD_MENU
 import net.lustenauer.gdx.scenes.scene2d.Command.Companion.CMD_RESTART
 import net.lustenauer.gdx.scenes.scene2d.Command.Companion.CMD_RESUME
@@ -361,24 +363,24 @@ class CardScreen(game: ChangMemory) : AbstractScreen(game) {
 
     private fun initStage() {
         skinWindow = Skin(
-            Gdx.files.internal(Constants.SKIN_WINDOW),
-            TextureAtlas(Constants.TEXTURE_ATLAS_WINDOS)
+            Gdx.files.internal(SkinConfig.WINDOW),
+            TextureAtlas(Atlas.WINDOWS)
         )
 
         stage = Stage(
             StretchViewport(
-                Constants.VIEWPORT_CARD_WIDTH,
-                Constants.VIEWPORT_CARD_HEIGHT
+                Viewport.CARD_WIDTH,
+                Viewport.CARD_HEIGHT
             )
         )
         stack = Stack()
         stage.addActor(stack)
-        stack.setSize(Constants.VIEWPORT_GUI_WIDTH, Constants.VIEWPORT_GUI_HEIGHT)
+        stack.setSize(Viewport.GUI_WIDTH, Viewport.GUI_HEIGHT)
 
         hudStage = Stage(
             StretchViewport(
-                Constants.VIEWPORT_CARD_WIDTH,
-                Constants.VIEWPORT_CARD_HEIGHT
+                Viewport.CARD_WIDTH,
+                Viewport.CARD_HEIGHT
             )
         )
     }

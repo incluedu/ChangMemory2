@@ -2,46 +2,74 @@ package net.lustenauer.games.memory2.utils
 
 
 object Constants {
-    // Visible game world is 5 meters wide
-    const val VIEWPORT_WIDTH: Float = 5.0f
-    const val VIEWPORT_HEIGHT: Float = 5.0f
+    // ---- VIEWPORTS & DIMENSIONS ----
+    object Viewport {
+        const val WIDTH = 5.0f
+        const val HEIGHT = 5.0f
+        const val CARD_WIDTH = 480.0f
+        const val CARD_HEIGHT = 800.0f
+        const val GUI_WIDTH = 480.0f
+        const val GUI_HEIGHT = 800.0f
+    }
 
-    // Visible game dimensions is 5 meters
-    const val VIEWPORT_CARD_WIDTH: Float = 480.0f
-    const val VIEWPORT_CARD_HEIGHT: Float = 800.0f
+    // ---- TEXTURE ATLASES ----
+    object Atlas {
+        const val CARDS = "images/cards.atlas"
+        const val LIBGDX_UI = "images/uiskin.atlas"
+        const val WINDOWS = "skinsets/window.atlas"
+    }
 
-    // GUI dimensions
-    const val VIEWPORT_GUI_WIDTH: Float = 480.0f
-    const val VIEWPORT_GUI_HEIGHT: Float = 800.0f
+    // ---- SKIN CONFIGURATIONS (JSON) ----
+    object SkinConfig {
+        const val LIBGDX_UI = "images/uiskin.json"
+        const val FONTS = "fonts/changMemory.json"
+        const val WINDOW = "skinsets/window.json"
+    }
 
-    // Location of description file for texture atlas
-    const val TEXTURE_ATLAS_CARDS: String = "images/cards.atlas"
-    const val TEXTURE_ATLAS_LIBGDX_UI: String = "images/uiskin.atlas"
-    const val TEXTURE_ATLAS_WINDOS: String = "skinsets/window.atlas"
+    // ---- BITMAP FONTS ----
+    object Font {
+        const val UBUNTU48 = "fonts/ubuntu48"
+        const val FONT12 = "fonts/ubuntu12"
+        const val FONT16 = "fonts/ubuntu16"
+        const val FONT24 = "fonts/ubuntu24"
+        const val FONT32 = "fonts/ubuntu32"
+        const val FONT48 = "fonts/ubuntu48"
+        const val FONT56 = "fonts/ubuntu56"
+        const val FONT72 = "fonts/ubuntu72"
+    }
 
-    // Location of description file for skins
-    const val SKIN_LIBGDX_UI: String = "images/uiskin.json"
-    const val SKIN_FONTS: String = "fonts/changMemory.json"
-    const val SKIN_WINDOW: String = "skinsets/window.json"
+    // ---- MUSIC FILES ----
+    object Music {
+        const val TITLE1 = "music/alw.ogg"
+        const val TITLE2 = "music/av_1200.ogg"
+        const val TITLE3 = "music/beefeater.ogg"
+        const val TITLE4 = "music/forgottenone.ogg"
+        const val TITLE5 = "music/mind_traveller.ogg"
+        const val TITLE6 = "music/the_hunt_for_lars.ogg"
+    }
 
-    // Locations of BitmapFonts
-    const val FONT_UBUNTU48: String = "fonts/ubuntu48"
-    const val FONT_FONT12: String = "fonts/ubuntu12"
-    const val FONT_FONT16: String = "fonts/ubuntu16"
-    const val FONT_FONT24: String = "fonts/ubuntu24"
-    const val FONT_FONT32: String = "fonts/ubuntu32"
-    const val FONT_FONT48: String = "fonts/ubuntu48"
-    const val FONT_FONT56: String = "fonts/ubuntu56"
-    const val FONT_FONT72: String = "fonts/ubuntu72"
+    // ---- DRAWABLE NAMES INSIDE SKINS ----
+    object Skins {
+        const val BACKGROUND_3 = "background3"
+        const val BTN_BACK = "btnBack"
+        const val BTN_BLUE = "blue"
+        const val BTN_BLUE_BIG = "blueBig"
+        const val FONT_16 = "font16"
+        const val FONT_32 = "font32"
+        const val IMG_BUTTERFLY = "butterfly"
+        const val IMG_FROG = "frog"
+        const val IMG_GOOGLE_ACHIEVEMENTS = "imgGoogleAchievementsWhite"
+        const val IMG_GOOGLE_LEADERBOARDS = "imgGoogleLeaderboardsWhite"
+        const val IMG_GOOGLE_PLAY = "imgGooglePlay"
+        const val IMG_GOOGLE_SIGN_IN = "imgGoogleSignIn"
+        const val IMG_GOOGLE_SIGN_OUT = "imgGoogleSignOut"
+    }
 
-    // Game preferences file
-    const val PREFERENCES: String = "changmemory.prefs"
-
-    // music files
-    const val MUSIC1: String = "music/alw.ogg"
-    const val MUSIC2: String = "music/av_1200.ogg"
-    const val MUSIC3: String = "music/beefeater.ogg"
-    const val MUSIC4: String = "music/forgottenone.ogg"
-    const val MUSIC5: String = "music/mind_traveller.ogg"
-    const val MUSIC6: String = "music/the_hunt_for_lars.ogg"
+    // ---- GAME PREFERENCES ----
+    object Prefs {
+        const val FILE_NAME = "changmemory.prefs"
+    }
 }
+
+
+

@@ -1,26 +1,14 @@
 package net.lustenauer.games.memory2.game.actors
 
-import com.badlogic.gdx.scenes.scene2d.InputEvent
-import com.badlogic.gdx.scenes.scene2d.InputListener
 import com.badlogic.gdx.scenes.scene2d.ui.Image
-import net.lustenauer.games.memory2.game.Assets
+import ktx.actors.onClick
 import net.lustenauer.games.memory2.ChangMemory
+import net.lustenauer.games.memory2.game.Assets
+import net.lustenauer.games.memory2.utils.Constants.Skins.IMG_GOOGLE_LEADERBOARDS
 
-class BtnPlayLeaderboards : Image(Assets.instance.skinWindow, "imgGoogleLeaderboardsWhite") {
+class BtnPlayLeaderboards : Image(Assets.instance.skinWindow, IMG_GOOGLE_LEADERBOARDS) {
     init {
         setPosition(160f, 20f)
-
-        addListener(object : InputListener() {
-            override fun touchDown(
-                event: InputEvent?,
-                x: Float,
-                y: Float,
-                pointer: Int,
-                button: Int
-            ): Boolean {
-                ChangMemory.actionResolver?.showLeaderboardsGPGS()
-                return true
-            }
-        })
+        onClick { ChangMemory.actionResolver?.showLeaderboardsGPGS() }
     }
 }

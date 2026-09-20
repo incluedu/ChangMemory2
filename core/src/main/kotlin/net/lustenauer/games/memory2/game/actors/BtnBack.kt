@@ -1,43 +1,15 @@
 package net.lustenauer.games.memory2.game.actors
 
 import com.badlogic.gdx.Screen
-import com.badlogic.gdx.scenes.scene2d.EventListener
-import com.badlogic.gdx.scenes.scene2d.InputEvent
-import com.badlogic.gdx.scenes.scene2d.InputListener
 import com.badlogic.gdx.scenes.scene2d.ui.Image
+import ktx.actors.onClick
 import net.lustenauer.games.memory2.ChangMemory
 import net.lustenauer.games.memory2.game.Assets
+import net.lustenauer.games.memory2.utils.Constants.Skins.BTN_BACK
 
-class BtnBack() : Image(Assets.instance.skinWindow, "btnBack") {
-    private var screen: Screen? = null
-
-    constructor(listener: EventListener?) : this() {
-        addListener(listener)
-    }
-
+class BtnBack(screen: Screen? = null) : Image(Assets.instance.skinWindow, BTN_BACK) {
     init {
         setPosition(20f, 20f)
-    }
-
-    constructor(screen: Screen?) : this() {
-        this.screen = screen
-        addListener(object : InputListener() {
-            override fun touchDown(
-                event: InputEvent?,
-                x: Float,
-                y: Float,
-                pointer: Int,
-                button: Int
-            ): Boolean {
-                setScreen()
-                return true
-            }
-        })
-    }
-
-    private fun setScreen() {
-        screen?.let { screen ->
-            ChangMemory.getInstance().setScreen(screen)
-        }
+        screen?.let { onClick { ChangMemory.instance.setScreen(it) } }
     }
 }

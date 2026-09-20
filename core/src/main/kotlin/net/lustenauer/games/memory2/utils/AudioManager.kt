@@ -145,16 +145,16 @@ class AudioManager private constructor() {
     }
 
     private fun loadRandomMusic() {
-        val r = Random().nextInt(5)
+        val r = Random().nextInt(6)
 
-        when (r) {
-            0 -> musicName = Constants.MUSIC1
-            1 -> musicName = Constants.MUSIC2
-            2 -> musicName = Constants.MUSIC3
-            3 -> musicName = Constants.MUSIC4
-            4 -> musicName = Constants.MUSIC5
-            5 -> musicName = Constants.MUSIC6
-            else -> musicName = Constants.MUSIC1
+        musicName = when (r) {
+            0 -> Constants.Music.TITLE1
+            1 -> Constants.Music.TITLE2
+            2 -> Constants.Music.TITLE3
+            3 -> Constants.Music.TITLE4
+            4 -> Constants.Music.TITLE5
+            5 -> Constants.Music.TITLE6
+            else -> Constants.Music.TITLE1
         }
 
         if (this.playingMusic != null) {

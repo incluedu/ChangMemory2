@@ -4,13 +4,16 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input.Keys.BACK
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.InputListener
+import com.badlogic.gdx.scenes.scene2d.ui.Image
 import com.badlogic.gdx.utils.viewport.StretchViewport
+import ktx.scene2d.image
+import ktx.scene2d.scene2d
 import net.lustenauer.games.memory2.ChangMemory
 import net.lustenauer.games.memory2.game.Assets
-import net.lustenauer.games.memory2.game.actors.BtnGooglePlay
 import net.lustenauer.games.memory2.game.actors.BtnGooglePlusSignIn
 import net.lustenauer.games.memory2.utils.AudioManager
 import net.lustenauer.games.memory2.utils.Constants
+import net.lustenauer.games.memory2.utils.Constants.Viewport
 import net.lustenauer.games.memory2.utils.GamePreferences
 
 class MenuScreen(game: ChangMemory) : AbstractScreen(game) {
@@ -59,8 +62,8 @@ class MenuScreen(game: ChangMemory) : AbstractScreen(game) {
 
         stage = com.badlogic.gdx.scenes.scene2d.Stage(
             StretchViewport(
-                Constants.VIEWPORT_GUI_WIDTH,
-                Constants.VIEWPORT_GUI_HEIGHT
+                Viewport.GUI_WIDTH,
+                Viewport.GUI_HEIGHT
             )
         )
         Gdx.input.setInputProcessor(stage)
@@ -72,7 +75,7 @@ class MenuScreen(game: ChangMemory) : AbstractScreen(game) {
         stage!!.clear()
         val stack = com.badlogic.gdx.scenes.scene2d.ui.Stack()
         stage!!.addActor(stack)
-        stack.setSize(Constants.VIEWPORT_GUI_WIDTH, Constants.VIEWPORT_GUI_HEIGHT)
+        stack.setSize(Viewport.GUI_WIDTH, Viewport.GUI_HEIGHT)
         stack.add(layerBackground)
         stack.add(layerLogo)
         stack.add(layerControls)
@@ -98,8 +101,8 @@ class MenuScreen(game: ChangMemory) : AbstractScreen(game) {
 
     private fun buildBackgroundLayer(): com.badlogic.gdx.scenes.scene2d.ui.Table {
         val layer = com.badlogic.gdx.scenes.scene2d.ui.Table()
-        val imgBackground = com.badlogic.gdx.scenes.scene2d.ui.Image(windowSkin, "background4")
-        layer.add<com.badlogic.gdx.scenes.scene2d.ui.Image?>(imgBackground)
+        val imgBackground = Image(windowSkin, "background4")
+        layer.add<Image?>(imgBackground)
         return layer
     }
 
@@ -197,14 +200,16 @@ class MenuScreen(game: ChangMemory) : AbstractScreen(game) {
         })
 
 
-        layer.add<com.badlogic.gdx.scenes.scene2d.ui.Button?>(btnStart).pad(0f, 0f, 60f, 0f).colspan(2).row()
-        layer.add<com.badlogic.gdx.scenes.scene2d.ui.Button?>(btnScore).pad(0f, 0f, 20f, 20f)
-        layer.add<com.badlogic.gdx.scenes.scene2d.ui.Button?>(btnSettings).pad(0f, 0f, 20f, 0f).row()
-        layer.add<com.badlogic.gdx.scenes.scene2d.ui.Button?>(btnCredits).pad(0f, 0f, 20f, 20f)
-        layer.add<com.badlogic.gdx.scenes.scene2d.ui.Button?>(btnExit).pad(0f, 0f, 20f, 0f).row()
+        layer.add(btnStart).pad(0f, 0f, 60f, 0f).colspan(2).row()
+        layer.add(btnScore).pad(0f, 0f, 20f, 20f)
+        layer.add(btnSettings).pad(0f, 0f, 20f, 0f).row()
+        layer.add(btnCredits).pad(0f, 0f, 20f, 20f)
+        layer.add(btnExit).pad(0f, 0f, 20f, 0f).row()
 
         layer.addActor(BtnGooglePlusSignIn())
-        layer.addActor(BtnGooglePlay())
+        val skinWindow = Assets.instance.skinWindow
+        layer.addActor(scene2d.image("imgGooglePlay", skinWindow) { setPosition(20f, 20f) })
+
         return layer
     }
 
@@ -218,7 +223,7 @@ class MenuScreen(game: ChangMemory) : AbstractScreen(game) {
             "font48",
             com.badlogic.gdx.graphics.Color.YELLOW
         )
-        lbl.setPosition((Constants.VIEWPORT_GUI_WIDTH - lbl.getWidth()) / 2, 700f)
+        lbl.setPosition((Viewport.GUI_WIDTH - lbl.getWidth()) / 2, 700f)
         layer.addActor(lbl)
 
         lbl = com.badlogic.gdx.scenes.scene2d.ui.Label(
@@ -227,7 +232,7 @@ class MenuScreen(game: ChangMemory) : AbstractScreen(game) {
             "font24",
             com.badlogic.gdx.graphics.Color.YELLOW
         )
-        lbl.setPosition((Constants.VIEWPORT_GUI_WIDTH - lbl.getWidth()) / 2, 660f)
+        lbl.setPosition((Viewport.GUI_WIDTH - lbl.getWidth()) / 2, 660f)
         layer.addActor(lbl)
 
         return layer

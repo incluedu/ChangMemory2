@@ -17,7 +17,7 @@ class GamePreferences private constructor() {
 
     // singleton: prevent instantiation from other classes
     init {
-        prefs = Gdx.app.getPreferences(Constants.PREFERENCES)
+        prefs = Gdx.app.getPreferences(Constants.Prefs.FILE_NAME)
     }
 
     fun load() {

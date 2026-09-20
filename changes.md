@@ -4,6 +4,8 @@ All notable changes and version milestones of this project will be documented in
 
 ---
 
+
+
 ## [2.0.0-alpha.1] - 2026-09-20
 ### Added
 * `[+]` Complete porting of the entire game source code from Java to **Kotlin**.
@@ -11,6 +13,11 @@ All notable changes and version milestones of this project will be documented in
 * `[+]` Upgraded the desktop launcher to **LWJGL3** for perfect modern PC compatibility.
 * `[+]` Future-proofed `AndroidManifest.xml` with modern `dataExtractionRules` for Android 12 up to Android 16+.
 * `[+]` Migrated all asset and level files to the central `assets/` directory for robust cross-platform loading.
+* `[+]` Migrated core build scripts from Groovy (`build.gradle`) to the modern, type-safe **Kotlin DSL (`build.gradle.kts`)** [ktx-app-docs].
+* `[+]` Integrated **LibKTX** modules (`ktx-actors` and `ktx-scene2d`) to eliminate legacy Java boilerplate code [ktx-actors-docs, ktx-scene2d-docs].
+* `[+]` Refactored interactive game buttons (`BtnBack`, Google Play services UI) into minimalist, crash-safe KTX **`onClick`** lambda listeners [ktx-actors-docs].
+* `[+]` Cleaned up and modularized complex layout containers (`WindowGameOver`, `WindowPause`) using specialized Kotlin scope functions (`.apply`) and localized string constants.
+* `[+]` Fully overhauled the global asset management (`Assets.kt` & `AssetCard.kt`), implementing type-safe generic resource loading (`manager.load<T>`), automated array disposers (`cardAssetList.dispose`), and central companion object configurations for all game sounds [ktx-assets-docs].
 
 ### Changed
 * `[c]` Rebranded the project from *ChangMemory* to **ChangMemory II**.

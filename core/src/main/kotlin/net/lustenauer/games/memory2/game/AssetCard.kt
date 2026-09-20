@@ -1,31 +1,33 @@
 package net.lustenauer.games.memory2.game
 
 import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.graphics.Texture
+import com.badlogic.gdx.graphics.Texture.TextureFilter.Linear
 import com.badlogic.gdx.graphics.g2d.TextureAtlas
 import com.badlogic.gdx.utils.Disposable
+import net.lustenauer.games.memory2.game.Assets.Companion.TAG
 
 class AssetCard @JvmOverloads constructor(
-    private val assets: Assets, atlas: TextureAtlas,
+    assets: Assets,
+    atlas: TextureAtlas,
     assetName: String?,
-    desc: String?,
+    var desc: String?,
     soundPath: String?,
     soundVolume: Float = 1.0f,
     notFlip: Boolean = false
 ) : Disposable {
+
     var card: TextureAtlas.AtlasRegion
     var doneSound: AssetSound? = null
-    var desc: String?
 
     init {
-        Gdx.app.debug(Assets.Companion.TAG, "add card -->" + assetName)
+        Gdx.app.debug(TAG, "add card --> $assetName")
 
-        this.desc = desc
-        card = atlas.findRegion(assetName)
-        card.getTexture().setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear)
-        if (!notFlip) card.flip(true, false)
-        if (soundPath == null) doneSound = null
-        else doneSound = AssetSound(assets, soundPath, soundVolume)
+        card = atlas.findRegion(assetName).apply {
+            texture.setFilter(Linear, Linear)
+            if (!notFlip) flip(true, false)
+        }
+
+        doneSound = if (soundPath == null) null else AssetSound(assets, soundPath, soundVolume)
     }
 
     override fun dispose() {

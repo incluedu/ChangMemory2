@@ -11,7 +11,9 @@ import com.badlogic.gdx.utils.viewport.StretchViewport
 import net.lustenauer.games.memory2.ChangMemory
 import net.lustenauer.games.memory2.game.actors.BtnBack
 import net.lustenauer.games.memory2.game.actors.BtnGooglePlusSignIn
-import net.lustenauer.games.memory2.utils.Constants
+import net.lustenauer.games.memory2.utils.Constants.Atlas
+import net.lustenauer.games.memory2.utils.Constants.SkinConfig
+import net.lustenauer.games.memory2.utils.Constants.Viewport
 
 class CreditsScreen(game: ChangMemory) : AbstractScreen(game) {
     private val TAG: String = this.javaClass.getName()
@@ -39,8 +41,8 @@ class CreditsScreen(game: ChangMemory) : AbstractScreen(game) {
         ChangMemory.actionResolver?.setTrackerScreenName(TAG)
         stage = com.badlogic.gdx.scenes.scene2d.Stage(
             StretchViewport(
-                Constants.VIEWPORT_GUI_WIDTH,
-                Constants.VIEWPORT_GUI_HEIGHT
+                Viewport.GUI_WIDTH,
+                Viewport.GUI_HEIGHT
             )
         )
         Gdx.input.setCatchKey(BACK, true)
@@ -59,8 +61,8 @@ class CreditsScreen(game: ChangMemory) : AbstractScreen(game) {
     /* PRIVATE METHODS */ /* ================ */
     private fun init() {
         skinWindow = com.badlogic.gdx.scenes.scene2d.ui.Skin(
-            Gdx.files.internal(Constants.SKIN_WINDOW),
-            TextureAtlas(Constants.TEXTURE_ATLAS_WINDOS)
+            Gdx.files.internal(SkinConfig.WINDOW),
+            TextureAtlas(Atlas.WINDOWS)
         )
 
         val layerBackground: Actor = buildLayerBackground()
@@ -71,7 +73,7 @@ class CreditsScreen(game: ChangMemory) : AbstractScreen(game) {
         stage!!.clear()
         val stack = com.badlogic.gdx.scenes.scene2d.ui.Stack()
         stage!!.addActor(stack)
-        stack.setSize(Constants.VIEWPORT_GUI_WIDTH, Constants.VIEWPORT_GUI_HEIGHT)
+        stack.setSize(Viewport.GUI_WIDTH, Viewport.GUI_HEIGHT)
         stack.add(layerBackground)
         stack.add(layerLogo)
         stack.add(layerCreditsText)
@@ -133,11 +135,11 @@ class CreditsScreen(game: ChangMemory) : AbstractScreen(game) {
         val layer = Table()
 
         val lblTitle = Label("CHANG MEMORY", skinWindow, "font48", Color.YELLOW)
-        lblTitle.setPosition((Constants.VIEWPORT_GUI_WIDTH - lblTitle.width) / 2, 710f)
+        lblTitle.setPosition((Viewport.GUI_WIDTH - lblTitle.width) / 2, 710f)
         layer.addActor(lblTitle)
 
         val lblCopyright = Label("(c) 2015 BY Lustenauer Net", skinWindow, "font24", Color.YELLOW)
-        lblCopyright.setPosition((Constants.VIEWPORT_GUI_WIDTH - lblCopyright.width) / 2, 670f)
+        lblCopyright.setPosition((Viewport.GUI_WIDTH - lblCopyright.width) / 2, 670f)
         layer.addActor(lblCopyright)
 
         val versionText = ChangMemory.actionResolver?.appVersion ?: "1.0-Desktop"

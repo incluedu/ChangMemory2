@@ -22,6 +22,7 @@ import net.lustenauer.games.memory2.game.actors.BtnGooglePlusSignIn
 import net.lustenauer.games.memory2.game.actors.BtnGooglePlusSignOut
 import net.lustenauer.games.memory2.utils.AudioManager
 import net.lustenauer.games.memory2.utils.Constants
+import net.lustenauer.games.memory2.utils.Constants.Viewport
 import net.lustenauer.games.memory2.utils.GamePreferences
 
 class SettingsScreen(game: ChangMemory) : AbstractScreen(game) {
@@ -63,8 +64,8 @@ class SettingsScreen(game: ChangMemory) : AbstractScreen(game) {
         ChangMemory.actionResolver?.setTrackerScreenName(TAG)
         stage = com.badlogic.gdx.scenes.scene2d.Stage(
             StretchViewport(
-                Constants.VIEWPORT_GUI_WIDTH,
-                Constants.VIEWPORT_GUI_HEIGHT
+                Viewport.GUI_WIDTH,
+                Viewport.GUI_HEIGHT
             )
         )
         Gdx.input.setCatchKey(BACK, true)
@@ -91,7 +92,7 @@ class SettingsScreen(game: ChangMemory) : AbstractScreen(game) {
         stage!!.clear()
         val stack = Stack()
         stage!!.addActor(stack)
-        stack.setSize(Constants.VIEWPORT_GUI_WIDTH, Constants.VIEWPORT_GUI_HEIGHT)
+        stack.setSize(Viewport.GUI_WIDTH, Viewport.GUI_HEIGHT)
         stack.add(layerBackground)
         stack.add(layerLogo)
         stack.add(layerControls)
@@ -136,7 +137,7 @@ class SettingsScreen(game: ChangMemory) : AbstractScreen(game) {
             "font48",
             Color.YELLOW
         )
-        lbl.setPosition((Constants.VIEWPORT_GUI_WIDTH - lbl.getWidth()) / 2, 700f)
+        lbl.setPosition((Viewport.GUI_WIDTH - lbl.getWidth()) / 2, 700f)
         layer.addActor(lbl)
 
         lbl = Label(
@@ -145,7 +146,7 @@ class SettingsScreen(game: ChangMemory) : AbstractScreen(game) {
             "font24",
             Color.YELLOW
         )
-        lbl.setPosition((Constants.VIEWPORT_GUI_WIDTH - lbl.getWidth()) / 2, 660f)
+        lbl.setPosition((Viewport.GUI_WIDTH - lbl.getWidth()) / 2, 660f)
         layer.addActor(lbl)
 
         return layer

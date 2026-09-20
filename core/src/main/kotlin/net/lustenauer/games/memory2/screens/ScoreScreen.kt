@@ -15,6 +15,8 @@ import net.lustenauer.games.memory2.game.actors.BtnPlayLeaderboards
 import net.lustenauer.games.memory2.utils.AchievementEntry
 import net.lustenauer.games.memory2.utils.AchievementManager
 import net.lustenauer.games.memory2.utils.Constants
+import net.lustenauer.games.memory2.utils.Constants.Atlas
+import net.lustenauer.games.memory2.utils.Constants.SkinConfig
 
 class ScoreScreen(game: ChangMemory) : AbstractScreen(game) {
     private val TAG: kotlin.String = this.javaClass.getName()
@@ -48,8 +50,8 @@ class ScoreScreen(game: ChangMemory) : AbstractScreen(game) {
 
         stage = Stage(
             StretchViewport(
-                Constants.VIEWPORT_GUI_WIDTH,
-                Constants.VIEWPORT_GUI_HEIGHT
+                Constants.Viewport.GUI_WIDTH,
+                Constants.Viewport.GUI_HEIGHT
             )
         )
 
@@ -73,8 +75,8 @@ class ScoreScreen(game: ChangMemory) : AbstractScreen(game) {
     /* PRIVATE METHODES */ /* ================ */
     private fun init() {
         windowSkin = com.badlogic.gdx.scenes.scene2d.ui.Skin(
-            Gdx.files.internal(Constants.SKIN_WINDOW),
-            TextureAtlas(Constants.TEXTURE_ATLAS_WINDOS)
+            Gdx.files.internal(SkinConfig.WINDOW),
+            TextureAtlas(Atlas.WINDOWS)
         )
 
         val layerBackground = buildLayerBackground()
@@ -84,7 +86,7 @@ class ScoreScreen(game: ChangMemory) : AbstractScreen(game) {
         stage!!.clear()
         val stack = com.badlogic.gdx.scenes.scene2d.ui.Stack()
         stage!!.addActor(stack)
-        stack.setSize(Constants.VIEWPORT_GUI_WIDTH, Constants.VIEWPORT_GUI_HEIGHT)
+        stack.setSize(Constants.Viewport.GUI_WIDTH, Constants.Viewport.GUI_HEIGHT)
         stack.add(layerBackground)
         stack.add(layerLogo)
         stack.add(layerControls)
@@ -144,7 +146,7 @@ class ScoreScreen(game: ChangMemory) : AbstractScreen(game) {
             "font48",
             com.badlogic.gdx.graphics.Color.YELLOW
         )
-        lbl.setPosition((Constants.VIEWPORT_GUI_WIDTH - lbl.getWidth()) / 2, 700f)
+        lbl.setPosition((Constants.Viewport.GUI_WIDTH - lbl.getWidth()) / 2, 700f)
         layer.addActor(lbl)
 
         lbl = com.badlogic.gdx.scenes.scene2d.ui.Label(
@@ -153,7 +155,7 @@ class ScoreScreen(game: ChangMemory) : AbstractScreen(game) {
             "font24",
             com.badlogic.gdx.graphics.Color.YELLOW
         )
-        lbl.setPosition((Constants.VIEWPORT_GUI_WIDTH - lbl.getWidth()) / 2, 660f)
+        lbl.setPosition((Constants.Viewport.GUI_WIDTH - lbl.getWidth()) / 2, 660f)
         layer.addActor(lbl)
 
         return layer
