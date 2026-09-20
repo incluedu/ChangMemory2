@@ -2,6 +2,7 @@ package net.lustenauer.games.memory2.game
 
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.scenes.scene2d.Actor
+import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.utils.Align
 import ktx.log.logger
@@ -95,50 +96,38 @@ class ScoreList private constructor() {
      */
     val scorePane: Actor
         get() {
-            return scene2d.table(Assets.instance.skinWindow) {
-                background = skin.getDrawable(Skins.BACKGROUND_6)
+            val skinWindow = Assets.instance.skinWindow
+
+            val tbl = Table().apply {
+                background = skinWindow.getDrawable(Skins.BACKGROUND_6)
                 setSize(460f, 450f)
                 setPosition(10f, 200f)
                 align(Align.topLeft)
                 pad(20f)
+            }
 
-                label("Highscore", Skins.DEFAULT_FONT) {
-                    color = Color.ORANGE
-                }.cell(colspan = 5, padBottom = 25f)
-                row()
+            tbl.add(Label("Highscore", skinWindow, Skins.DEFAULT_FONT, Color.ORANGE)).colspan(5).padBottom(25f).row()
 
-                arrayOf("Rank", "Score", "Level", "Game-Time", "Date").forEach { header ->
-                    label(header, Skins.DEFAULT_FONT) {
-                        color = Color.ORANGE
-                    }.cell(align = Align.left, padRight = 10f, padBottom = 15f)
-                }
-                row()
+            arrayOf("Rank", "Score", "Level", "Game-Time", "Date").forEach { header ->
+                tbl.add(Label(header, skinWindow, Skins.DEFAULT_FONT, Color.ORANGE)).left().pad(0f, 0f, 15f, 10f)
+            }
+            tbl.row()
 
-                for (i in 0..<scores.size) {
-                    val e = scores[i]
-                    if (e.score > 0) {
-                        val formattedDate = DATE_FORMATTER.format(e.date)
+            for (i in 0..<scores.size) {
+                val e = scores[i]
+                if (e.score > 0) {
+                    val formattedDate = DATE_FORMATTER.format(e.date)
 
-                        addCell("#${i + 1}")
-                        addCell("${e.score}")
-                        addCell("${e.level}")
-                        addCell(Time.formatSeconds(e.time))
-                        addCell(formattedDate)
-                        row()
-                    }
+                    tbl.add(Label("#${i + 1}", skinWindow, Skins.DEFAULT_FONT, Color.WHITE)).left().pad(0f, 0f, 5f, 10f)
+                    tbl.add(Label("${e.score}", skinWindow, Skins.DEFAULT_FONT, Color.WHITE)).left().pad(0f, 0f, 5f, 10f)
+                    tbl.add(Label("${e.level}", skinWindow, Skins.DEFAULT_FONT, Color.WHITE)).left().pad(0f, 0f, 5f, 10f)
+                    tbl.add(Label(Time.formatSeconds(e.time), skinWindow, Skins.DEFAULT_FONT, Color.WHITE)).left().pad(0f, 0f, 5f, 10f)
+                    tbl.add(Label(formattedDate, skinWindow, Skins.DEFAULT_FONT, Color.WHITE)).left().pad(0f, 0f, 5f, 10f).row()
                 }
             }
-        }
 
-    /**
-     * Helper extension function to uniformly add a formatted text cell to a libGDX layout table.
-     * Tied to KTable to enable native KTX-Scene2D layout DSL behavior.
-     */
-    private fun KTable.addCell(text: String) {
-        label(text, Skins.DEFAULT_FONT) {
-            color = Color.WHITE
-        }.cell(align = Align.left, padRight = 10f, padBottom = 5f)
-    }
+            return tbl
+        }
 
     /**
      * Commits all current active score entries back into the encrypted local preferences storage node.

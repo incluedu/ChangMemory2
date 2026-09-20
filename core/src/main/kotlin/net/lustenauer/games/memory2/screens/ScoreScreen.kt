@@ -1,9 +1,9 @@
 package net.lustenauer.games.memory2.screens
 
 import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.Input.Keys.BACK
 import com.badlogic.gdx.graphics.g2d.TextureAtlas
 import com.badlogic.gdx.scenes.scene2d.Stage
+import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.utils.viewport.StretchViewport
 import net.lustenauer.games.memory2.ChangMemory
 import net.lustenauer.games.memory2.game.ScoreList
@@ -81,7 +81,7 @@ class ScoreScreen(game: ChangMemory) : AbstractScreen(game) {
 
         val layerBackground = buildLayerBackground()
         val layerLogo = buildLayerLogo()
-        val layerControls = buildLayerContorls()
+        val layerControls = buildLayerControls()
 
         stage!!.clear()
         val stack = com.badlogic.gdx.scenes.scene2d.ui.Stack()
@@ -113,15 +113,15 @@ class ScoreScreen(game: ChangMemory) : AbstractScreen(game) {
     }
 
     /* LAYERS AND ACTORS */ /* ================= */
-    private fun buildLayerBackground(): com.badlogic.gdx.scenes.scene2d.ui.Table {
-        val layer = com.badlogic.gdx.scenes.scene2d.ui.Table()
+    private fun buildLayerBackground(): Table {
+        val layer = Table()
         val imgBackground = com.badlogic.gdx.scenes.scene2d.ui.Image(windowSkin, "background4")
         layer.add<com.badlogic.gdx.scenes.scene2d.ui.Image?>(imgBackground)
         return layer
     }
 
-    private fun buildLayerContorls(): com.badlogic.gdx.scenes.scene2d.ui.Table {
-        val layer = com.badlogic.gdx.scenes.scene2d.ui.Table().bottom()
+    private fun buildLayerControls(): Table {
+        val layer = Table().bottom()
 
         btnAchievements = BtnPlayAchievements()
         btnLeaderboards = BtnPlayLeaderboards()
@@ -136,8 +136,8 @@ class ScoreScreen(game: ChangMemory) : AbstractScreen(game) {
         return layer
     }
 
-    private fun buildLayerLogo(): com.badlogic.gdx.scenes.scene2d.ui.Table {
-        val layer = com.badlogic.gdx.scenes.scene2d.ui.Table()
+    private fun buildLayerLogo(): Table {
+        val layer = Table()
         var lbl: com.badlogic.gdx.scenes.scene2d.ui.Label?
 
         lbl = com.badlogic.gdx.scenes.scene2d.ui.Label(
