@@ -25,11 +25,23 @@ import net.lustenauer.utils.Time
  * @param cmdListener The listener that handles the fired [CommandListener.CommandEvent]s.
  */
 class WindowGameOver(cmdListener: CommandListener?) : AbstractCommandWindow(cmdListener) {
+
+    /** The texture skin resource container specifically assigned to window elements. */
     private lateinit var skinWindow: Skin
+
+    /** Label displaying the player's final accumulated score. */
     private lateinit var lblScore: Label
+
+    /** Label displaying the total chronological time spent in the match session. */
     private lateinit var lblTime: Label
+
+    /** Label displaying the total number of manual card flips executed. */
     private lateinit var lblCardFlippedCount: Label
+
+    /** Label displaying the absolute count of successfully matched card sets. */
     private lateinit var lblCardSolvedCount: Label
+
+    /** Label displaying the count of lucky strikes triggered during the game. */
     private lateinit var lblLuckyStrikeCount: Label
 
     /**
@@ -37,7 +49,7 @@ class WindowGameOver(cmdListener: CommandListener?) : AbstractCommandWindow(cmdL
      * and builds the statistics panel rows.
      */
     override fun init() {
-        skinWindow = Assets.instance.skinWindow
+        skinWindow = Assets.skinWindow
         skin = skinWindow
         setBackground(Skins.BACKGROUND_3)
         isVisible = false
@@ -109,19 +121,35 @@ class WindowGameOver(cmdListener: CommandListener?) : AbstractCommandWindow(cmdL
     /** Updates the displayed total number of card flips performed by the player. */
     fun setCardFlipCount(cardFlippedCount: Int) = lblCardFlippedCount.setText(cardFlippedCount.toString())
 
-    /** Updates the displayed count of successfully matched card pairs. */
+    /** Updates the displayed total count of successfully matched card pairs. */
     fun setTotalCardSolvedCount(cardSolvedCount: Int) = lblCardSolvedCount.setText(cardSolvedCount.toString())
 
     companion object {
+        /** Title banner text displayed at the top of the game over overlay. */
         private const val TEXT_TITLE = "G A M E   O V E R"
+
+        /** Label text assigned to the online leaderboard navigation button. */
         private const val TEXT_BTN_SCORES = "SCORES"
+
+        /** Label text assigned to the main menu navigation button. */
         private const val TEXT_BTN_MENU = "MENU"
+
+        /** Label text assigned to the match restart option button. */
         private const val TEXT_BTN_RESTART = "RESTART"
 
+        /** Label header description tracking the final score metric row. */
         private const val TEXT_STAT_SCORE = "TOTAL SCORE:"
+
+        /** Label header description tracking the gameplay time metric row. */
         private const val TEXT_STAT_TIME = "TOTAL TIME:"
+
+        /** Label header description tracking matched card pairs across levels. */
         private const val TEXT_STAT_SOLVED = "CARDS SOLVED:"
+
+        /** Label header description tracking consecutive blind matches. */
         private const val TEXT_STAT_LUCKY = "LUCKY STRIKES:"
+
+        /** Label header description tracking the total interactive flip count. */
         private const val TEXT_STAT_FLIPPED = "CARDS FLIPPED:"
     }
 }

@@ -7,7 +7,7 @@ import net.lustenauer.games.memory2.ChangMemory
 import net.lustenauer.games.memory2.game.Assets
 import net.lustenauer.games.memory2.utils.Constants.Skins.BTN_BACK
 
-class BtnBack(screen: Screen? = null) : Image(Assets.instance.skinWindow, BTN_BACK) {
+class BtnBack(screen: Screen? = null) : Image(Assets.skinWindow, BTN_BACK) {
     init {
         setPosition(20f, 20f)
         screen?.let { onClick { ChangMemory.instance.setScreen(it) } }

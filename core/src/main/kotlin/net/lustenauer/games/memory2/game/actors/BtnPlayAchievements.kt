@@ -6,7 +6,7 @@ import net.lustenauer.games.memory2.ChangMemory
 import net.lustenauer.games.memory2.game.Assets
 import net.lustenauer.games.memory2.utils.Constants.Skins.IMG_GOOGLE_ACHIEVEMENTS
 
-class BtnPlayAchievements : Image(Assets.instance.skinWindow, IMG_GOOGLE_ACHIEVEMENTS) {
+class BtnPlayAchievements : Image(Assets.skinWindow, IMG_GOOGLE_ACHIEVEMENTS) {
     init {
         setPosition(208f, 20f)
         onClick { ChangMemory.actionResolver?.showAchievementsGPGS() }

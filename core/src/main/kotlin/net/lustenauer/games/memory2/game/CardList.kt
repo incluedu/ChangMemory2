@@ -35,7 +35,7 @@ class CardList {
      * Skips the first two technical cards (e.g., back cover and empty states).
      */
     private fun addAllCards() {
-        val numCards = Assets.instance.cardAssetList.size
+        val numCards = Assets.cardAssetList.size
         for (i in 2..<numCards) {
             cards.add(Card(i))
         }

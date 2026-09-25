@@ -24,13 +24,15 @@ import net.lustenauer.gdx.scenes.scene2d.ui.AbstractCommandWindow
  * @param cmdListener The listener that handles the fired [CommandListener.CommandEvent]s.
  */
 class WindowPause(cmdListener: CommandListener?) : AbstractCommandWindow(cmdListener) {
+
+    /** The texture skin resource container specifically assigned to window elements. */
     private lateinit var skinWindow: Skin
 
     /**
      * Initializes the pause window layout, visual assets, labels, and command buttons.
      */
     override fun init() {
-        skinWindow = Assets.instance.skinWindow
+        skinWindow = Assets.skinWindow
         skin = skinWindow
         setBackground(Skins.BACKGROUND_3)
         isVisible = false
@@ -79,10 +81,19 @@ class WindowPause(cmdListener: CommandListener?) : AbstractCommandWindow(cmdList
     }
 
     companion object {
+        /** Title banner text displayed at the top of the pause overlay. */
         private const val TEXT_TITLE = "G A M E   P A U S E D"
+
+        /** Label text assigned to the resume gameplay option button. */
         private const val TEXT_BTN_RESUME = "RESUME"
+
+        /** Label text assigned to the match reset option button. */
         private const val TEXT_BTN_RESTART = "RESTART"
+
+        /** Label text assigned to the main menu navigation button. */
         private const val TEXT_BTN_MENU = "MENU"
+
+        /** Label text assigned to the game settings panel button. */
         private const val TEXT_BTN_SETTINGS = "SETTINGS"
     }
 }

@@ -246,11 +246,11 @@ class CardScreen(game: ChangMemory) : AbstractScreen(game) {
     }
 
     private fun initSounds() {
-        beepSound = Assets.instance.beepSound
-        gameOverSound = Assets.instance.gameOverSound
-        luckyTrySound = Assets.instance.luckyTrySound
-        levelCompleteSound = Assets.instance.levelComplSound
-        toManyTrySound = Assets.instance.toManyTrySound
+        beepSound = Assets.beepSound
+        gameOverSound = Assets.gameOverSound
+        luckyTrySound = Assets.luckyTrySound
+        levelCompleteSound = Assets.levelComplSound
+        toManyTrySound = Assets.toManyTrySound
 
         beepSound.loadSound()
         gameOverSound.loadSound()

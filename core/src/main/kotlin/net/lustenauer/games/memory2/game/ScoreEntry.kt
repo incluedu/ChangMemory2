@@ -3,7 +3,7 @@ package net.lustenauer.games.memory2.game
 import java.time.Instant
 
 /**
- * Represents a immutable highscore entry within the game.
+ * Represents an immutable highscore entry within the game.
  * Implements [Comparable] to automatically sort scores in descending order (highest score first).
  *
  * @property name The profile name of the player. Defaults to [DEFAULT_NAME].
@@ -24,9 +24,11 @@ data class ScoreEntry(
     /**
      * Compares this highscore entry with another entry for sorting purposes.
      * Elements are ordered descending based on the numerical [score] value.
+     * Uses zero-allocation primitive comparison for peak sorting performance.
      */
-    override fun compareTo(other: ScoreEntry): Int =
-        compareByDescending<ScoreEntry> { it.score }.compare(this, other)
+    override fun compareTo(other: ScoreEntry): Int {
+        return other.score.compareTo(this.score)
+    }
 
     companion object {
         /**

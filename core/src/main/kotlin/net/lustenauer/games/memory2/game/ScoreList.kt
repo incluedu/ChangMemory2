@@ -3,10 +3,8 @@ package net.lustenauer.games.memory2.game
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.ui.Label
-import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.utils.Align
 import ktx.log.logger
-import ktx.scene2d.KTable
 import ktx.scene2d.label
 import ktx.scene2d.scene2d
 import ktx.scene2d.table
@@ -18,6 +16,8 @@ import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.util.*
 import com.badlogic.gdx.utils.Array as GdxArray
+import com.badlogic.gdx.scenes.scene2d.ui.Table
+
 
 
 /**
@@ -26,9 +26,14 @@ import com.badlogic.gdx.utils.Array as GdxArray
  *
  * @author Patric Hollenstein
  */
-class ScoreList private constructor() {
+object ScoreList {
 
     private val log = logger<ScoreList>()
+
+    private const val FALLBACK_NAME = "Changnoi"
+
+    private val DATE_FORMATTER = DateTimeFormatter.ofPattern("dd-MMM-yyyy HH:mm", Locale.ENGLISH)
+        .withZone(ZoneId.systemDefault())
 
     /**
      * The continuous container storing the top ranking score records.
@@ -92,41 +97,48 @@ class ScoreList private constructor() {
 
     /**
      * Compiles and layout-structures the highscore leaderboard visual representation
-     * into a scene2d [Table] actor.
+     * into a scene2d [Table] actor utilizing the type-safe KTX Scene2D DSL.
      */
     val scorePane: Actor
         get() {
-            val skinWindow = Assets.instance.skinWindow
+            val defaultStyle = Assets.skinWindow.get(Label.LabelStyle::class.java)
+            val baseFont = defaultStyle.font
 
-            val tbl = Table().apply {
-                background = skinWindow.getDrawable(Skins.BACKGROUND_6)
+            val headerStyle = Label.LabelStyle(baseFont, Color.ORANGE)
+            val rowStyle = Label.LabelStyle(baseFont, Color.WHITE)
+
+            return scene2d.table {
+                background = Assets.skinWindow.getDrawable(Skins.BACKGROUND_6)
                 setSize(460f, 450f)
                 setPosition(10f, 200f)
                 align(Align.topLeft)
                 pad(20f)
-            }
 
-            tbl.add(Label("Highscore", skinWindow, Skins.DEFAULT_FONT, Color.ORANGE)).colspan(5).padBottom(25f).row()
+                label("Highscore") {
+                    style = headerStyle
+                }.cell(colspan = 5, padBottom = 25f)
+                row()
 
-            arrayOf("Rank", "Score", "Level", "Game-Time", "Date").forEach { header ->
-                tbl.add(Label(header, skinWindow, Skins.DEFAULT_FONT, Color.ORANGE)).left().pad(0f, 0f, 15f, 10f)
-            }
-            tbl.row()
+                listOf("Rank", "Score", "Level", "Game-Time", "Date").forEach { header ->
+                    label(header) {
+                        style = headerStyle
+                    }.cell(align = Align.left, padRight = 10f, padBottom = 15f)
+                }
+                row()
 
-            for (i in 0..<scores.size) {
-                val e = scores[i]
-                if (e.score > 0) {
-                    val formattedDate = DATE_FORMATTER.format(e.date)
+                scores.forEach { e ->
+                    if (e.score > 0) {
+                        val formattedDate = DATE_FORMATTER.format(e.date)
 
-                    tbl.add(Label("#${i + 1}", skinWindow, Skins.DEFAULT_FONT, Color.WHITE)).left().pad(0f, 0f, 5f, 10f)
-                    tbl.add(Label("${e.score}", skinWindow, Skins.DEFAULT_FONT, Color.WHITE)).left().pad(0f, 0f, 5f, 10f)
-                    tbl.add(Label("${e.level}", skinWindow, Skins.DEFAULT_FONT, Color.WHITE)).left().pad(0f, 0f, 5f, 10f)
-                    tbl.add(Label(Time.formatSeconds(e.time), skinWindow, Skins.DEFAULT_FONT, Color.WHITE)).left().pad(0f, 0f, 5f, 10f)
-                    tbl.add(Label(formattedDate, skinWindow, Skins.DEFAULT_FONT, Color.WHITE)).left().pad(0f, 0f, 5f, 10f).row()
+                        label("#${scores.indexOf(e, true) + 1}") { style = rowStyle }.cell(align = Align.left, padRight = 10f, padBottom = 5f)
+                        label("${e.score}") { style = rowStyle }.cell(align = Align.left, padRight = 10f, padBottom = 5f)
+                        label("${e.level}") { style = rowStyle }.cell(align = Align.left, padRight = 10f, padBottom = 5f)
+                        label(Time.formatSeconds(e.time)) { style = rowStyle }.cell(align = Align.left, padRight = 10f, padBottom = 5f)
+                        label(formattedDate) { style = rowStyle }.cell(align = Align.left, padRight = 10f, padBottom = 5f)
+                        row()
+                    }
                 }
             }
-
-            return tbl
         }
 
     /**
@@ -137,34 +149,16 @@ class ScoreList private constructor() {
 
         val prefs = GamePreferences.instance.prefs
 
-        for ((index, entry) in scores.withIndex()) {
-            prefs.putString("Rank${index + 1}.Name", entry.name)
-            prefs.putInteger("Rank${index + 1}.Score", entry.score)
-            prefs.putInteger("Rank${index + 1}.Level", entry.level)
-            prefs.putFloat("Rank${index + 1}.Time", entry.time)
-
-            prefs.putString("Rank${index + 1}.Date", DATE_FORMATTER.format(entry.date))
+        for (i in 0 until scores.size) {
+            val entry = scores[i]
+            prefs.putString("Rank${i + 1}.Name", entry.name)
+            prefs.putInteger("Rank${i + 1}.Score", entry.score)
+            prefs.putInteger("Rank${i + 1}.Level", entry.level)
+            prefs.putFloat("Rank${i + 1}.Time", entry.time)
+            prefs.putString("Rank${i + 1}.Date", DATE_FORMATTER.format(entry.date))
         }
         prefs.flush()
 
         log.debug { "save() -> flush preferences success." }
-    }
-
-    companion object {
-        /**
-         * The default fallback score name if no record configuration matches.
-         */
-        private const val FALLBACK_NAME = "Changnoi"
-
-        /**
-         * Thread-safe date layout engine replacing old Java SimpleDateFormat.
-         */
-        private val DATE_FORMATTER = DateTimeFormatter.ofPattern("dd-MMM-yyyy HH:mm", Locale.ENGLISH)
-            .withZone(ZoneId.systemDefault())
-
-        /**
-         * Global singleton instance locator.
-         */
-        val instance = ScoreList()
     }
 }

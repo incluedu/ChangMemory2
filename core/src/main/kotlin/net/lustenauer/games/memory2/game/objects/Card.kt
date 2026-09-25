@@ -10,54 +10,40 @@ import com.badlogic.gdx.scenes.scene2d.Touchable
 import com.badlogic.gdx.scenes.scene2d.actions.Actions
 import net.lustenauer.games.memory2.game.AssetSound
 import net.lustenauer.games.memory2.game.Assets
+import net.lustenauer.games.memory2.game.Assets.flipSound
 import net.lustenauer.games.memory2.utils.AudioManager
 
 /**
- * This class handles a single card
+ * Represents a single interactive memory card actor within the game stage.
+ * Handles card orientations, flipping animations, scoring states, and localized audio triggers.
  *
  * @author Patric Hollenstein
+ * @param assetNumber The specific card ID configuration to fetch textures and sounds from assets.
  */
 class Card(private val assetNumber: Int) : Actor() {
-    var cardFrontTexReg: TextureRegion
-    var cardBackTexReg: TextureRegion
+    var cardFrontTexReg: TextureRegion = Assets.cardAssetList[assetNumber].card
+    var cardBackTexReg: TextureRegion = Assets.cardAssetList[0].card
 
-    var cardClickSound: AssetSound
-    var cardSolvedSound: AssetSound? = null
-    var cardSolvedDefaultSound: AssetSound
+    var cardClickSound: AssetSound = Assets.clickSound
+    var cardSolvedSound: AssetSound? = Assets.cardAssetList[assetNumber].doneSound
+    var cardSolvedDefaultSound: AssetSound = Assets.doneSound
 
-    var cardName: String? // must have the same name then the second card object
+    var cardName: String? = Assets.cardAssetList[assetNumber].desc
 
-    var cardSolved: Boolean = false // true when the second card is found
-    var cardIsOnBack: Boolean = false // true when the card is on the back position
-    var cardIsOnFront: Boolean = false // true when the card is on the front position
-    var startCardFlip: Boolean = false // if this bit is true the rotation off the card will start
-    var cardIsFlipping: Boolean = false // card flipping is active
+    var cardSolved: Boolean = false
+    var cardIsOnBack: Boolean = false
+    var cardIsOnFront: Boolean = false
+    var startCardFlip: Boolean = false
+    var cardIsFlipping: Boolean = false
 
-    var score: Int = 50 // the start score off a card
+    var score: Int = 50
     var time: Int = 5
-    var viewed: Int = 0 // how many time this card have been viewed
+    var viewed: Int = 0
 
-    /* GETTER AND SETTER */ /* ================= */
     var isScoreZero: Boolean = false
         private set
 
-    private var cardSolvedSoundVolume = 0f
-
-
-    /* CONSTRUCTOR */ /* =========== */ /**
-     *
-     * @param assetNumber this int gives the number of the card witch should be displayed
-     * @param name this String parameter must be the same then on the second card. It is used in the equals method of
-     * this class
-     */
     init {
-        cardFrontTexReg = Assets.instance.cardAssetList[assetNumber].card
-        cardBackTexReg = Assets.instance.cardAssetList[0].card
-        cardClickSound = Assets.instance.clickSound
-        cardSolvedSound = Assets.instance.cardAssetList[assetNumber].doneSound
-        cardSolvedDefaultSound = Assets.instance.doneSound
-        cardName = Assets.instance.cardAssetList[assetNumber].desc
-
         setSize(cardBackTexReg.regionWidth.toFloat(), cardBackTexReg.regionHeight.toFloat())
         setOrigin(width / 2, height / 2)
         touchable = Touchable.enabled
@@ -70,43 +56,35 @@ class Card(private val assetNumber: Int) : Actor() {
         })
     }
 
-
+    /** Secondary constructor cloning properties based on an existing card configuration. */
     constructor(card: Card) : this(card.assetNumber)
 
-    /* PUBLIC METHODES */ /* =============== */
     override fun draw(batch: Batch, alpha: Float) {
-        val tex: TextureRegion?
-        if (getScaleX() > 0) {
-            tex = cardBackTexReg
-        } else {
-            tex = cardFrontTexReg
-        }
+        val tex = if (scaleX > 0) cardBackTexReg else cardFrontTexReg
 
         batch.draw(
             tex,
-            getX(),
-            getY(),
-            getOriginX(),
-            getOriginY(),
-            getWidth(),
-            getHeight(),
-            getScaleX(),
-            getScaleY(),
-            getRotation()
+            x,
+            y,
+            originX,
+            originY,
+            width,
+            height,
+            scaleX,
+            scaleY,
+            rotation
         )
     }
 
-    /**
-     * Implement check for card is on front or back
-     */
     override fun act(delta: Float) {
         cardIsOnFront = false
         cardIsOnBack = false
-        if (getScaleX() <= -1.0) {
+
+        if (scaleX <= -1.0) {
             cardIsOnFront = true
             cardIsFlipping = false
         }
-        if (getScaleX() >= 1.0) {
+        if (scaleX >= 1.0) {
             cardIsOnBack = true
             cardIsFlipping = false
         }
@@ -115,45 +93,44 @@ class Card(private val assetNumber: Int) : Actor() {
     }
 
     /**
-     * returns true the other card have the same name then this card
+     * Checks equality based on the matching [cardName] identifier string values.
      */
-    override fun equals(obj: Any?): Boolean {
-        if (this === obj) return true
-        if (obj == null) return false
-        if (javaClass != obj.javaClass) return false
-        val other = obj as Card
-        if (cardName == null) {
-            if (other.cardName != null) return false
-        } else if (cardName != other.cardName) return false
-        return true
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        val otherCard = other as? Card ?: return false
+        return cardName == otherCard.cardName
     }
 
     /**
-     * Flips the card from front to back or from back to front
+     * Generates a stable hash code utilizing the card's identifying name template.
+     */
+    override fun hashCode(): Int {
+        return cardName?.hashCode() ?: 0
+    }
+
+    /**
+     * Flips the card container from front to back or vice versa using LibGDX scale actions.
      */
     fun flipCard() {
         startCardFlip = false
         cardIsFlipping = true
 
         if (cardIsOnBack) {
-            AudioManager.instance.add(cardClickSound)
+            AudioManager.instance.add(flipSound)
             addAction(Actions.sequence(Actions.scaleTo(0.0f, 1f, .15f), Actions.scaleTo(-1f, 1f, .25f)))
-            //Gdx.app.debug(TAG, cardName + ": Flips from back to front");
         }
         if (cardIsOnFront) {
             addAction(Actions.sequence(Actions.scaleTo(0.0f, 1f, .15f), Actions.scaleTo(1f, 1f, .25f)))
-            //Gdx.app.debug(TAG, cardName + ": Flips from front to back");
-            if (score > 0) score -= 5 // remove 5 from score on every wrong view
+            if (score > 0) score -= 5
+            if (time > 0) time--
 
-            if (time > 0) time-- // remove 1 from time on every view
-
-            this.isScoreZero = score <= 0 // set scoreZero to true when score <= 0
+            this.isScoreZero = score <= 0
             viewed++
         }
     }
 
     /**
-     * load all the sounds off the card when it is necessary
+     * Pre-loads all asset tracks assigned to individual matches when initialization routines complete.
      */
     fun loadAllSounds() {
         cardClickSound.loadSound()
@@ -162,29 +139,24 @@ class Card(private val assetNumber: Int) : Actor() {
     }
 
     /**
-     * Plays the sound for the card is solved
+     * Triggers localized victory cues once match pairs validate successfully inside controller filters.
      */
     fun playCardSolvedSound() {
-        cardSolvedSound?.let { sound ->
-            AudioManager.instance.add(sound)
-        } ?: run {
-            AudioManager.instance.add(cardSolvedDefaultSound)
-        }
-
+        val sound = cardSolvedSound ?: cardSolvedDefaultSound
+        AudioManager.instance.add(sound)
         Gdx.app.debug(TAG, "$cardName: Play solved sound")
     }
 
-    /* PRIVATE METHODES */ /* ================ */
     /**
-     * This method check the card is solved or not and flip the card to front and play a click sound
+     * Sets internal state bits once initial player tap actions clear verification boundaries.
      */
-    protected fun handleTouchDownEvent() {
-        if (!cardSolved and cardIsOnBack) {
+    private fun handleTouchDownEvent() {
+        if (!cardSolved && cardIsOnBack) {
             startCardFlip = true
         }
     }
 
     companion object {
-        private val TAG: String = Card::class.java.getName()
+        private val TAG: String = Card::class.java.name
     }
 }

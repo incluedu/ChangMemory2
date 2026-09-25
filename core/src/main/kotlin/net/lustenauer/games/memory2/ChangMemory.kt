@@ -25,7 +25,7 @@ private constructor() : Game() {
         readyForStart = false
 
         AchievementManager.instance.init()
-        ScoreList.instance.init()
+        ScoreList.init()
         GamePreferences.instance.load()
 
         if (GamePreferences.instance.googleSignIn) actionResolver?.signInGPGS()
@@ -34,9 +34,9 @@ private constructor() : Game() {
 
         // Load assets
         Gdx.app.debug(TAG, "Init new AssetManager")
-        Assets.instance.initManager(com.badlogic.gdx.assets.AssetManager())
-        Assets.instance.loadTextures()
-        com.badlogic.gdx.graphics.Texture.setAssetManager(Assets.instance.manager)
+        Assets.initManager(com.badlogic.gdx.assets.AssetManager())
+        Assets.loadTextures()
+        com.badlogic.gdx.graphics.Texture.setAssetManager(Assets.manager)
 
         // show loading screen
         loadingScreen = LoadingScreen(this)
@@ -45,11 +45,11 @@ private constructor() : Game() {
         Thread(object : Runnable {
             override fun run() {
                 // loading assets
-                Assets.instance.loadSounds()
+                Assets.loadSounds()
 
                 Gdx.app.postRunnable(object : Runnable {
                     override fun run() {
-                        Assets.instance.init()
+                        Assets.init()
 
                         cardScreen = CardScreen(this@ChangMemory)
                         creditsScreen = CreditsScreen(this@ChangMemory)
@@ -67,7 +67,7 @@ private constructor() : Game() {
 
     override fun dispose() {
         Gdx.app.debug(TAG, "dispose()")
-        ScoreList.instance.save()
+        ScoreList.save()
         GamePreferences.instance.save()
         AudioManager.instance.stopMusic()
         super.dispose()

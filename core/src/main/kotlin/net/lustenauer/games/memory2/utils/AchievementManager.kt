@@ -91,7 +91,7 @@ protected constructor() {
                 InfoList.instance.add("CONGRATULATIONS", flash = true, size = InfoList.SIZE_XL)
                 InfoList.instance.add(entry.name, size = InfoList.SIZE_L)
 
-                AudioManager.instance.add(Assets.instance.soundAchievement)
+                AudioManager.instance.add(Assets.soundAchievement)
 
                 entry.isUnlocked = true
 

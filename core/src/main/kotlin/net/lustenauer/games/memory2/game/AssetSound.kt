@@ -1,9 +1,8 @@
 package net.lustenauer.games.memory2.game
 
-import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.audio.Sound
 import ktx.assets.load
-import net.lustenauer.games.memory2.game.Assets.Companion.TAG
+import ktx.log.logger
 
 /**
  * Manages individual sound assets within the game.
@@ -30,7 +29,8 @@ class AssetSound @JvmOverloads constructor(
      * and blocks the execution thread until the asset is fully loaded.
      */
     fun loadSound() {
-        Gdx.app.debug(TAG, "loadSound() --> Path: $soundPath")
+        // Modernes KTX-Logging ohne manuelles TAG
+        log.debug { "loadSound() --> Path: $soundPath" }
 
         if (soundPath != null) {
             if (!assets.manager.isLoaded(soundPath)) {
@@ -57,4 +57,9 @@ class AssetSound @JvmOverloads constructor(
         sound = loadedSound
         return loadedSound
     }
+
+    companion object {
+        private val log = logger<AssetSound>()
+    }
+
 }

@@ -83,7 +83,7 @@ class SettingsScreen(game: ChangMemory) : AbstractScreen(game) {
 
     /* PRIVATE METHODS */ /* ================ */
     private fun init() {
-        skinWindow = Assets.instance.skinWindow
+        skinWindow = Assets.skinWindow
 
         val layerBackground: Actor = buildLayerBackground()
         val layerLogo: Actor = buildLayerLogo()

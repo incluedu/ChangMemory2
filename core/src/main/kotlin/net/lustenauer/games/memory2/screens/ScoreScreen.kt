@@ -126,7 +126,7 @@ class ScoreScreen(game: ChangMemory) : AbstractScreen(game) {
         btnAchievements = BtnPlayAchievements()
         btnLeaderboards = BtnPlayLeaderboards()
 
-        layer.addActor(ScoreList.instance.scorePane)
+        layer.addActor(ScoreList.scorePane)
 
         layer.addActor(BtnBack(ChangMemory.prevScreen))
         layer.addActor(btnAchievements)

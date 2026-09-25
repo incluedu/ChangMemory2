@@ -58,7 +58,7 @@ class MenuScreen(game: ChangMemory) : AbstractScreen(game) {
 
     /* PRIVATE METHODES */ /* ================ */
     private fun initStage() {
-        windowSkin = Assets.instance.skinWindow
+        windowSkin = Assets.skinWindow
 
         stage = com.badlogic.gdx.scenes.scene2d.Stage(
             StretchViewport(
@@ -207,7 +207,7 @@ class MenuScreen(game: ChangMemory) : AbstractScreen(game) {
         layer.add(btnExit).pad(0f, 0f, 20f, 0f).row()
 
         layer.addActor(BtnGooglePlusSignIn())
-        val skinWindow = Assets.instance.skinWindow
+        val skinWindow = Assets.skinWindow
         layer.addActor(scene2d.image("imgGooglePlay", skinWindow) { setPosition(20f, 20f) })
 
         return layer

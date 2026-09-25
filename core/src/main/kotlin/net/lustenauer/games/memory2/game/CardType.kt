@@ -1,0 +1,46 @@
+package net.lustenauer.games.memory2.game
+
+/**
+ * Defines the standard card pool types with their associated texture asset keys,
+ * description labels, and optional specific sound paths.
+ */
+enum class CardType(val id: String, val desc: String, val soundPath: String? = null) {
+    ALLIGATOR("alligator", "Alligator"),
+    ANGEL("angel", "Angel"),
+    ANT("ant", "Ant"),
+    APPLE("apple", "Apple"),
+    BEE("bee", "Bee"),
+    BIRD("bird", "Bird", "sounds/bird.ogg"),
+    CORN("corn", "Corn"),
+    CRAB("crab", "Crab"),
+    DOG("dog", "Dog", "sounds/dog.ogg"),
+    DRAGONFLY("dragonfly", "Dragonfly"),
+    DUCK("duck", "Duck"),
+    ELEPHANT("elephant", "Elephant", "sounds/elephant.ogg"),
+    FISH("fish", "Fish", "sounds/bubbles.ogg"),
+    FROG("frog", "Frog"),
+    GHOST("ghost", "Ghost"),
+    HEDGEHOG("hedgehog", "Hedgehog"),
+    HERO("hero", "Superhero"),
+    HORSE("horse", "Horse"),
+    JELLYFISH("jellyfish", "Jellyfish"),
+    KID("kid", "Kid"),
+    LION("lion", "Lion"),
+    MONKEY("monkey", "Monkey"),
+    MOUSE("mouse", "Mouse"),
+    NINJA("ninja", "Ninja"),
+    OCTOPUS("octopus", "Octopus"),
+    PARROT("parrot", "Parrot"),
+    PENGUIN("penguin", "Penguin"),
+    PIG("pig", "Pig", "sounds/pig.ogg"),
+    RABBIT("rabbit", "Rabbit"),
+    SANTA("santa", "Santa"),
+    SHARK("shark", "Shark"),
+    SNAIL("snail", "Snail"),
+    TROLL("troll", "Troll"),
+    TURKEY("turkey", "Turkey"),
+    TURTLE("turtle", "Turtle"),
+    VAMPIRE("vampire", "Vampire"),
+    WORM("worm", "Worm"),
+    ZOMBIE("zombie", "Zombie", "sounds/zombie.ogg");
+}

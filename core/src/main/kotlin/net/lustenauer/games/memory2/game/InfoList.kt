@@ -98,7 +98,7 @@ class InfoList private constructor() {
             else -> Skins.DEFAULT_FONT
         }
 
-        return Label(text, Assets.instance.skinWindow, styleName, baseColor).apply {
+        return Label(text, Assets.skinWindow, styleName, baseColor).apply {
             if (flash) {
                 addAction(
                     Actions.forever(

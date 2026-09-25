@@ -15,7 +15,7 @@ abstract class AbstractScreen(protected val game: ChangMemory) : Screen {
 
     /* PUBLIC METHODS */ /* =============== */
     override fun resume() {
-        while (!Assets.instance.manager.update()) {
+        while (!Assets.manager.update()) {
             Gdx.app.debug(this.javaClass.getName(), "Asset manager is updating ....")
         }
     }
@@ -24,6 +24,6 @@ abstract class AbstractScreen(protected val game: ChangMemory) : Screen {
     }
 
     override fun dispose() {
-        Assets.instance.dispose()
+        Assets.dispose()
     }
 }

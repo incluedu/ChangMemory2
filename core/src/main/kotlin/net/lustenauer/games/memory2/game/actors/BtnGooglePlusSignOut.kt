@@ -7,7 +7,7 @@ import net.lustenauer.games.memory2.game.Assets
 import net.lustenauer.games.memory2.utils.Constants.Skins.IMG_GOOGLE_SIGN_OUT
 import net.lustenauer.games.memory2.utils.GamePreferences
 
-class BtnGooglePlusSignOut : Image(Assets.instance.skinWindow, IMG_GOOGLE_SIGN_OUT) {
+class BtnGooglePlusSignOut : Image(Assets.skinWindow, IMG_GOOGLE_SIGN_OUT) {
     init {
         setPosition(296f, 20f)
 

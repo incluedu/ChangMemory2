@@ -27,7 +27,7 @@ class LoadingScreen(game: ChangMemory) : AbstractScreen(game) {
 
         update(deltaTime)
 
-        val progressPercent = (Assets.instance.manager.progress * 100).toInt()
+        val progressPercent = (Assets.manager.progress * 100).toInt()
         lblLoading.setText("LOADING ... $progressPercent%")
 
         stage.act(deltaTime)

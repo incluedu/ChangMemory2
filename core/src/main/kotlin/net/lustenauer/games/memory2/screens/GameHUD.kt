@@ -36,12 +36,12 @@ class GameHUD(
 
     init {
         val hudLabelStyle = Label.LabelStyle().apply {
-            font = Assets.instance.fonts.font24
+            font = Assets.fonts.font24
             fontColor = Color.WHITE
         }
 
         val infoLabelStyle = Label.LabelStyle().apply {
-            font = Assets.instance.fonts.font12 // Greift direkt auf deine AssetFonts.font12 zu!
+            font = Assets.fonts.font12 // Greift direkt auf deine AssetFonts.font12 zu!
             fontColor = Color.WHITE
         }
 

@@ -206,7 +206,7 @@ class GameController {
         ChangMemory.actionResolver?.submitLeaderboardsGPGS(
             score, level, cardFlipCount, cardSetSolvedCount, luckyStrikeCount
         )
-        ScoreList.instance.addScore(score, level, totalTime)
+        ScoreList.addScore(score, level, totalTime)
         scoreSubmit = true
     }
 }
