@@ -4,29 +4,33 @@ All notable changes and version milestones of this project will be documented in
 
 ---
 
-
-
-## [2.0.0-alpha.1] - 2026-09-20
+## [2.0.0-alpha.1] - In Development (Unreleased)
 ### Added
 * `[+]` Complete porting of the entire game source code from Java to **Kotlin**.
 * `[+]` Modernized the build system to the current **Gradle** multi-module structure.
 * `[+]` Upgraded the desktop launcher to **LWJGL3** for perfect modern PC compatibility.
 * `[+]` Future-proofed `AndroidManifest.xml` with modern `dataExtractionRules` for Android 12 up to Android 16+.
 * `[+]` Migrated all asset and level files to the central `assets/` directory for robust cross-platform loading.
-* `[+]` Migrated core build scripts from Groovy (`build.gradle`) to the modern, type-safe **Kotlin DSL (`build.gradle.kts`)** [ktx-app-docs].
-* `[+]` Integrated **LibKTX** modules (`ktx-actors` and `ktx-scene2d`) to eliminate legacy Java boilerplate code [ktx-actors-docs, ktx-scene2d-docs].
-* `[+]` Refactored interactive game buttons (`BtnBack`, Google Play services UI) into minimalist, crash-safe KTX **`onClick`** lambda listeners [ktx-actors-docs].
+* `[+]` Migrated core build scripts from Groovy (`build.gradle`) to the modern, type-safe **Kotlin DSL (`build.gradle.kts`)**.
+* `[+]` Integrated **LibKTX** modules (`ktx-actors` and `ktx-scene2d`) to eliminate legacy Java boilerplate code.
+* `[+]` Implemented an inline lambda factory `invoke` operator inside `CommandListener` to completely eliminate Java boilerplate (`object : CommandListener()`) in favor of flat Kotlin syntax.
+* `[+]` Added comprehensive, professional English KDoc documentation to `CommandListener`, `WindowPause`, `WindowGameOver`, and their respective screen wrapper methods.
+* `[+]` Refactored interactive game buttons (`BtnBack`, Google Play services UI) into minimalist, crash-safe KTX **`onClick`** lambda listeners.
 * `[+]` Cleaned up and modularized complex layout containers (`WindowGameOver`, `WindowPause`) using specialized Kotlin scope functions (`.apply`) and localized string constants.
-* `[+]` Fully overhauled the global asset management (`Assets.kt` & `AssetCard.kt`), implementing type-safe generic resource loading (`manager.load<T>`), automated array disposers (`cardAssetList.dispose`), and central companion object configurations for all game sounds [ktx-assets-docs].
+* `[+]` Fully overhauled the global asset management (`Assets.kt` & `AssetCard.kt`), implementing type-safe generic resource loading (`manager.load<T>`), automated array disposers (`cardAssetList.dispose`), and central companion object configurations for all game sounds.
 * `[+]` Integrated **ktx-log** inline lambdas to eliminate legacy `Gdx.app.debug` string allocation overhead and companion object tags.
 
 ### Changed
 * `[c]` Rebranded the project from *ChangMemory* to **ChangMemory II**.
 * `[c]` Drastically increased thread safety and stability across all screens using Kotlin's null-safety features (`lateinit var`, `?.let`, smart casts).
+* `[c]` Radically downsized `CardScreen` by decoupling UI event handling and routing click actions directly into `WindowPause` and `WindowGameOver`.
 * `[c]` Refactored core gameplay buttons inside `CardScreen` into type-safe KTX **`onClick`** lambda listeners.
+
+### Fixed
 * `[f]` Fixed deep Z-index rendering bugs where the interactive pause button was obscured by background image swaps during difficulty increments.
 * `[f]` Fixed a hidden state freeze where exiting a paused game left flags active, causing subsequent matches to lock instantly.
 * `[f]` Resolved critical input crashes by synchronizing `stage.clear()` execution order to fire strictly before fresh asset deployment.
+* `[f]` Fixed a game statistics bug where the final count of solved cards incorrectly displayed as `0` on the Game Over screen due to a premature variable reset during level advancements. This was resolved by tracking a new persistent `totalCardSetSolvedCount` in the `GameController`.
 * `[c]` Consolidated state reset routines by removing redundant `prepareManualRestart` hooks in favor of atomic, unified variable clearing.
 
 ---

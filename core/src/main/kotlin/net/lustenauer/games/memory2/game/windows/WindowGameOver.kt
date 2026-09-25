@@ -15,6 +15,15 @@ import net.lustenauer.gdx.scenes.scene2d.CommandListener
 import net.lustenauer.gdx.scenes.scene2d.ui.AbstractCommandWindow
 import net.lustenauer.utils.Time
 
+/**
+ * An overlay window displayed when the game finishes or the player loses.
+ *
+ * Displays final game statistics (score, time, cards flipped/solved, lucky strikes)
+ * and provides navigation buttons to view scores, return to the menu, or restart.
+ * Communicates actions back to the controller via a [CommandListener].
+ *
+ * @param cmdListener The listener that handles the fired [CommandListener.CommandEvent]s.
+ */
 class WindowGameOver(cmdListener: CommandListener?) : AbstractCommandWindow(cmdListener) {
     private lateinit var skinWindow: Skin
     private lateinit var lblScore: Label
@@ -23,10 +32,14 @@ class WindowGameOver(cmdListener: CommandListener?) : AbstractCommandWindow(cmdL
     private lateinit var lblCardSolvedCount: Label
     private lateinit var lblLuckyStrikeCount: Label
 
+    /**
+     * Initializes the game over window layout, sets up action buttons,
+     * and builds the statistics panel rows.
+     */
     override fun init() {
         skinWindow = Assets.instance.skinWindow
         skin = skinWindow
-        setBackground(Skins.BACKGROUND_3) // Nutzt das Alias!
+        setBackground(Skins.BACKGROUND_3)
         isVisible = false
         sizeBy(400f, 250f)
 
@@ -59,6 +72,14 @@ class WindowGameOver(cmdListener: CommandListener?) : AbstractCommandWindow(cmdL
         buildStatRow(TEXT_STAT_FLIPPED, 140f, 60f) { lblCardFlippedCount = it }
     }
 
+    /**
+     * Helper method to construct a standardized row containing a title label and a value label.
+     *
+     * @param title The text description of the statistic.
+     * @param x The X position coordinates of the row container.
+     * @param y The Y position coordinates of the row container.
+     * @param assignTo Callback function passing the generated value [Label] to bind it to a class reference.
+     */
     private fun buildStatRow(title: String, x: Float, y: Float, assignTo: (Label) -> Unit) {
         val grp = Group().apply { setPosition(x, y) }
 
@@ -76,11 +97,20 @@ class WindowGameOver(cmdListener: CommandListener?) : AbstractCommandWindow(cmdL
         assignTo(valueLabel)
     }
 
+    /** Updates the displayed total score. */
     fun setScore(score: Int) = lblScore.setText(score.toString())
+
+    /** Updates the displayed game duration, formatting seconds into a time string. */
     fun setTime(totalTime: Float) = lblTime.setText(Time.formatSeconds(totalTime))
+
+    /** Updates the displayed number of consecutive correct card matches. */
     fun setLuckStrikeCount(luckyStrikeCount: Int) = lblLuckyStrikeCount.setText(luckyStrikeCount.toString())
+
+    /** Updates the displayed total number of card flips performed by the player. */
     fun setCardFlipCount(cardFlippedCount: Int) = lblCardFlippedCount.setText(cardFlippedCount.toString())
-    fun setCardSolvedCount(cardSolvedCount: Int) = lblCardSolvedCount.setText(cardSolvedCount.toString())
+
+    /** Updates the displayed count of successfully matched card pairs. */
+    fun setTotalCardSolvedCount(cardSolvedCount: Int) = lblCardSolvedCount.setText(cardSolvedCount.toString())
 
     companion object {
         private const val TEXT_TITLE = "G A M E   O V E R"

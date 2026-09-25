@@ -15,9 +15,20 @@ import net.lustenauer.gdx.scenes.scene2d.Command.Companion.CMD_SETTINGS
 import net.lustenauer.gdx.scenes.scene2d.CommandListener
 import net.lustenauer.gdx.scenes.scene2d.ui.AbstractCommandWindow
 
+/**
+ * An overlay window displayed when the game is paused.
+ *
+ * Provides UI controls for resuming, restarting, opening settings, or returning to the main menu.
+ * Communicates actions back to the controller via a [CommandListener].
+ *
+ * @param cmdListener The listener that handles the fired [CommandListener.CommandEvent]s.
+ */
 class WindowPause(cmdListener: CommandListener?) : AbstractCommandWindow(cmdListener) {
     private lateinit var skinWindow: Skin
 
+    /**
+     * Initializes the pause window layout, visual assets, labels, and command buttons.
+     */
     override fun init() {
         skinWindow = Assets.instance.skinWindow
         skin = skinWindow

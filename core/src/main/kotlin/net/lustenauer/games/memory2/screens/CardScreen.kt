@@ -168,6 +168,7 @@ class CardScreen(game: ChangMemory) : AbstractScreen(game) {
 
         Gdx.input.inputProcessor = stage
     }
+
     private fun init() {
         if (!settingsScreenShow && !scoresScreenShow) {
             initSounds()
@@ -212,39 +213,33 @@ class CardScreen(game: ChangMemory) : AbstractScreen(game) {
     }
 
     /**
-     * Initialize the complete GameOverWindow with all its elements.
+     * Initializes the [WindowGameOver] container layer.
      */
     private fun initWindowGameOver() {
-        log.debug { "initGameOverWindow" }
+        log.debug { "initWindowGameOver" }
 
-        windowGameOver = WindowGameOver(object : CommandListener() {
-            override fun performCommand(event: CommandEvent?): Boolean {
-                when (event?.command) {
-                    CMD_RESTART -> doGameRestart()
-                    CMD_MENU -> doShowMenuScreen()
-                    CMD_SCORE -> doShowScoreScreen()
-                }
-                return true
+        windowGameOver = WindowGameOver(CommandListener { event ->
+            when (event?.command) {
+                CMD_RESTART -> doGameRestart()
+                CMD_MENU    -> doShowMenuScreen()
+                CMD_SCORE   -> doShowScoreScreen()
             }
         })
         hudStage.addActor(windowGameOver)
     }
 
     /**
-     * Initialize the complete WindowPause window container layout layer.
+     * Initializes the [WindowPause] container layer.
      */
     private fun initWindowPause() {
         log.debug { "initWindowPause" }
 
-        windowPause = WindowPause(object : CommandListener() {
-            override fun performCommand(event: CommandEvent?): Boolean {
-                when (event?.command) {
-                    CMD_RESTART -> doGameRestart()
-                    CMD_MENU -> doShowMenuScreen()
-                    CMD_SETTINGS -> doShowSettingsScreen()
-                    CMD_RESUME -> doGameResume()
-                }
-                return true
+        windowPause = WindowPause(CommandListener { event ->
+            when (event?.command) {
+                CMD_RESTART  -> doGameRestart()
+                CMD_MENU     -> doShowMenuScreen()
+                CMD_SETTINGS -> doShowSettingsScreen()
+                CMD_RESUME   -> doGameResume()
             }
         })
         stage.addActor(windowPause)
@@ -329,10 +324,10 @@ class CardScreen(game: ChangMemory) : AbstractScreen(game) {
     }
 
     /**
-     * Updates the remaining match timer stream.
-     * Delegates chronological calculations directly back to the [controller].
+     * Executes chronological time subtractions on the remaining match countdown.
+     * Triggers warnings if limits break critical milestones.
      */
-    private fun updateTime(deltaTime: Float) {
+    fun updateTime(deltaTime: Float) {
         controller.updateTime(
             deltaTime = deltaTime,
             onGameOverTrigger = { doGameOver() },
@@ -370,7 +365,7 @@ class CardScreen(game: ChangMemory) : AbstractScreen(game) {
             setScore(controller.score)
             setTime(controller.totalTime)
             setCardFlipCount(controller.cardFlipCount)
-            setCardSolvedCount(controller.cardSetSolvedCount)
+            setTotalCardSolvedCount(controller.totalCardSetSolvedCount)
             setLuckStrikeCount(controller.luckyStrikeCount)
         }
 

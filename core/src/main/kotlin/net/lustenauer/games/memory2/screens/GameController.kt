@@ -32,6 +32,8 @@ class GameController {
 
     var cardSetTries = 0
     var cardSetSolvedCount = 0
+    var totalCardSetSolvedCount = 0
+        private set
     var cardFlipCount = 0
     var luckyStrikeCount = 0
     var luckyStrikeInARowCount = 0
@@ -63,6 +65,7 @@ class GameController {
         level = 0
         totalTime = 0f
         cardSetSolvedCount = 0
+        totalCardSetSolvedCount = 0
         startTime = com.badlogic.gdx.utils.TimeUtils.nanoTime()
         timeLeft = 60f
 
@@ -78,7 +81,7 @@ class GameController {
     }
 
     /**
-     * Upgrades the active level index and triggers standard preparation
+     * Advances the active level index and triggers standard preparation
      * announcements to display inside the info pooling overlays.
      */
     fun startNextLevel(): GdxArray<Card> {
@@ -132,10 +135,6 @@ class GameController {
      * Evaluates current active card selections to check for valid match pairs.
      * Computes point increments and expands timers upon successful matches.
      */
-    /**
-     * Evaluates current active card selections to check for valid match pairs.
-     * Computes point increments and expands timers upon successful matches.
-     */
     fun processVisibleCards(
         onPlayToManySound: () -> Unit,
         onLuckyStrike: (Card, Card) -> Unit,
@@ -158,6 +157,7 @@ class GameController {
                     secondCard.cardSolved = true
 
                     cardSetSolvedCount++
+                    totalCardSetSolvedCount++
                     cardSetTries++
 
                     score += firstCard.score + secondCard.score
