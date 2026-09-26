@@ -41,6 +41,8 @@ All notable changes and version milestones of this project will be documented in
 * `[c]` Consolidated all scattered balancing configuration variables (base timers, scores, penalties) into structured, central **`companion object`** constants.
 * `[c]` Fully migrated the `android` module's native launcher class from Java to a 100% pure **Kotlin implementation (`AndroidLauncher.kt`)**, successfully eliminating legacy Java setter boilerplate (`setActionResolver`) in favor of type-safe Kotlin property syntax.
 * `[c]` Upgraded diagnostics inside the Android runtime environment to use zero-allocation, high-performance **`Iktx-log`** inline lambdas to significantly reduce mobile garbage collection overhead.
+* `[c]` Refactored the core **`MenuScreen.kt`** lifecycle structure to utilize zero-allocation **`ktx-log`** diagnostics, removing the legacy static `TAG` string string-builders.
+* `[c]` Consolidated input processing pipelines inside the menu update ticks by replacing bitwise evaluations with clean logical short-circuit pathways.
 
 ### Removed
 * `[-]` Permanently removed all legacy AdMob mobile advertising layout containers, banner configuration instances, and network permission hooks from the Android codebase to ensure an ad-free user experience.
@@ -60,6 +62,7 @@ All notable changes and version milestones of this project will be documented in
 * `[f]` Fixed a subtle sound displacement issue inside the lucky strike trigger chain by routing audio execution safely back into the deferred **`AudioManager.add()`** delay register.
 * `[f]` Corrected a minor textual layout spelling mistake inside the notification announcement stream from `"TO MANY TRY"` to grammatically sound **`"TOO MANY TRIES"`**.
 * `[f]` Resolved a critical multi-platform compiler error chain by routing all core screen and actor service configurations through the modern synchronized instance reference bridge (`ChangMemory.instance.actionResolver`).
+* `[f]` Fixed a critical structural runtime freeze by shifting the memory cleanup routine (`stage.dispose()`) from the temporary `hide()` method into the official, permanent `dispose()` engine lifecycle hook.
 
 ---
 

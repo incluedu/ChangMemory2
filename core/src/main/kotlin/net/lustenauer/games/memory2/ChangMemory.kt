@@ -34,7 +34,7 @@ class ChangMemory private constructor() : Game() {
 
     override fun create() {
         // Set Libgdx log level
-        Gdx.app.logLevel = LOG_DEBUG
+        Gdx.app.logLevel = LOG_NONE
         readyForStart = false
 
         AchievementManager.init()
