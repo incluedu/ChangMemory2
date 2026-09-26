@@ -38,7 +38,7 @@ class CreditsScreen(game: ChangMemory) : AbstractScreen(game) {
 
     override fun show() {
         Gdx.app.debug(TAG, "show()")
-        ChangMemory.actionResolver?.setTrackerScreenName(TAG)
+        ChangMemory.instance.actionResolver?.setTrackerScreenName(TAG)
         stage = com.badlogic.gdx.scenes.scene2d.Stage(
             StretchViewport(
                 Viewport.GUI_WIDTH,
@@ -142,7 +142,7 @@ class CreditsScreen(game: ChangMemory) : AbstractScreen(game) {
         lblCopyright.setPosition((Viewport.GUI_WIDTH - lblCopyright.width) / 2, 670f)
         layer.addActor(lblCopyright)
 
-        val versionText = ChangMemory.actionResolver?.appVersion ?: "2.0-Desktop"
+        val versionText = ChangMemory.instance.actionResolver?.appVersion ?: "2.0-Desktop"
         val lblVersion = Label("Version $versionText", skinWindow, "font12", Color.WHITE)
         lblVersion.setPosition(10f, 780f)
         layer.addActor(lblVersion)

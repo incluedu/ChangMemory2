@@ -27,7 +27,6 @@ object AchievementManager {
     private var points40000 = false
     private var points50000 = false
 
-
     private lateinit var achievements: GdxArray<AchievementEntry>
 
     /**
@@ -40,9 +39,6 @@ object AchievementManager {
 
     /**
      * Search for an AchievementId inside the active memory pool registers.
-     *
-     * @param id String with the Achievement ID
-     * @return the matching [AchievementEntry], or null if not found
      */
     private fun find(id: String?): AchievementEntry? {
         if (id == null) return null
@@ -54,9 +50,9 @@ object AchievementManager {
     }
 
     /**
-     * Deploys notification rewards onto the UI and signals the GPGS backend channels.
+     * Deploys notification rewards onto the UI and signals the platform backend.
      */
-    private fun doAchievement(id: String?): Boolean {
+    private fun doAchievement(achievement: GameAchievement, id: String): Boolean {
         val entry = find(id) ?: return false
 
         if (!entry.isUnlocked) {
@@ -66,7 +62,7 @@ object AchievementManager {
             AudioManager.add(Assets.soundAchievement)
 
             entry.isUnlocked = true
-            ChangMemory.actionResolver?.unlockAchievementGPGS(id)
+            ChangMemory.instance.actionResolver?.unlockAchievement(achievement)
             return true
         }
         return true
@@ -77,7 +73,7 @@ object AchievementManager {
      */
     fun getAchievements(): GdxArray<AchievementEntry> {
         if (achievements.size == 0) {
-            ChangMemory.actionResolver?.loadAchievements()
+            ChangMemory.instance.actionResolver?.loadAchievements()
         }
         return achievements
     }
@@ -86,54 +82,50 @@ object AchievementManager {
      * Validates if the player broke a specific level milestone.
      */
     fun checkAchievementsLevel(level: Int) {
-        if (ChangMemory.actionResolver?.isSignedInGPGS != true) return
+        if (ChangMemory.instance.actionResolver?.isSignedIn != true) return
 
-        val targetId = when (level) {
-            5 -> ID_LEVEL5
-            10 -> ID_LEVEL10
-            15 -> ID_LEVEL15
-            20 -> ID_LEVEL20
-            25 -> ID_LEVEL25
-            30 -> ID_LEVEL30
-            35 -> ID_LEVEL35
-            40 -> ID_LEVEL40
-            45 -> ID_LEVEL45
-            50 -> ID_LEVEL50
-            else -> null
+        when (level) {
+            5  -> doAchievement(GameAchievement.LEVEL_5, ID_LEVEL5)
+            10 -> doAchievement(GameAchievement.LEVEL_10, ID_LEVEL10)
+            15 -> doAchievement(GameAchievement.LEVEL_15, ID_LEVEL15)
+            20 -> doAchievement(GameAchievement.LEVEL_20, ID_LEVEL20)
+            25 -> doAchievement(GameAchievement.LEVEL_25, ID_LEVEL25)
+            30 -> doAchievement(GameAchievement.LEVEL_30, ID_LEVEL30)
+            35 -> doAchievement(GameAchievement.LEVEL_35, ID_LEVEL35)
+            40 -> doAchievement(GameAchievement.LEVEL_40, ID_LEVEL40)
+            45 -> doAchievement(GameAchievement.LEVEL_45, ID_LEVEL45)
+            50 -> doAchievement(GameAchievement.LEVEL_50, ID_LEVEL50)
         }
-        targetId?.let { doAchievement(it) }
     }
 
     /**
      * Validates if the player achieved multiple blind pairs back-to-the-row.
      */
     fun checkLuckyStrikeAchievements(luckyStrikeInARowCount: Int) {
-        if (ChangMemory.actionResolver?.isSignedInGPGS != true) return
+        if (ChangMemory.instance.actionResolver?.isSignedIn != true) return
 
-        val targetId = when (luckyStrikeInARowCount) {
-            1 -> ID_IN_A_ROW_1
-            2 -> ID_IN_A_ROW_2
-            3 -> ID_IN_A_ROW_3
-            4 -> ID_IN_A_ROW_4
-            5 -> ID_IN_A_ROW_5
-            else -> null
+        when (luckyStrikeInARowCount) {
+            1 -> doAchievement(GameAchievement.IN_A_ROW_1, ID_IN_A_ROW_1)
+            2 -> doAchievement(GameAchievement.IN_A_ROW_2, ID_IN_A_ROW_2)
+            3 -> doAchievement(GameAchievement.IN_A_ROW_3, ID_IN_A_ROW_3)
+            4 -> doAchievement(GameAchievement.IN_A_ROW_4, ID_IN_A_ROW_4)
+            5 -> doAchievement(GameAchievement.IN_A_ROW_5, ID_IN_A_ROW_5)
         }
-        targetId?.let { doAchievement(it) }
     }
 
     /**
      * Increments specific tier markers once global scores break milestones.
      */
     fun checkScoreAchievements(score: Int) {
-        if (score in 5000..9999 && !points5000) points5000 = doAchievement(ID_POINTS_5000)
-        if (score in 10000..14999 && !points10000) points10000 = doAchievement(ID_POINTS_10000)
-        if (score in 15000..19999 && !points15000) points15000 = doAchievement(ID_POINTS_15000)
-        if (score in 20000..24999 && !points20000) points20000 = doAchievement(ID_POINTS_20000)
-        if (score in 25000..29999 && !points25000) points25000 = doAchievement(ID_POINTS_25000)
-        if (score in 30000..34999 && !points30000) points30000 = doAchievement(ID_POINTS_30000)
-        if (score in 35000..39999 && !points35000) points35000 = doAchievement(ID_POINTS_35000)
-        if (score in 40000..49999 && !points40000) points40000 = doAchievement(ID_POINTS_40000)
-        if (score >= 50000 && !points50000) points50000 = doAchievement(ID_POINTS_50000)
+        if (score in 5000..9999 && !points5000) points5000 = doAchievement(GameAchievement.POINTS_5000, ID_POINTS_5000)
+        if (score in 10000..14999 && !points10000) points10000 = doAchievement(GameAchievement.POINTS_10000, ID_POINTS_10000)
+        if (score in 15000..19999 && !points15000) points15000 = doAchievement(GameAchievement.POINTS_15000, ID_POINTS_15000)
+        if (score in 20000..24999 && !points20000) points20000 = doAchievement(GameAchievement.POINTS_20000, ID_POINTS_20000)
+        if (score in 25000..29999 && !points25000) points25000 = doAchievement(GameAchievement.POINTS_25000, ID_POINTS_25000)
+        if (score in 30000..34999 && !points30000) points30000 = doAchievement(GameAchievement.POINTS_30000, ID_POINTS_30000)
+        if (score in 35000..39999 && !points35000) points35000 = doAchievement(GameAchievement.POINTS_35000, ID_POINTS_35000)
+        if (score in 40000..49999 && !points40000) points40000 = doAchievement(GameAchievement.POINTS_40000, ID_POINTS_40000)
+        if (score >= 50000 && !points50000) points50000 = doAchievement(GameAchievement.POINTS_50000, ID_POINTS_50000)
     }
 
     /**
@@ -142,11 +134,12 @@ object AchievementManager {
     fun checkGameDoneAchievement(score: Int) {
         if (score < 2000) return
 
-        ChangMemory.actionResolver?.apply {
-            incrementAchievementGPGS(ID_WORM, 1)
-            incrementAchievementGPGS(ID_MOUSE, 1)
-            incrementAchievementGPGS(ID_HEDGEHOG, 1)
-            incrementAchievementGPGS(ID_PARROT, 1)
+        // BEHOBEN: Nutzt jetzt die fehlerfreie, plattformunabhängige Methode des Interfaces
+        ChangMemory.instance.actionResolver?.apply {
+            incrementAchievement(GameAchievement.WORM, 1)
+            incrementAchievement(GameAchievement.MOUSE, 1)
+            incrementAchievement(GameAchievement.HEDGEHOG, 1)
+            incrementAchievement(GameAchievement.PARROT, 1)
         }
     }
 

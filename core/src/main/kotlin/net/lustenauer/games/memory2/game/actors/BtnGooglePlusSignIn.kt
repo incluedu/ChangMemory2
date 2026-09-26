@@ -12,13 +12,13 @@ class BtnGooglePlusSignIn : Image(Assets.skinWindow, IMG_GOOGLE_SIGN_IN) {
         setPosition(296f, 20f)
 
         onClick {
-            ChangMemory.actionResolver?.signInGPGS()
+            ChangMemory.instance.actionResolver?.signIn()
             GamePreferences.instance.googleSignIn = true
         }
     }
 
     override fun act(delta: Float) {
-        isVisible = ChangMemory.actionResolver?.isSignedInGPGS == false
+        isVisible = ChangMemory.instance.actionResolver?.isSignedIn == false
         super.act(delta)
     }
 }

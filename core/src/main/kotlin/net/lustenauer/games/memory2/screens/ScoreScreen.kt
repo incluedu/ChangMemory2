@@ -44,7 +44,7 @@ class ScoreScreen(game: ChangMemory) : AbstractScreen(game) {
     override fun show() {
         Gdx.app.debug(TAG, "show()")
 
-        ChangMemory.actionResolver?.setTrackerScreenName(TAG)
+        ChangMemory.instance.actionResolver?.setTrackerScreenName(TAG)
 
         achList = AchievementManager.getAchievements()
 
@@ -98,7 +98,7 @@ class ScoreScreen(game: ChangMemory) : AbstractScreen(game) {
     }
 
     private fun updateButtons() {
-        val signedIn = ChangMemory.actionResolver?.isSignedInGPGS ?: false
+        val signedIn = ChangMemory.instance.actionResolver?.isSignedIn ?: false
 
         btnAchievements.isVisible = signedIn
         btnLeaderboards.isVisible = signedIn

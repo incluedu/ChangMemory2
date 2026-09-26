@@ -1,8 +1,13 @@
 package net.lustenauer.games.memory2
 
+import com.badlogic.gdx.Application.LOG_DEBUG
+import com.badlogic.gdx.Application.LOG_NONE
 import com.badlogic.gdx.Game
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Screen
+import com.badlogic.gdx.assets.AssetManager
+import com.badlogic.gdx.graphics.Texture
+import ktx.log.logger
 import net.lustenauer.games.memory2.game.Assets
 import net.lustenauer.games.memory2.game.ScoreList
 import net.lustenauer.games.memory2.screens.*
@@ -10,63 +15,68 @@ import net.lustenauer.games.memory2.utils.AchievementManager
 import net.lustenauer.games.memory2.utils.ActionResolver
 import net.lustenauer.games.memory2.utils.AudioManager
 import net.lustenauer.games.memory2.utils.GamePreferences
+import kotlin.concurrent.thread
 
+/**
+ * The central game coordinator instance mapping screen switches, operational lifecycle profiles,
+ * and unified backend cross-platform resolver bindings.
+ *
+ * @author Patric Hollenstein
+ */
+class ChangMemory private constructor() : Game() {
 
-class ChangMemory  // Constructor for singleton
-private constructor() : Game() {
-    var readyForStart: kotlin.Boolean = false
+    private val log = logger<ChangMemory>()
+
+    var readyForStart = false
+    var actionResolver: ActionResolver? = null
 
     private var loadingScreen: LoadingScreen? = null
 
     override fun create() {
         // Set Libgdx log level
-        Gdx.app.setLogLevel(com.badlogic.gdx.Application.LOG_NONE)
-        // Gdx.app.setLogLevel(Application.LOG_DEBUG);
+        Gdx.app.logLevel = LOG_DEBUG
         readyForStart = false
 
         AchievementManager.init()
         ScoreList.init()
         GamePreferences.instance.load()
 
-        if (GamePreferences.instance.googleSignIn) actionResolver?.signInGPGS()
+        if (GamePreferences.instance.googleSignIn) {
+            actionResolver?.signIn()
+        }
 
         initMusicLoop()
 
         // Load assets
-        Gdx.app.debug(TAG, "Init new AssetManager")
-        Assets.initManager(com.badlogic.gdx.assets.AssetManager())
+        log.debug { "Init new AssetManager" }
+        Assets.initManager(AssetManager())
         Assets.loadTextures()
-        com.badlogic.gdx.graphics.Texture.setAssetManager(Assets.manager)
+        Texture.setAssetManager(Assets.manager)
 
-        // show loading screen
+        // Show loading screen
         loadingScreen = LoadingScreen(this)
         setScreen(loadingScreen)
 
-        Thread(object : Runnable {
-            override fun run() {
-                // loading assets
-                Assets.loadSounds()
+        thread {
+            Assets.loadSounds()
 
-                Gdx.app.postRunnable(object : Runnable {
-                    override fun run() {
-                        Assets.init()
+            Gdx.app.postRunnable {
+                Assets.init()
 
-                        cardScreen = CardScreen(this@ChangMemory)
-                        creditsScreen = CreditsScreen(this@ChangMemory)
-                        menuScreen = MenuScreen(this@ChangMemory)
-                        scoreScreen = ScoreScreen(this@ChangMemory)
-                        settingsScreen = SettingsScreen(this@ChangMemory)
-                        prevScreen = menuScreen
+                cardScreen = CardScreen(this@ChangMemory)
+                creditsScreen = CreditsScreen(this@ChangMemory)
+                menuScreen = MenuScreen(this@ChangMemory)
+                scoreScreen = ScoreScreen(this@ChangMemory)
+                settingsScreen = SettingsScreen(this@ChangMemory)
+                prevScreen = menuScreen
 
-                        readyForStart = true
-                    }
-                })
+                readyForStart = true
             }
-        }).start()
+        }
     }
 
     override fun dispose() {
-        Gdx.app.debug(TAG, "dispose()")
+        log.debug { "dispose()" }
         ScoreList.save()
         GamePreferences.instance.save()
         AudioManager.stopMusic()
@@ -79,27 +89,21 @@ private constructor() : Game() {
      */
     private fun initMusicLoop() {
         if (AudioManager.hasMusic()) return
-        Gdx.app.debug("AbstractScreen", "initMusicLoop()")
+        log.debug { "initMusicLoop()" }
         AudioManager.startRandomMusic()
     }
 
     companion object {
-        private val TAG: String = ChangMemory::class.java.name
-
         @get:JvmName("getKotlinInstance")
         val instance: ChangMemory get() = getInstance()
 
-        @JvmStatic
-        var actionResolver: ActionResolver? = null
-
-        var musicOnCompletionCounter: Int = 0
+        var musicOnCompletionCounter = 0
 
         lateinit var cardScreen: CardScreen
         lateinit var creditsScreen: CreditsScreen
         lateinit var menuScreen: MenuScreen
         lateinit var scoreScreen: ScoreScreen
         lateinit var settingsScreen: SettingsScreen
-        lateinit var scoreList: ScoreList
         lateinit var prevScreen: Screen
 
         private var _instance: ChangMemory? = null

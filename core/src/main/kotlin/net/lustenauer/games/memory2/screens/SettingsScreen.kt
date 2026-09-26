@@ -61,7 +61,7 @@ class SettingsScreen(game: ChangMemory) : AbstractScreen(game) {
 
     override fun show() {
         Gdx.app.debug(TAG, "show()")
-        ChangMemory.actionResolver?.setTrackerScreenName(TAG)
+        ChangMemory.instance.actionResolver?.setTrackerScreenName(TAG)
         stage = com.badlogic.gdx.scenes.scene2d.Stage(
             StretchViewport(
                 Viewport.GUI_WIDTH,

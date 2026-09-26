@@ -26,7 +26,7 @@ class MenuScreen(game: ChangMemory) : AbstractScreen(game) {
     /* PUBLIC METHODES */ /* =============== */
     public override fun show() {
         Gdx.app.debug(TAG, "show()")
-        ChangMemory.actionResolver?.setTrackerScreenName(TAG)
+        ChangMemory.instance.actionResolver?.setTrackerScreenName(TAG)
         Gdx.input.setCatchKey(BACK, true)
 
         AudioManager.playMusic()
@@ -284,6 +284,6 @@ class MenuScreen(game: ChangMemory) : AbstractScreen(game) {
 
     private fun doGoogleSignIn() {
         Gdx.app.debug(TAG, "doGoogleSignIn()")
-        ChangMemory.actionResolver?.signInGPGS()
+        ChangMemory.instance.actionResolver?.signIn()
     }
 }

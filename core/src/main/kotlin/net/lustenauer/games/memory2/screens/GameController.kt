@@ -199,7 +199,7 @@ class GameController {
      * Local score calculation anchor that commits metrics back into the leaderboards.
      */
     fun submitScore() {
-        ChangMemory.actionResolver?.submitLeaderboardsGPGS(
+        ChangMemory.instance.actionResolver?.submitScore(
             score, level, cardFlipCount, cardSetSolvedCount, luckyStrikeCount
         )
         ScoreList.addScore(score, level, totalTime)

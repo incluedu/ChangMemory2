@@ -75,12 +75,12 @@ class CardScreen(game: ChangMemory) : AbstractScreen(game) {
 
     /**
      * Triggered once this screen context becomes the active visibility layer inside the game loop.
-     * Calibrates analytics trackers via [ChangMemory.actionResolver], captures the hardware back button,
+     * Calibrates analytics trackers via [ChangMemory.instance.actionResolver], captures the hardware back button,
      * activates background audio streams via [AudioManager], and triggers the core [init] sequence.
      */
     override fun show() {
         log.debug { "show()" }
-        ChangMemory.actionResolver?.setTrackerScreenName(CardScreen::class.java.name)
+        ChangMemory.instance.actionResolver?.setTrackerScreenName(CardScreen::class.java.name)
 
         Gdx.input.setCatchKey(BACK, true)
 

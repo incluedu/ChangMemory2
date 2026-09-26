@@ -12,13 +12,13 @@ class BtnGooglePlusSignOut : Image(Assets.skinWindow, IMG_GOOGLE_SIGN_OUT) {
         setPosition(296f, 20f)
 
         onClick {
-            ChangMemory.actionResolver?.signOutGPGS()
+            ChangMemory.instance.actionResolver?.signOut()
             GamePreferences.instance.googleSignIn = false
         }
     }
 
     override fun act(delta: Float) {
-        isVisible = ChangMemory.actionResolver?.isSignedInGPGS == true
+        isVisible = ChangMemory.instance.actionResolver?.isSignedIn == true
         super.act(delta)
     }
 }

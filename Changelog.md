@@ -21,6 +21,8 @@ All notable changes and version milestones of this project will be documented in
 * `[+]` Converted `AudioManager` and `InfoList` into native Kotlin **`object`** singletons, completely eradicating legacy Java `.instance` boilerplate and private constructor wrappers.
 * `[+]` Modernized background music loading by swapping the old Java utility framework randomizers with highly efficient, zero-allocation native Kotlin **`Random.nextInt()`** loops.
 * `[+]` Implemented formal, rich KDoc documentation with strict Markdown backtick syntax configurations to protect IDE symbol expansion compilers from crashing on reserved keywords.
+* `[+]` Centralized the global engine versioning by introducing a unified `APP_VERSION` compile-time constant inside core `Constants.kt`, creating a single source of truth for all platform modules.
+* `[+]` Created a dedicated `DesktopActionResolver.kt` file within the `lwjgl3` module to cleanly separate launcher configurations from desktop-specific no-op cloud overrides.
 
 ### Changed
 * `[c]` Rebranded the project from *ChangMemory* to **ChangMemory II**.
@@ -28,7 +30,7 @@ All notable changes and version milestones of this project will be documented in
 * `[c]` Radically downsized `CardScreen` by decoupling UI event handling and routing click actions directly into `WindowPause` and `WindowGameOver`.
 * `[c]` Transformed `Assets` and `ScoreList` into native, robust Kotlin **`object`** singletons, removing the legacy `.instance` boilerplate.
 * `[c]` Refactored the leaderboard rendering (`scorePane`) into a declarative, responsive UI layout via **KTX Scene2D DSL**.
-* `[c]` Migrated legacy `Gdx.app.debug` statements inside asset classes and core handlers to zero-allocation **`ktx-log`** inline lambdas.
+* `[c]` Migrated legacy `Gdx.app.debug` statements inside asset classes and core handlers to zero-allocation **`Iktx-log`** inline lambdas.
 * `[c]` Decoupled `SoundListObject` from its heavy parent singleton scope by stripping the redundant **`inner`** modifier, transforming it into a lightweight, standalone Kotlin **`data class`** to drastically reduce garbage collection overhead on mobile architectures.
 * `[c]` Unified input processor polling hooks across the frame initialization stream by utilizing flat, expression-based Kotlin `if-else` return pipelines.
 * `[c]` Re-licensed the entire *ChangMemory II* codebase from Apache 2.0 to the simpler, more community-friendly **MIT License**.
@@ -37,6 +39,12 @@ All notable changes and version milestones of this project will be documented in
 * `[c]` Replaced high-allocation chronological approximations inside the main time loop with performant, zero-allocation native **`TimeUtils`** nano-subtractions.
 * `[c]` Upgraded the card array evaluation pipeline inside `processVisibleCards()` to utilize type-safe, readable KTX **`.first()`** and **`.last()`** collection operators.
 * `[c]` Consolidated all scattered balancing configuration variables (base timers, scores, penalties) into structured, central **`companion object`** constants.
+* `[c]` Fully migrated the `android` module's native launcher class from Java to a 100% pure **Kotlin implementation (`AndroidLauncher.kt`)**, successfully eliminating legacy Java setter boilerplate (`setActionResolver`) in favor of type-safe Kotlin property syntax.
+* `[c]` Upgraded diagnostics inside the Android runtime environment to use zero-allocation, high-performance **`Iktx-log`** inline lambdas to significantly reduce mobile garbage collection overhead.
+
+### Removed
+* `[-]` Permanently removed all legacy AdMob mobile advertising layout containers, banner configuration instances, and network permission hooks from the Android codebase to ensure an ad-free user experience.
+* `[-]` Deleted the obsolete `license.apache2` template file to maintain a single, clean licensing architecture across the repository.
 
 ### Fixed
 * `[f]` Fixed a critical runtime crash on the score screen where an unresolved `LabelStyle` identifier name (`font16`) caused skin deployment crashes; fixed by binding directly to the default chalkboard typography font context.
@@ -44,16 +52,14 @@ All notable changes and version milestones of this project will be documented in
 * `[f]` Fixed a hidden state freeze where exiting a paused game left flags active, causing subsequent matches to lock instantly.
 * `[f]` Resolved critical input crashes by synchronizing `stage.clear()` execution order to fire strictly before fresh asset deployment.
 * `[f]` Fixed a game statistics bug where the final count of solved cards incorrectly displayed as `0` on the Game Over screen due to a premature variable reset during level advancements. This was resolved by tracking a new persistent `totalCardSetSolvedCount` in the `GameController`.
-* `[c]` Consolidated state reset routines by removing redundant `prepareManualRestart` hooks in favor of atomic, unified variable clearing.
+* `[f]` Consolidated state reset routines by removing redundant `prepareManualRestart` hooks in favor of atomic, unified variable clearing.
 * `[f]` Fixed a dangerous hidden logic bug in `AudioManager.update()` where a bitwise **`and`** operator was erroneously used instead of a proper short-circuit logical **`&&`** evaluation during frame queue checks.
-* `[f]` Fixed a critical Java-Base module restriction failure (`Symbol is declared in module java.base which does not export package...`) caused by accidental IDE auto-imports of internal JDK system drivers (`BMPSet.BACK`). All inputs now reference explicit LibGDX key registers (`com.badlogic.gdx.Input.Keys`).
+* `[f]` Fixed a critical Java-Base module restriction failure (`Symbol is declared in module java.base...`) caused by accidental IDE auto-imports of internal JDK system drivers (`BMPSet.BACK`). All inputs now reference explicit LibGDX key registers (`com.badlogic.gdx.Input.Keys`).
 * `[f]` Fixed a core user experience flow oversight in `CardScreen.resume()` where minimizing or interrupting the application background layer forced gameplay to continue instantly even if the player had manually locked focus inside the modal pause window overlay.
 * `[f]` Fixed a significant analytical statistics bug where `cardSetTries` incorrectly registered a double penalty iteration (+2) instead of a proper singular pass (+1) upon failed card match attempts.
 * `[f]` Fixed a subtle sound displacement issue inside the lucky strike trigger chain by routing audio execution safely back into the deferred **`AudioManager.add()`** delay register.
 * `[f]` Corrected a minor textual layout spelling mistake inside the notification announcement stream from `"TO MANY TRY"` to grammatically sound **`"TOO MANY TRIES"`**.
-
-### Removed
-* `[-]` Deleted the obsolete `license.apache2` template file to maintain a single, clean licensing structure across the repository.
+* `[f]` Resolved a critical multi-platform compiler error chain by routing all core screen and actor service configurations through the modern synchronized instance reference bridge (`ChangMemory.instance.actionResolver`).
 
 ---
 

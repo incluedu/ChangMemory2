@@ -136,7 +136,7 @@ class LoadingScreen(game: ChangMemory) : AbstractScreen(game) {
         layer.addActor(lblLoading)
 
         lbl = Label(
-            "Version " + ChangMemory.actionResolver?.appVersion,
+            "Version " + ChangMemory.instance.actionResolver?.appVersion,
             windowSkin,
             "font12",
             com.badlogic.gdx.graphics.Color.WHITE
