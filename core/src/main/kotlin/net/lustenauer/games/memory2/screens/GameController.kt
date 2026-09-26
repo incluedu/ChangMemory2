@@ -1,6 +1,7 @@
 package net.lustenauer.games.memory2.screens
 
 import com.badlogic.gdx.graphics.Color
+import com.badlogic.gdx.utils.TimeUtils
 import ktx.log.logger
 import net.lustenauer.games.memory2.ChangMemory
 import net.lustenauer.games.memory2.game.CardList
@@ -21,12 +22,12 @@ class GameController {
 
     private val log = logger<GameController>()
 
-    // Core State Variables
+    // --- GAME METRICS ---
     var score = 0
         private set
     var level = 0
         private set
-    var timeLeft = 60f
+    var timeLeft = START_TIME
     var totalTime = 0f
         private set
 
@@ -38,6 +39,7 @@ class GameController {
     var luckyStrikeCount = 0
     var luckyStrikeInARowCount = 0
 
+    // --- GAME STATE FLAGS ---
     var startTime: Long = 0
     var levelCompleted = false
     var luckyStrikeSet = false
@@ -47,12 +49,10 @@ class GameController {
     var gamePaused = false
     var scoreSubmit = false
 
+    // --- CARD CONTAINERS ---
     var visibleCards = GdxArray<Card>()
     val cardList = CardList()
     var gameSet = GdxArray<Card>()
-
-    private var cardA: Card? = null
-    private var cardB: Card? = null
 
     /**
      * Resets all numerical state monitors back to default milestone scales
@@ -66,8 +66,8 @@ class GameController {
         totalTime = 0f
         cardSetSolvedCount = 0
         totalCardSetSolvedCount = 0
-        startTime = com.badlogic.gdx.utils.TimeUtils.nanoTime()
-        timeLeft = 60f
+        startTime = TimeUtils.nanoTime()
+        timeLeft = START_TIME
 
         scoreSubmit = false
         timeLeft10Seconds = false
@@ -99,18 +99,20 @@ class GameController {
     }
 
     /**
-     * Executes chronological time subtractions on remaining match streams.
-     * Triggers warnings if limits break critical milestones.
+     * Executes chronological time subtractions on remaining match countdowns.
+     * Triggers callbacks if limits break critical hardware milestones.
      */
-    fun updateTime(deltaTime: Float, onGameOverTrigger: () -> Unit, playBeepSound: () -> Unit) {
+    fun updateTime(delta: Float, onGameOverTrigger: () -> Unit, playBeepSound: () -> Unit) {
         if (gameOver) return
 
-        totalTime += deltaTime
+        totalTime += delta
 
-        if (timeLeft > 0 && !levelCompleted) timeLeft -= deltaTime
+        if (timeLeft > 0 && !levelCompleted) {
+            timeLeft -= delta
+        }
 
-        if (timeLeft >= 31) timeLeft30Seconds = false
-        if (timeLeft.toInt() <= 30 && !timeLeft30Seconds) {
+        if (timeLeft >= THRESHOLD_WARN_30 + 1) timeLeft30Seconds = false
+        if (timeLeft.toInt() <= THRESHOLD_WARN_30 && !timeLeft30Seconds) {
             timeLeft30Seconds = true
             playBeepSound()
 
@@ -118,12 +120,12 @@ class GameController {
             InfoList.add("30 SEC LEFT", size = InfoList.SIZE_XL, color = Color.RED)
         }
 
-        if (timeLeft.toInt() <= 10) timeLeft10Seconds = true
-        if (timeLeft.toInt() >= 11) timeLeft10Seconds = false
+        if (timeLeft.toInt() <= THRESHOLD_WARN_10) timeLeft10Seconds = true
+        if (timeLeft.toInt() >= THRESHOLD_WARN_10 + 1) timeLeft10Seconds = false
 
-        if (timeLeft10Seconds && com.badlogic.gdx.utils.TimeUtils.timeSinceNanos(startTime) > 1000000000) {
+        if (timeLeft10Seconds && (TimeUtils.nanoTime() - startTime) > ONE_SECOND_NANOS) {
             playBeepSound()
-            startTime = com.badlogic.gdx.utils.TimeUtils.nanoTime()
+            startTime = TimeUtils.nanoTime()
         }
 
         if (timeLeft <= 0 && visibleCards.size <= 1 && !levelCompleted) {
@@ -142,11 +144,8 @@ class GameController {
         onLevelComplete: () -> Unit
     ) {
         if (visibleCards.size >= 2) {
-            val firstCard = visibleCards[0]
-            val secondCard = visibleCards[1]
-
-            cardA = firstCard
-            cardB = secondCard
+            val firstCard = visibleCards.first()
+            val secondCard = visibleCards.last()
 
             val cardAReady = firstCard.cardIsOnFront && !firstCard.cardIsFlipping
             val cardBReady = secondCard.cardIsOnFront && !secondCard.cardIsFlipping
@@ -161,12 +160,10 @@ class GameController {
                     cardSetTries++
 
                     score += firstCard.score + secondCard.score
-                    val timeAdd = firstCard.time + secondCard.time
-                    timeLeft += timeAdd.toFloat()
+                    timeLeft += (firstCard.time + secondCard.time)
+                    AchievementManager.checkScoreAchievements(score)
 
-                    AchievementManager.instance.checkScoreAchievements(score)
-
-                    log.debug { "${firstCard.cardName}: Card set found add $timeAdd seconds to timeLeft" }
+                    log.debug { "${firstCard.cardName}: Card set found, added ${firstCard.time + secondCard.time} seconds to timeLeft." }
 
                     levelCompleted = cardSetSolvedCount >= (gameSet.size / 2)
                     luckyStrikeSet = (firstCard.viewed == 0 && secondCard.viewed == 0)
@@ -175,6 +172,7 @@ class GameController {
                         score += 100
                         luckyStrikeInARowCount++
                         luckyStrikeCount++
+                        AchievementManager.checkLuckyStrikeAchievements(luckyStrikeInARowCount)
                         onLuckyStrike(firstCard, secondCard)
                     } else {
                         onSolved(firstCard, secondCard)
@@ -183,16 +181,14 @@ class GameController {
                     if (levelCompleted) onLevelComplete()
                 } else {
                     if (firstCard.isScoreZero || secondCard.isScoreZero) {
-                        InfoList.add("TO MANY TRY", size = InfoList.SIZE_L)
-                        InfoList.add("-5 SEC", size = InfoList.SIZE_L)
+                        InfoList.add("TOO MANY TRIES", size = InfoList.SIZE_L)
+                        InfoList.add("-$PENALTY_SECONDS SEC", size = InfoList.SIZE_L)
                         onPlayToManySound()
-                        timeLeft -= 5f
+                        timeLeft -= PENALTY_SECONDS
                     }
 
-                    for (card in visibleCards) {
-                        card.flipCard()
-                        cardSetTries++
-                    }
+                    visibleCards.forEach { card -> card.flipCard() }
+                    cardSetTries++
                 }
                 visibleCards.clear()
             }
@@ -208,5 +204,16 @@ class GameController {
         )
         ScoreList.addScore(score, level, totalTime)
         scoreSubmit = true
+    }
+
+    companion object {
+        // --- BALANCING CONSTANTS ---
+        private const val START_TIME = 60f
+        private const val PENALTY_SECONDS = 5f
+        private const val BONUS_LUCKY_STRIKE = 100
+
+        private const val THRESHOLD_WARN_30 = 30
+        private const val THRESHOLD_WARN_10 = 10
+        private const val ONE_SECOND_NANOS = 1_000_000_000L
     }
 }

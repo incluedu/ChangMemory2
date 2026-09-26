@@ -1,56 +1,22 @@
 package net.lustenauer.games.memory2.utils
 
-import com.badlogic.gdx.Gdx
+import ktx.log.logger
 import net.lustenauer.games.memory2.ChangMemory
 import net.lustenauer.games.memory2.game.Assets
 import net.lustenauer.games.memory2.game.InfoList
+import com.badlogic.gdx.utils.Array as GdxArray
 
-class AchievementManager  // Constructor for singleton
-protected constructor() {
-    val ID_LEVEL5: String = "CgkIl6WA-7keEAIQHA"
-    val ID_LEVEL10: String = "CgkIl6WA-7keEAIQAg"
-    val ID_LEVEL15: String = "CgkIl6WA-7keEAIQAw"
-    val ID_LEVEL20: String = "CgkIl6WA-7keEAIQBA"
-    val ID_LEVEL25: String = "CgkIl6WA-7keEAIQBQ"
-    val ID_LEVEL30: String = "CgkIl6WA-7keEAIQBg"
-    val ID_LEVEL35: String = "CgkIl6WA-7keEAIQGA"
-    val ID_LEVEL40: String = "CgkIl6WA-7keEAIQGQ"
-    val ID_LEVEL45: String = "CgkIl6WA-7keEAIQGg"
-    val ID_LEVEL50: String = "CgkIl6WA-7keEAIQGw"
-    val ID_IN_A_ROW_1: String = "CgkIl6WA-7keEAIQCw"
-    val ID_IN_A_ROW_2: String = "CgkIl6WA-7keEAIQCg"
-    val ID_IN_A_ROW_3: String = "CgkIl6WA-7keEAIQDA"
-    val ID_IN_A_ROW_4: String = "CgkIl6WA-7keEAIQDQ"
-    val ID_IN_A_ROW_5: String = "CgkIl6WA-7keEAIQDg"
-    val ID_POINTS_5000: String = "CgkIl6WA-7keEAIQDw"
-    val ID_POINTS_10000: String = "CgkIl6WA-7keEAIQEA"
-    val ID_POINTS_15000: String = "CgkIl6WA-7keEAIQEQ"
-    val ID_POINTS_20000: String = "CgkIl6WA-7keEAIQEg"
-    val ID_POINTS_25000: String = "CgkIl6WA-7keEAIQEw"
-    val ID_POINTS_30000: String = "CgkIl6WA-7keEAIQFA"
-    val ID_POINTS_35000: String = "CgkIl6WA-7keEAIQFQ"
-    val ID_POINTS_40000: String = "CgkIl6WA-7keEAIQFg"
-    val ID_POINTS_50000: String = "CgkIl6WA-7keEAIQFw"
+/**
+ * Central Google Play Games Services (GPGS) achievement monitoring engine.
+ * Tracks level milestones, blind luck streaks, and specific point achievements
+ * dynamically during a live campaign loop.
+ *
+ * @author Patric Hollenstein
+ */
+object AchievementManager {
 
-    val ID_WORM: String = "CgkIl6WA-7keEAIQHQ"
-    val ID_MOUSE: String = "CgkIl6WA-7keEAIQHg"
-    val ID_HEDGEHOG: String = "CgkIl6WA-7keEAIQHw"
-    val ID_PARROT: String = "CgkIl6WA-7keEAIQIA"
+    private val log = logger<AchievementManager>()
 
-    // private boolean level10;
-    // private boolean level15;
-    // private boolean level20;
-    // private boolean level25;
-    // private boolean level30;
-    // private boolean level35;
-    // private boolean level40;
-    // private boolean level45;
-    // private boolean level50;
-    // private boolean inARow1;
-    // private boolean inARow2;
-    // private boolean inARow3;
-    // private boolean inARow4;
-    // private boolean inARow5;
     private var points5000 = false
     private var points10000 = false
     private var points15000 = false
@@ -61,110 +27,161 @@ protected constructor() {
     private var points40000 = false
     private var points50000 = false
 
-    val TAG: String = this.javaClass.getName()
-    private var achievements: com.badlogic.gdx.utils.Array<AchievementEntry>? = null
 
+    private lateinit var achievements: GdxArray<AchievementEntry>
+
+    /**
+     * Initializes the memory pools for active tracking metrics.
+     */
     fun init() {
-        Gdx.app.debug(TAG, "init()")
-
-        achievements = com.badlogic.gdx.utils.Array<AchievementEntry>()
+        log.debug { "init()" }
+        achievements = GdxArray<AchievementEntry>()
     }
 
     /**
-     * Search for an AchievementId
+     * Search for an AchievementId inside the active memory pool registers.
      *
-     * @param id String with the AchivementID
-     * @return the index of the AchivementID or -1 when not found
+     * @param id String with the Achievement ID
+     * @return the matching [AchievementEntry], or null if not found
      */
     private fun find(id: String?): AchievementEntry? {
-        for (i in 0..<achievements!!.size) {
-            val entry = achievements!!.get(i)
+        if (id == null) return null
+        for (i in 0 until achievements.size) {
+            val entry = achievements[i]
             if (entry.id == id) return entry
         }
         return null
     }
 
+    /**
+     * Deploys notification rewards onto the UI and signals the GPGS backend channels.
+     */
     private fun doAchievement(id: String?): Boolean {
-        val entry = find(id)
-        if (entry != null) {
-            if (!entry.isUnlocked) {
-                InfoList.add("CONGRATULATIONS", flash = true, size = InfoList.SIZE_XL)
-                InfoList.add(entry.name, size = InfoList.SIZE_L)
+        val entry = find(id) ?: return false
 
-                AudioManager.add(Assets.soundAchievement)
+        if (!entry.isUnlocked) {
+            InfoList.add("CONGRATULATIONS", flash = true, size = InfoList.SIZE_XL)
+            InfoList.add(entry.name, size = InfoList.SIZE_L)
 
-                entry.isUnlocked = true
+            AudioManager.add(Assets.soundAchievement)
 
-                ChangMemory.actionResolver?.unlockAchievementGPGS(id)
-                return true
-            } else {
-                return true
-            }
+            entry.isUnlocked = true
+            ChangMemory.actionResolver?.unlockAchievementGPGS(id)
+            return true
         }
-        return false
+        return true
     }
-
 
     /**
-     *
-     * @return
+     * Pulls the current synchronised leaderboard achievements container.
      */
-    fun getAchievements(): com.badlogic.gdx.utils.Array<AchievementEntry> {
-        if (achievements!!.size == 0) ChangMemory.actionResolver?.loadAchievements()
-        return achievements!!
+    fun getAchievements(): GdxArray<AchievementEntry> {
+        if (achievements.size == 0) {
+            ChangMemory.actionResolver?.loadAchievements()
+        }
+        return achievements
     }
 
+    /**
+     * Validates if the player broke a specific level milestone.
+     */
     fun checkAchievementsLevel(level: Int) {
         if (ChangMemory.actionResolver?.isSignedInGPGS != true) return
 
-        when (level) {
-            5 -> doAchievement(ID_LEVEL5)
-            10 -> doAchievement(ID_LEVEL10)
-            15 -> doAchievement(ID_LEVEL15)
-            20 -> doAchievement(ID_LEVEL20)
-            25 -> doAchievement(ID_LEVEL25)
-            30 -> doAchievement(ID_LEVEL30)
-            35 -> doAchievement(ID_LEVEL35)
-            40 -> doAchievement(ID_LEVEL40)
-            45 -> doAchievement(ID_LEVEL45)
-            50 -> doAchievement(ID_LEVEL50)
+        val targetId = when (level) {
+            5 -> ID_LEVEL5
+            10 -> ID_LEVEL10
+            15 -> ID_LEVEL15
+            20 -> ID_LEVEL20
+            25 -> ID_LEVEL25
+            30 -> ID_LEVEL30
+            35 -> ID_LEVEL35
+            40 -> ID_LEVEL40
+            45 -> ID_LEVEL45
+            50 -> ID_LEVEL50
+            else -> null
         }
+        targetId?.let { doAchievement(it) }
     }
 
-    fun checkLuckStrikeAchievements(luckyStrikeInARowCount: Int) {
+    /**
+     * Validates if the player achieved multiple blind pairs back-to-the-row.
+     */
+    fun checkLuckyStrikeAchievements(luckyStrikeInARowCount: Int) {
         if (ChangMemory.actionResolver?.isSignedInGPGS != true) return
 
-        when (luckyStrikeInARowCount) {
-            1 -> doAchievement(ID_IN_A_ROW_1)
-            2 -> doAchievement(ID_IN_A_ROW_2)
-            3 -> doAchievement(ID_IN_A_ROW_3)
-            4 -> doAchievement(ID_IN_A_ROW_4)
-            5 -> doAchievement(ID_IN_A_ROW_5)
+        val targetId = when (luckyStrikeInARowCount) {
+            1 -> ID_IN_A_ROW_1
+            2 -> ID_IN_A_ROW_2
+            3 -> ID_IN_A_ROW_3
+            4 -> ID_IN_A_ROW_4
+            5 -> ID_IN_A_ROW_5
+            else -> null
         }
+        targetId?.let { doAchievement(it) }
     }
 
+    /**
+     * Increments specific tier markers once global scores break milestones.
+     */
     fun checkScoreAchievements(score: Int) {
-        if (score >= 5000 && score < 10000 && !points5000) points5000 = doAchievement(ID_POINTS_5000)
-        if (score >= 10000 && score < 15000 && !points10000) points10000 = doAchievement(ID_POINTS_10000)
-        if (score >= 15000 && score < 20000 && !points15000) points15000 = doAchievement(ID_POINTS_15000)
-        if (score >= 20000 && score < 25000 && !points20000) points20000 = doAchievement(ID_POINTS_20000)
-        if (score >= 25000 && score < 30000 && !points25000) points25000 = doAchievement(ID_POINTS_25000)
-        if (score >= 30000 && score < 35000 && !points30000) points30000 = doAchievement(ID_POINTS_30000)
-        if (score >= 35000 && score < 40000 && !points35000) points35000 = doAchievement(ID_POINTS_35000)
-        if (score >= 40000 && score < 50000 && !points40000) points40000 = doAchievement(ID_POINTS_40000)
+        if (score in 5000..9999 && !points5000) points5000 = doAchievement(ID_POINTS_5000)
+        if (score in 10000..14999 && !points10000) points10000 = doAchievement(ID_POINTS_10000)
+        if (score in 15000..19999 && !points15000) points15000 = doAchievement(ID_POINTS_15000)
+        if (score in 20000..24999 && !points20000) points20000 = doAchievement(ID_POINTS_20000)
+        if (score in 25000..29999 && !points25000) points25000 = doAchievement(ID_POINTS_25000)
+        if (score in 30000..34999 && !points30000) points30000 = doAchievement(ID_POINTS_30000)
+        if (score in 35000..39999 && !points35000) points35000 = doAchievement(ID_POINTS_35000)
+        if (score in 40000..49999 && !points40000) points40000 = doAchievement(ID_POINTS_40000)
         if (score >= 50000 && !points50000) points50000 = doAchievement(ID_POINTS_50000)
     }
 
+    /**
+     * Increments lifetime completion targets upon matches scoring above threshold limits.
+     */
     fun checkGameDoneAchievement(score: Int) {
         if (score < 2000) return
 
-        ChangMemory.actionResolver?.incrementAchievementGPGS(ID_WORM, 1)
-        ChangMemory.actionResolver?.incrementAchievementGPGS(ID_MOUSE, 1)
-        ChangMemory.actionResolver?.incrementAchievementGPGS(ID_HEDGEHOG, 1)
-        ChangMemory.actionResolver?.incrementAchievementGPGS(ID_PARROT, 1)
+        ChangMemory.actionResolver?.apply {
+            incrementAchievementGPGS(ID_WORM, 1)
+            incrementAchievementGPGS(ID_MOUSE, 1)
+            incrementAchievementGPGS(ID_HEDGEHOG, 1)
+            incrementAchievementGPGS(ID_PARROT, 1)
+        }
     }
 
-    companion object {
-        val instance: AchievementManager = AchievementManager() // Initialize class as a singleton
-    }
+    // ==========================================
+    // CONSTANTS & GOOGLE PLAY IDs
+    // ==========================================
+    const val ID_LEVEL5 = "CgkIl6WA-7keEAIQHA"
+    const val ID_LEVEL10 = "CgkIl6WA-7keEAIQAg"
+    const val ID_LEVEL15 = "CgkIl6WA-7keEAIQAw"
+    const val ID_LEVEL20 = "CgkIl6WA-7keEAIQBA"
+    const val ID_LEVEL25 = "CgkIl6WA-7keEAIQBQ"
+    const val ID_LEVEL30 = "CgkIl6WA-7keEAIQBg"
+    const val ID_LEVEL35 = "CgkIl6WA-7keEAIQGA"
+    const val ID_LEVEL40 = "CgkIl6WA-7keEAIQGQ"
+    const val ID_LEVEL45 = "CgkIl6WA-7keEAIQGg"
+    const val ID_LEVEL50 = "CgkIl6WA-7keEAIQGw"
+
+    const val ID_IN_A_ROW_1 = "CgkIl6WA-7keEAIQCw"
+    const val ID_IN_A_ROW_2 = "CgkIl6WA-7keEAIQCg"
+    const val ID_IN_A_ROW_3 = "CgkIl6WA-7keEAIQDA"
+    const val ID_IN_A_ROW_4 = "CgkIl6WA-7keEAIQDQ"
+    const val ID_IN_A_ROW_5 = "CgkIl6WA-7keEAIQDg"
+
+    const val ID_POINTS_5000 = "CgkIl6WA-7keEAIQDw"
+    const val ID_POINTS_10000 = "CgkIl6WA-7keEAIQEA"
+    const val ID_POINTS_15000 = "CgkIl6WA-7keEAIQEQ"
+    const val ID_POINTS_20000 = "CgkIl6WA-7keEAIQEg"
+    const val ID_POINTS_25000 = "CgkIl6WA-7keEAIQEw"
+    const val ID_POINTS_30000 = "CgkIl6WA-7keEAIQFA"
+    const val ID_POINTS_35000 = "CgkIl6WA-7keEAIQFQ"
+    const val ID_POINTS_40000 = "CgkIl6WA-7keEAIQFg"
+    const val ID_POINTS_50000 = "CgkIl6WA-7keEAIQFw"
+
+    const val ID_WORM = "CgkIl6WA-7keEAIQHQ"
+    const val ID_MOUSE = "CgkIl6WA-7keEAIQHg"
+    const val ID_HEDGEHOG = "CgkIl6WA-7keEAIQHw"
+    const val ID_PARROT = "CgkIl6WA-7keEAIQIA"
 }

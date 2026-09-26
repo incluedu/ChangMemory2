@@ -84,7 +84,7 @@ class CardScreen(game: ChangMemory) : AbstractScreen(game) {
 
         Gdx.input.setCatchKey(BACK, true)
 
-        achList = AchievementManager.instance.getAchievements()
+        achList = AchievementManager.getAchievements()
         AudioManager.playMusic()
         init()
     }
@@ -183,10 +183,9 @@ class CardScreen(game: ChangMemory) : AbstractScreen(game) {
             windowGameOver.isVisible = false
         }
 
-        AchievementManager.instance.checkAchievementsLevel(controller.level)
+        AchievementManager.checkAchievementsLevel(controller.level)
         log.debug { "--> Start level ${controller.level}" }
 
-        // Input-Fokus sicher auf das Spielfeld übertragen
         Gdx.input.inputProcessor = stage
     }
 
@@ -308,10 +307,7 @@ class CardScreen(game: ChangMemory) : AbstractScreen(game) {
             stage.act(delta)
 
             updateTime(delta)
-
-            // TODO: InfoList bei Gelegenheit auf ein echtes Kotlin 'object' umstellen!
             InfoList.addInfoTable(hudStage)
-
             updateFlipCard()
             updateLevelCompleted()
             updateVisibleCards()
@@ -374,7 +370,7 @@ class CardScreen(game: ChangMemory) : AbstractScreen(game) {
      */
     fun updateTime(delta: Float) {
         controller.updateTime(
-            deltaTime = delta,
+            delta = delta,
             onGameOverTrigger = { doGameOver() },
             playBeepSound = { AudioManager.play(beepSound) }
         )
@@ -406,7 +402,6 @@ class CardScreen(game: ChangMemory) : AbstractScreen(game) {
 
         controller.gameOver = true
 
-        // TODO: InfoList & AudioManager bei Gelegenheit auf echte Kotlin 'object' Singletons umstellen!
         InfoList.add("GAME OVER", flash = true, size = InfoList.SIZE_XXXL)
         AudioManager.add(gameOverSound)
 
@@ -425,7 +420,7 @@ class CardScreen(game: ChangMemory) : AbstractScreen(game) {
 
         Gdx.input.inputProcessor = hudStage
 
-        AchievementManager.instance.checkGameDoneAchievement(controller.score)
+        AchievementManager.checkGameDoneAchievement(controller.score)
 
         if (!controller.scoreSubmit) {
             controller.submitScore()
@@ -484,10 +479,7 @@ class CardScreen(game: ChangMemory) : AbstractScreen(game) {
         windowPause.isVisible = false
         btnPause.isChecked = false
         gamePaused = false
-
-        // TODO: AudioManager bei Gelegenheit auf ein echtes Kotlin 'object' umstellen!
         AudioManager.playMusic()
-
         controller.gameSet.forEach { card ->
             card.startCardFlip = false
         }
@@ -501,7 +493,6 @@ class CardScreen(game: ChangMemory) : AbstractScreen(game) {
     private fun doLevelCompleted() {
         log.debug { "doLevelCompleted() --> Level: ${controller.level}" }
 
-        // TODO: InfoList & AudioManager bei Gelegenheit auf echte Kotlin 'object' Singletons umstellen!
         InfoList.add("LEVEL COMPLETED!", size = InfoList.SIZE_L)
         AudioManager.add(levelCompleteSound)
     }
@@ -551,14 +542,11 @@ class CardScreen(game: ChangMemory) : AbstractScreen(game) {
     /**
      * Triggers the specialized lucky strike sequence once a blind match pair validates successfully.
      * Enqueues high-priority floating point announcements via [InfoList] and triggers audio feedback cues.
-     *
-     * @param firstCard The first matching [Card] actor selection.
-     * @param secondCard The second matching [Card] actor selection.
      */
-    private fun doLuckStrikeSet(firstCard: Card, secondCard: Card) { // Parameter sprechender benannt
+    private fun doLuckStrikeSet(firstCard: Card, secondCard: Card) {
         log.debug { "doLuckStrikeSet() -> Match: ${firstCard.cardName}" }
 
-        // TODO: InfoList & AudioManager bei Gelegenheit auf echte Kotlin 'object' Singletons umstellen!
+        // Texte für die Kreidetafel einreihen
         InfoList.add(firstCard.cardName, size = InfoList.SIZE_L, color = Color.RED)
         InfoList.add("+${firstCard.time + secondCard.time} sec", size = InfoList.SIZE_L)
         InfoList.add("+${firstCard.score + secondCard.score} POINTS", size = InfoList.SIZE_L)
@@ -568,7 +556,7 @@ class CardScreen(game: ChangMemory) : AbstractScreen(game) {
         InfoList.add("+100 EXTRA POINTS", size = InfoList.SIZE_L)
 
         firstCard.playCardSolvedSound()
-        AudioManager.play(luckyTrySound)
+        AudioManager.add(luckyTrySound)
     }
 
     /**
@@ -582,7 +570,6 @@ class CardScreen(game: ChangMemory) : AbstractScreen(game) {
     private fun doCardSolved(firstCard: Card, secondCard: Card) {
         log.debug { "doCardSolved() -> Match: ${firstCard.cardName}" }
 
-        // TODO: InfoList bei Gelegenheit auf ein echtes Kotlin 'object' Singleton umstellen!
         InfoList.add(firstCard.cardName, size = InfoList.SIZE_L)
 
         val timeIncrement = firstCard.time + secondCard.time

@@ -24,7 +24,7 @@ private constructor() : Game() {
         // Gdx.app.setLogLevel(Application.LOG_DEBUG);
         readyForStart = false
 
-        AchievementManager.instance.init()
+        AchievementManager.init()
         ScoreList.init()
         GamePreferences.instance.load()
 

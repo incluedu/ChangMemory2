@@ -46,7 +46,7 @@ class ScoreScreen(game: ChangMemory) : AbstractScreen(game) {
 
         ChangMemory.actionResolver?.setTrackerScreenName(TAG)
 
-        achList = AchievementManager.instance.getAchievements()
+        achList = AchievementManager.getAchievements()
 
         stage = Stage(
             StretchViewport(

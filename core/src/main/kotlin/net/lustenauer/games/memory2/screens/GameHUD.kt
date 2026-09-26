@@ -32,7 +32,6 @@ class GameHUD(
     private val lblLevel: Label
     private val lblScore: Label
     private val lblTimeLeft: FlashLabel
-    private val lblInfo: Label
 
     init {
         val hudLabelStyle = Label.LabelStyle().apply {
@@ -57,14 +56,9 @@ class GameHUD(
             setPosition(20f, 735f, Align.left)
         }
 
-        lblInfo = Label("Info:", infoLabelStyle).apply {
-            setPosition(5f, 30f, Align.left)
-        }
-
         hudStage.addActor(lblLevel)
         hudStage.addActor(lblScore)
         hudStage.addActor(lblTimeLeft)
-        hudStage.addActor(lblInfo)
     }
 
     /**
@@ -86,13 +80,6 @@ class GameHUD(
             lblTimeLeft.setColor(Color.WHITE)
         }
         lblTimeLeft.setText("TIME LEFT: ${timeLeft.toInt()}")
-
-        val musicPos = AudioManager.playingMusic?.position ?: 0.0f
-        lblInfo.setText(
-            "Music: $musicPos\n" +
-                "Count: ${ChangMemory.musicOnCompletionCounter}\n" +
-                "FPS:   ${Gdx.graphics.framesPerSecond}"
-        )
     }
 
     /**
