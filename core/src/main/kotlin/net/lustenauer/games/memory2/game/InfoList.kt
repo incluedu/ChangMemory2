@@ -10,25 +10,25 @@ import net.lustenauer.games.memory2.utils.Constants.Skins
 import com.badlogic.gdx.utils.Array as GdxArray
 
 /**
- * A singleton container that holds floating or flashing text elements (Labels).
+ * A native Kotlin singleton object container that holds floating or flashing text elements (Labels).
  * Collects message entries and compiles them into an animated, scrolling libGDX [Table] overlay.
  *
  * @author Patric Hollenstein
  */
-class InfoList private constructor() {
+object InfoList {
 
     /**
      * The internal collection holding all queued message [Actor] items before layout compilation.
      */
-    private val list = GdxArray<Actor?>()
+    private val list = GdxArray<Actor>()
 
     /**
      * Appends a new text message to the floating layout pool.
-     * Uses Kotlin default parameters to replace six heavily overloaded legacy Java methods.
+     * Uses Kotlin default parameters to replace multiple overloaded legacy method definitions.
      *
      * @param text The string characters to display inside the label.
      * @param flash If true, forces the label to cycle through an animated light/dark color loop.
-     * @param size The targeted font sizing constant from the [Companion] object.
+     * @param size The targeted font sizing constant from the constants block.
      * @param color The font base tinting structure. Overridden by [Color.WHITE] if flashing is active.
      */
     fun add(
@@ -52,8 +52,8 @@ class InfoList private constructor() {
         if (list.isEmpty) return null
 
         val table = Table().apply {
-            for (actor in list) {
-                add(actor).row()
+            for (i in 0 until list.size) {
+                add(list[i]).row()
             }
 
             pack()
@@ -88,14 +88,14 @@ class InfoList private constructor() {
         val baseColor = if (flash) Color.WHITE else (color ?: Color.WHITE)
 
         val styleName = when (size) {
-            SIZE_XS -> Skins.FONT_16
-            SIZE_S -> Skins.FONT_16
-            SIZE_M -> Skins.FONT_24
-            SIZE_L -> Skins.FONT_32
-            SIZE_XL -> Skins.FONT_48
-            SIZE_XXL -> Skins.FONT_56
+            SIZE_XS   -> Skins.FONT_16
+            SIZE_S    -> Skins.FONT_16
+            SIZE_M    -> Skins.FONT_24
+            SIZE_L    -> Skins.FONT_32
+            SIZE_XL   -> Skins.FONT_48
+            SIZE_XXL  -> Skins.FONT_56
             SIZE_XXXL -> Skins.FONT_72
-            else -> Skins.DEFAULT_FONT
+            else      -> Skins.DEFAULT_FONT
         }
 
         return Label(text, Assets.skinWindow, styleName, baseColor).apply {
@@ -112,24 +112,18 @@ class InfoList private constructor() {
         }
     }
 
-    companion object {
-        /**
-         * Floating speed constant determining how fast flash color changes loop.
-         */
-        private const val FLASHTIME = 0.4f
+    // =================
+    // CONSTANTS & SIZES
+    // =================
 
-        /**
-         * The central global singleton access node.
-         */
-        val instance = InfoList()
+    private const val FLASHTIME = 0.4f
 
-        const val SIZE_XS = 7000
-        const val SIZE_S = 7001
-        const val SIZE_M = 7002
-        const val SIZE_L = 7003
-        const val SIZE_XL = 7004
-        const val SIZE_XXL = 7005
-        const val SIZE_XXXL = 7006
-        private const val SIZE_DEFAULT = 0
-    }
+    const val SIZE_XS = 7000
+    const val SIZE_S = 7001
+    const val SIZE_M = 7002
+    const val SIZE_L = 7003
+    const val SIZE_XL = 7004
+    const val SIZE_XXL = 7005
+    const val SIZE_XXXL = 7006
+    private const val SIZE_DEFAULT = 0
 }

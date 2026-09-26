@@ -87,7 +87,7 @@ class GameHUD(
         }
         lblTimeLeft.setText("TIME LEFT: ${timeLeft.toInt()}")
 
-        val musicPos = AudioManager.instance.playingMusic?.position ?: 0.0f
+        val musicPos = AudioManager.playingMusic?.position ?: 0.0f
         lblInfo.setText(
             "Music: $musicPos\n" +
                 "Count: ${ChangMemory.musicOnCompletionCounter}\n" +

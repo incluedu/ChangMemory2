@@ -91,8 +91,8 @@ class GameController {
         levelCompleted = false
         level++
 
-        InfoList.instance.add("LEVEL $level", size = InfoList.SIZE_XL)
-        InfoList.instance.add("GET READY", flash = true, size = InfoList.SIZE_L)
+        InfoList.add("LEVEL $level", size = InfoList.SIZE_XL)
+        InfoList.add("GET READY", flash = true, size = InfoList.SIZE_L)
 
         gameSet = cardList.getCardGameSet(level)
         return gameSet
@@ -114,8 +114,8 @@ class GameController {
             timeLeft30Seconds = true
             playBeepSound()
 
-            InfoList.instance.add("WARNING", flash = true, size = InfoList.SIZE_XXXL)
-            InfoList.instance.add("30 SEC LEFT", size = InfoList.SIZE_XL, color = Color.RED)
+            InfoList.add("WARNING", flash = true, size = InfoList.SIZE_XXXL)
+            InfoList.add("30 SEC LEFT", size = InfoList.SIZE_XL, color = Color.RED)
         }
 
         if (timeLeft.toInt() <= 10) timeLeft10Seconds = true
@@ -183,8 +183,8 @@ class GameController {
                     if (levelCompleted) onLevelComplete()
                 } else {
                     if (firstCard.isScoreZero || secondCard.isScoreZero) {
-                        InfoList.instance.add("TO MANY TRY", size = InfoList.SIZE_L)
-                        InfoList.instance.add("-5 SEC", size = InfoList.SIZE_L)
+                        InfoList.add("TO MANY TRY", size = InfoList.SIZE_L)
+                        InfoList.add("-5 SEC", size = InfoList.SIZE_L)
                         onPlayToManySound()
                         timeLeft -= 5f
                     }
