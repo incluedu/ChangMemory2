@@ -1,37 +1,39 @@
 # ChangMemory2
 
-A [libGDX](https://libgdx.com/) project generated with [gdx-liftoff](https://github.com/libgdx/gdx-liftoff).
+A modern cross-platform memory card game built with [libGDX](https://libgdx.com/) and generated via [gdx-liftoff](https://github.com/libgdx/gdx-liftoff).
 
-A game I wrote in Java for my son in 2015 using Lib GDX. I've now updated it to the latest version of Lib GDX and converted it to Kotlin.
+## 📜 Story & Overview
+This game was originally written in Java for my son back in 2015 using LibGDX. To future-proof the codebase and leverage modern development standards, it has been fully updated to the latest LibGDX ecosystem and completely rewritten in **Kotlin** utilizing **LibKTX**.
 
-The code is open source, and if anyone is interested, they're welcome to help me with the game. 
+The project is completely **Open Source**. If you are interested in game development, Kotlin, or LibGDX, you are more than welcome to help me improve the game, add features, or optimize asset pipelines!
 
-## Platforms
+💬 **Want to see what's new?** Check out our latest updates in the [Changelog](CHANGELOG.md).
+
+## 🎮 Platforms
 
 - `core`: Main module with the application logic shared by all platforms.
-- `lwjgl3`: Primary desktop platform using LWJGL3; was called 'desktop' in older docs.
-- `android`: Android mobile platform. Needs Android SDK.
+- `lwjgl3`: Primary desktop platform using LWJGL3 (replaces the legacy 'desktop' module).
+- `android`: Android mobile platform layer (Requires Android SDK).
 
-## Gradle
+## 🛠️ Gradle Build Tool
 
-This project uses [Gradle](https://gradle.org/) to manage dependencies.
-The Gradle wrapper was included, so you can run Gradle tasks using `gradlew.bat` or `./gradlew` commands.
+This project uses [Gradle](https://gradle.org/) to manage dependencies and build targets.
+The Gradle wrapper is included, so you can execute tasks directly using `gradlew.bat` (Windows) or `./gradlew` (macOS / Linux) commands.
+
 Useful Gradle tasks and flags:
 
-- `--continue`: when using this flag, errors will not stop the tasks from running.
-- `--daemon`: thanks to this flag, Gradle daemon will be used to run chosen tasks.
-- `--offline`: when using this flag, cached dependency archives will be used.
-- `--refresh-dependencies`: this flag forces validation of all dependencies. Useful for snapshot versions.
-- `android:lint`: performs Android project validation.
-- `build`: builds sources and archives of every project.
-- `cleanEclipse`: removes Eclipse project data.
-- `cleanIdea`: removes IntelliJ project data.
-- `clean`: removes `build` folders, which store compiled classes and built archives.
-- `eclipse`: generates Eclipse project data.
-- `idea`: generates IntelliJ project data.
-- `lwjgl3:jar`: builds application's runnable jar, which can be found at `lwjgl3/build/libs`.
-- `lwjgl3:run`: starts the application.
-- `test`: runs unit tests (if any).
+- `--continue`: Errors will not stop execution; forces Gradle to run remaining independent tasks.
+- `--daemon`: Toggles the Gradle daemon to significantly accelerate subsequent build loops.
+- `--offline`: Forces the build compiler to use cached dependency archives without network calls.
+- `--refresh-dependencies`: Forces validation and re-download of all remote dependencies.
+- `android:lint`: Performs Android project structural validations.
+- `build`: Assembles sources, compiles binaries, and archives packages for every platform module.
+- `clean`: Removes all local `build` target folders to secure clean compilation passes.
+- `lwjgl3:jar`: Builds the application's standalone runnable JAR file (found at `lwjgl3/build/libs`).
+- `lwjgl3:run`: Automatically compiles and launches the desktop application frame.
+- `test`: Executes localized unit tests (if any are present).
 
-Note that most tasks that are not specific to a single project can be run with `name:` prefix, where the `name` should be replaced with the ID of a specific project.
-For example, `core:clean` removes `build` folder only from the `core` project.
+> **Note:** Tasks that are not bound to a specific subproject can be executed with a `name:` prefix. For example, `core:clean` safely clears build artifacts exclusively for the shared core engine module.
+
+## ⚖️ License
+This project is open-source software licensed under the **MIT License**. See the [LICENSE](LICENSE) file for the full copyright and permission notice.
