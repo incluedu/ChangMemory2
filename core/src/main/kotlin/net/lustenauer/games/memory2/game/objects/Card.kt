@@ -116,7 +116,7 @@ class Card(private val assetNumber: Int) : Actor() {
         cardIsFlipping = true
 
         if (cardIsOnBack) {
-            AudioManager.instance.add(flipSound)
+            AudioManager.add(flipSound)
             addAction(Actions.sequence(Actions.scaleTo(0.0f, 1f, .15f), Actions.scaleTo(-1f, 1f, .25f)))
         }
         if (cardIsOnFront) {
@@ -143,7 +143,7 @@ class Card(private val assetNumber: Int) : Actor() {
      */
     fun playCardSolvedSound() {
         val sound = cardSolvedSound ?: cardSolvedDefaultSound
-        AudioManager.instance.add(sound)
+        AudioManager.add(sound)
         Gdx.app.debug(TAG, "$cardName: Play solved sound")
     }
 

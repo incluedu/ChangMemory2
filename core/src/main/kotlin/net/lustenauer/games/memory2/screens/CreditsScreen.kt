@@ -134,15 +134,15 @@ class CreditsScreen(game: ChangMemory) : AbstractScreen(game) {
     private fun buildLayerLogo(): Table {
         val layer = Table()
 
-        val lblTitle = Label("CHANG MEMORY", skinWindow, "font48", Color.YELLOW)
+        val lblTitle = Label("CHANG MEMORY II", skinWindow, "font48", Color.YELLOW)
         lblTitle.setPosition((Viewport.GUI_WIDTH - lblTitle.width) / 2, 710f)
         layer.addActor(lblTitle)
 
-        val lblCopyright = Label("(c) 2015 BY Lustenauer Net", skinWindow, "font24", Color.YELLOW)
+        val lblCopyright = Label("(c) 2015 - 2026 BY lustenauer.net", skinWindow, "font24", Color.YELLOW)
         lblCopyright.setPosition((Viewport.GUI_WIDTH - lblCopyright.width) / 2, 670f)
         layer.addActor(lblCopyright)
 
-        val versionText = ChangMemory.actionResolver?.appVersion ?: "1.0-Desktop"
+        val versionText = ChangMemory.actionResolver?.appVersion ?: "2.0-Desktop"
         val lblVersion = Label("Version $versionText", skinWindow, "font12", Color.WHITE)
         lblVersion.setPosition(10f, 780f)
         layer.addActor(lblVersion)

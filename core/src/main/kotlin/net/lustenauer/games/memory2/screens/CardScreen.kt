@@ -1,11 +1,10 @@
 package net.lustenauer.games.memory2.screens
 
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.Gdx.app
 import com.badlogic.gdx.Input
 import com.badlogic.gdx.Input.Keys.BACK
 import com.badlogic.gdx.graphics.Color
-import com.badlogic.gdx.graphics.GL20
-import com.badlogic.gdx.graphics.g2d.TextureAtlas
 import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.actions.Actions.moveTo
@@ -27,8 +26,6 @@ import net.lustenauer.games.memory2.game.windows.WindowPause
 import net.lustenauer.games.memory2.utils.AchievementEntry
 import net.lustenauer.games.memory2.utils.AchievementManager
 import net.lustenauer.games.memory2.utils.AudioManager
-import net.lustenauer.games.memory2.utils.Constants.Atlas
-import net.lustenauer.games.memory2.utils.Constants.SkinConfig
 import net.lustenauer.games.memory2.utils.Constants.Skins.BACKGROUND_4
 import net.lustenauer.games.memory2.utils.Constants.Viewport
 import net.lustenauer.gdx.scenes.scene2d.Command.Companion.CMD_MENU
@@ -44,13 +41,15 @@ import com.badlogic.gdx.utils.Array as GdxArray
  * layout calculations, score logic, visual announcements, game timer streams,
  * multi-stage overlays, and user interaction states.
  *
- * @param game The main execution game instance configuration wrapper.
+ * @param game The main execution game instance configuration wrapper passed to the base [AbstractScreen].
  * @author Patric Hollenstein
  */
 class CardScreen(game: ChangMemory) : AbstractScreen(game) {
+
     private val log = logger<CardScreen>()
 
     private val controller = GameController()
+
     private lateinit var hud: GameHUD
     private lateinit var btnPause: Button
     private lateinit var windowGameOver: WindowGameOver
@@ -66,17 +65,19 @@ class CardScreen(game: ChangMemory) : AbstractScreen(game) {
     private lateinit var levelCompleteSound: AssetSound
     private lateinit var luckyTrySound: AssetSound
 
-    private var gameSet = GdxArray<Card>()
     private lateinit var achList: GdxArray<AchievementEntry>
 
-    private var level = 0
     private var minActorCount = 0
-    private var gameOver = false
     private var gamePaused = false
     private var screenPaused = false
     private var settingsScreenShow = false
     private var scoresScreenShow = false
 
+    /**
+     * Triggered once this screen context becomes the active visibility layer inside the game loop.
+     * Calibrates analytics trackers via [ChangMemory.actionResolver], captures the hardware back button,
+     * activates background audio streams via [AudioManager], and triggers the core [init] sequence.
+     */
     override fun show() {
         log.debug { "show()" }
         ChangMemory.actionResolver?.setTrackerScreenName(CardScreen::class.java.name)
@@ -84,18 +85,19 @@ class CardScreen(game: ChangMemory) : AbstractScreen(game) {
         Gdx.input.setCatchKey(BACK, true)
 
         achList = AchievementManager.instance.getAchievements()
-        AudioManager.instance.playMusic()
+        AudioManager.playMusic()
         init()
     }
 
-    override fun render(deltaTime: Float) {
-        super.render(deltaTime)
+    /**
+     * Core frame rendering cycle execution block.
+     * Clears the graphics buffer and updates active stage behaviors chronologically.
+     */
+    override fun render(delta: Float) {
+        ktx.app.clearScreen(100f / 255f, 149f / 255f, 237f / 255f, 1f)
 
-        Gdx.gl.glClearColor(0x64 / 255.0f, 0x95 / 255.0f, 0xed / 255.0f, 0xff / 255.0f)
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
-
-        if (!screenPaused) hudStage.act(deltaTime)
-        update(deltaTime)
+        if (!screenPaused) hudStage.act(delta)
+        update(delta)
 
         hud.update(controller.level, controller.score, controller.timeLeft, controller.timeLeft30Seconds)
 
@@ -103,6 +105,11 @@ class CardScreen(game: ChangMemory) : AbstractScreen(game) {
         hudStage.draw()
     }
 
+    /**
+     * Standard sizing layout conversion hook triggered upon viewport scale transitions.
+     * Updates both the primary card game [stage] and the [hudStage] viewports,
+     * centering the cameras automatically to maintain perfect aspect ratios.
+     */
     override fun resize(width: Int, height: Int) {
         log.debug { "CardScreen resize to $width, $height" }
 
@@ -110,34 +117,48 @@ class CardScreen(game: ChangMemory) : AbstractScreen(game) {
         hudStage.viewport.update(width, height, true)
     }
 
+    /**
+     * Invoked when the screen context minimizes or visibility focus breaks.
+     * Safely freezes the rendering loop by setting [screenPaused] to true
+     * and suspends active audio playback via the audio manager.
+     */
     override fun pause() {
         log.debug { "CardScreen paused" }
         screenPaused = true
-        AudioManager.instance.pauseMusic()
+        AudioManager.pauseMusic()
     }
 
+    /**
+     * Triggered once active visibility layers swap away inside the central switch engine.
+     * Suspends music streams and safely flags transition benchmarks.
+     */
     override fun hide() {
         log.debug { "CardScreen hide" }
+
         if (!settingsScreenShow && !scoresScreenShow) {
-            stage.dispose()
-            hudStage.dispose()
+            AudioManager.pauseMusic()
         }
     }
 
+    /**
+     * Synchronizes the screen session upon application resume states.
+     * Safely triggers music playback via [AudioManager] and restores rendering ticks
+     * unless the [windowPause] overlay layer is actively blocking focus.
+     */
     override fun resume() {
         super.resume()
         log.debug { "CardScreen resume after Pause" }
-        screenPaused = false
-        AudioManager.instance.playMusic()
+
+        if (!windowPause.isVisible) {
+            screenPaused = false
+            AudioManager.playMusic()
+        }
     }
-
-    /* GETTER AND SETTER */ /* ================= */
-
-    /* PRIVATE METHODS */ /* ================ */
 
     /**
      * Constructs a fresh card game set configuration layout matrix matching the newly incremented difficulty scale index.
-     * Injects flashing announcement overlays and randomizes geometric actor alignments.
+     * Clears the active [stage], spawns the background, and randomizes geometric actor alignments.
+     * Re-links interactive overlays via [initButtonPause] and [initWindowPause].
      */
     private fun buildCardSet() {
         val imgBackground = Image(skinWindow, BACKGROUND_4)
@@ -147,11 +168,10 @@ class CardScreen(game: ChangMemory) : AbstractScreen(game) {
 
         val currentSet = controller.startNextLevel()
 
-        for (card in currentSet) {
+        currentSet.forEach { card ->
             card.loadAllSounds()
 
-            val randomRotation = (MathUtils.random() * 6f) - 3f
-            card.rotation = randomRotation
+            card.rotation = (MathUtils.random() * 6f) - 3f
             stage.addActor(card)
         }
 
@@ -166,9 +186,15 @@ class CardScreen(game: ChangMemory) : AbstractScreen(game) {
         AchievementManager.instance.checkAchievementsLevel(controller.level)
         log.debug { "--> Start level ${controller.level}" }
 
+        // Input-Fokus sicher auf das Spielfeld übertragen
         Gdx.input.inputProcessor = stage
     }
 
+    /**
+     * Orchestrates the primary initialisation and entry routing for the screen session.
+     * Prevents destructive resource rebuilds if navigating back from child overlays,
+     * calibrates the global input focus via an `if`-expression, and resets navigation flags.
+     */
     private fun init() {
         if (!settingsScreenShow && !scoresScreenShow) {
             initSounds()
@@ -182,19 +208,15 @@ class CardScreen(game: ChangMemory) : AbstractScreen(game) {
             buildCardSet()
         }
 
-        if (scoresScreenShow) {
-            Gdx.input.inputProcessor = hudStage
-        } else {
-            Gdx.input.inputProcessor = stage
-        }
+        Gdx.input.inputProcessor = if (scoresScreenShow) hudStage else stage
 
         settingsScreenShow = false
         scoresScreenShow = false
     }
 
     /**
-     * Initializes the interactive pause button, positions it in the upper-right UI corner,
-     * and attaches a modern, safe KTX click listener to trigger the game suspension state.
+     * Initializes the interactive [Button] pause play toggle, positions it in the upper-right UI corner,
+     * and attaches a modern, safe KTX click listener via [onClick] to trigger the game suspension state.
      */
     private fun initButtonPause() {
         btnPause = Button(skinWindow, "pausePlay").apply {
@@ -206,14 +228,14 @@ class CardScreen(game: ChangMemory) : AbstractScreen(game) {
     }
 
     /**
-     * Resets all session metrics back to defaults before a fresh campaign starts.
+     * Resets all active session metrics back to defaults via the [controller] before a fresh campaign starts.
      */
     private fun initFields() {
         controller.resetFields()
     }
 
     /**
-     * Initializes the [WindowGameOver] container layer.
+     * Initializes the [WindowGameOver] overlay container layer and registers its interactive UI command routing.
      */
     private fun initWindowGameOver() {
         log.debug { "initWindowGameOver" }
@@ -221,30 +243,34 @@ class CardScreen(game: ChangMemory) : AbstractScreen(game) {
         windowGameOver = WindowGameOver(CommandListener { event ->
             when (event?.command) {
                 CMD_RESTART -> doGameRestart()
-                CMD_MENU    -> doShowMenuScreen()
-                CMD_SCORE   -> doShowScoreScreen()
+                CMD_MENU -> doShowMenuScreen()
+                CMD_SCORE -> doShowScoreScreen()
             }
         })
         hudStage.addActor(windowGameOver)
     }
 
     /**
-     * Initializes the [WindowPause] container layer.
+     * Initializes the [WindowPause] overlay container layer and registers its interactive UI command routing.
      */
     private fun initWindowPause() {
         log.debug { "initWindowPause" }
 
         windowPause = WindowPause(CommandListener { event ->
             when (event?.command) {
-                CMD_RESTART  -> doGameRestart()
-                CMD_MENU     -> doShowMenuScreen()
+                CMD_RESTART -> doGameRestart()
+                CMD_MENU -> doShowMenuScreen()
                 CMD_SETTINGS -> doShowSettingsScreen()
-                CMD_RESUME   -> doGameResume()
+                CMD_RESUME -> doGameResume()
             }
         })
         stage.addActor(windowPause)
     }
 
+    /**
+     * Binds the necessary audio tracking clips by fetching pre-configured
+     * [AssetSound] references directly from the global [Assets] ecosystem.
+     */
     private fun initSounds() {
         beepSound = Assets.beepSound
         gameOverSound = Assets.gameOverSound
@@ -252,20 +278,18 @@ class CardScreen(game: ChangMemory) : AbstractScreen(game) {
         levelCompleteSound = Assets.levelComplSound
         toManyTrySound = Assets.toManyTrySound
 
-        beepSound.loadSound()
-        gameOverSound.loadSound()
-        luckyTrySound.loadSound()
-        levelCompleteSound.loadSound()
-        toManyTrySound.loadSound()
     }
 
+    /**
+     * Initializes the core visual architecture of the screen session.
+     * Binds pre-loaded skin templates from [Assets], orchestrates the primary game [stage],
+     * initializes responsive viewports, and links the graphical [GameHUD] infrastructure.
+     */
     private fun initStage() {
-        skinWindow = Skin(
-            Gdx.files.internal(SkinConfig.WINDOW),
-            TextureAtlas(Atlas.WINDOWS)
-        )
+        skinWindow = Assets.skinWindow
 
         stage = Stage(StretchViewport(Viewport.CARD_WIDTH, Viewport.CARD_HEIGHT))
+
         stack = Stack().apply {
             setSize(Viewport.GUI_WIDTH, Viewport.GUI_HEIGHT)
         }
@@ -275,47 +299,68 @@ class CardScreen(game: ChangMemory) : AbstractScreen(game) {
         hud = GameHUD(hudStage, skinWindow)
     }
 
-    private fun update(deltaTime: Float) {
+    /**
+     * Updates the underlying game board simulations and tick streams.
+     * Blocks execution loops if physical pause flags evaluate to true.
+     */
+    private fun update(delta: Float) {
         if (!screenPaused && !gamePaused) {
-            stage.act(deltaTime)
+            stage.act(delta)
 
-            updateTime(deltaTime)
-            InfoList.instance.addInfoTable(hudStage)
+            updateTime(delta)
+
+            // TODO: InfoList bei Gelegenheit auf ein echtes Kotlin 'object' umstellen!
+            InfoList.addInfoTable(hudStage)
 
             updateFlipCard()
             updateLevelCompleted()
             updateVisibleCards()
 
-            AudioManager.instance.update(deltaTime)
+            AudioManager.update(delta)
         }
         updateInputs()
     }
 
     /**
-     * This method check all the cards in the cardSet. When a card is found where it is necessary to flip to front then
-     * the card will flip to front and will add to the list off visibleCards.
+     * Iterates through the active card set to process user flip requests.
+     * Triggers animation sequences and increments tracking counters once selections pass verification.
      * Delegates all state properties directly to the backend [controller].
      */
     private fun updateFlipCard() {
-        for (card in controller.gameSet) {
-            if (card.startCardFlip && controller.visibleCards.size < 2) {
-                card.flipCard()
-                controller.visibleCards.add(card)
-                controller.cardFlipCount++
+        controller.gameSet.forEach { card ->
+            if (card.startCardFlip) {
+                if (controller.visibleCards.size < 2) {
+                    card.flipCard()
+                    controller.visibleCards.add(card)
+                    controller.cardFlipCount++
+                } else {
+                    card.startCardFlip = false
+                }
             }
         }
     }
 
+    /**
+     * Polls and processes hardware input actions like the Escape key or Android Back button.
+     * Manages overlay state transitions safely without bypassing interactive windows.
+     */
     private fun updateInputs() {
-        if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE) || Gdx.input.isKeyJustPressed(BACK)) {
-            if (gameOver || gamePaused) doShowMenuScreen()
-            else doGamePause()
+        val backOrEscapePressed = Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE) ||
+            Gdx.input.isKeyJustPressed(BACK)
+
+        if (backOrEscapePressed) {
+            if (!gamePaused && !controller.gameOver) {
+                doGamePause()
+            } else if (gamePaused && !controller.gameOver) {
+                doGameResume()
+            }
         }
     }
 
     /**
-     * Monitors the level completion status.
-     * Waits for all active info pooling elements to fade out before generating the next world stage.
+     * Monitors the level completion status inside the execution loop.
+     * Waits for all active info pooling elements to fade out (until the actor count matches [minActorCount])
+     * before triggering the generation of the next world stage via [buildCardSet].
      */
     private fun updateLevelCompleted() {
         if (controller.levelCompleted && hudStage.actors.size == minActorCount) {
@@ -325,43 +370,52 @@ class CardScreen(game: ChangMemory) : AbstractScreen(game) {
 
     /**
      * Executes chronological time subtractions on the remaining match countdown.
-     * Triggers warnings if limits break critical milestones.
+     * Triggers [doGameOver] once limits break or plays a warning sound via [beepSound].
      */
-    fun updateTime(deltaTime: Float) {
+    fun updateTime(delta: Float) {
         controller.updateTime(
-            deltaTime = deltaTime,
+            deltaTime = delta,
             onGameOverTrigger = { doGameOver() },
-            playBeepSound = { AudioManager.instance.play(beepSound) }
+            playBeepSound = { AudioManager.play(beepSound) }
         )
     }
 
     /**
      * Checks if the currently selected cards match a pair.
-     * Delegates full mathematical validation back to the [controller].
+     * Delegates state and match validation back to the [controller].
+     * Triggers localized audio feedback or routes state shifts via [doCardSolved] and [doLevelCompleted].
      */
     private fun updateVisibleCards() {
         controller.processVisibleCards(
-            onPlayToManySound = { AudioManager.instance.play(toManyTrySound) },
+            onPlayToManySound = { AudioManager.play(toManyTrySound) },
             onLuckyStrike = { cardA, cardB -> doLuckStrikeSet(cardA, cardB) },
             onSolved = { cardA, cardB -> doCardSolved(cardA, cardB) },
             onLevelComplete = { doLevelCompleted() }
         )
     }
 
-    /* HANDLER */
 
+    /**
+     * Triggers the final game over state sequence.
+     * Freezes game loops, animates the statistics panel container overlay onto the viewport,
+     * tracks unlocked achievements, and submits records to leaderboards.
+     */
     private fun doGameOver() {
         log.debug { "doGameOver()" }
         if (controller.gameOver) return
 
         controller.gameOver = true
-        InfoList.instance.add("GAME OVER", flash = true, size = InfoList.SIZE_XXXL)
-        AudioManager.instance.add(gameOverSound)
+
+        // TODO: InfoList & AudioManager bei Gelegenheit auf echte Kotlin 'object' Singletons umstellen!
+        InfoList.add("GAME OVER", flash = true, size = InfoList.SIZE_XXXL)
+        AudioManager.add(gameOverSound)
 
         windowGameOver.apply {
             isVisible = true
             setPosition(40f, -200f)
+
             addAction(moveTo(40f, 320f, 3f))
+
             setScore(controller.score)
             setTime(controller.totalTime)
             setCardFlipCount(controller.cardFlipCount)
@@ -378,6 +432,11 @@ class CardScreen(game: ChangMemory) : AbstractScreen(game) {
         }
     }
 
+    /**
+     * Toggles the active gameplay suspension state.
+     * Activates the [windowPause] overlay layer if running, or delegates
+     * execution back to [doGameResume] if the match is already suspended.
+     */
     private fun doGamePause() {
         log.debug { "doGamePause()" }
         if (!gamePaused) {
@@ -388,6 +447,12 @@ class CardScreen(game: ChangMemory) : AbstractScreen(game) {
         }
     }
 
+    /**
+     * Executes an atomic match reset routine.
+     * Submits outstanding scores, hides all active overlay windows,
+     * and posts a synchronous thread task via `Gdx.app.postRunnable`
+     * to safely clear layout fields and rebuild a fresh card matrix.
+     */
     private fun doGameRestart() {
         log.debug { "doGameRestart()" }
 
@@ -401,17 +466,17 @@ class CardScreen(game: ChangMemory) : AbstractScreen(game) {
         gamePaused = false
         controller.gamePaused = false
 
-        Gdx.app.postRunnable {
+        app.postRunnable {
             initFields()
             buildCardSet()
-            AudioManager.instance.playMusic()
+            AudioManager.playMusic()
         }
     }
 
     /**
-     * Resumes the active gameplay session. Hides the pause overlay menu,
-     * resets the visual state of the interactive pause button, and restarts
-     * the background music stream.
+     * Resumes the active gameplay session.
+     * Hides the [windowPause] overlay menu, resets the visual state of the interactive
+     * [btnPause] button, and restarts the background music stream.
      */
     private fun doGameResume() {
         log.debug { "doGameResume()" }
@@ -420,24 +485,38 @@ class CardScreen(game: ChangMemory) : AbstractScreen(game) {
         btnPause.isChecked = false
         gamePaused = false
 
-        AudioManager.instance.playMusic()
+        // TODO: AudioManager bei Gelegenheit auf ein echtes Kotlin 'object' umstellen!
+        AudioManager.playMusic()
 
-        gameSet.forEach { it.startCardFlip = false }
+        controller.gameSet.forEach { card ->
+            card.startCardFlip = false
+        }
+    }
+
+
+    /**
+     * Triggers the level completed state sequence.
+     * Displays a floating announcement via [InfoList] and plays the victory jingle via the audio manager.
+     */
+    private fun doLevelCompleted() {
+        log.debug { "doLevelCompleted() --> Level: ${controller.level}" }
+
+        // TODO: InfoList & AudioManager bei Gelegenheit auf echte Kotlin 'object' Singletons umstellen!
+        InfoList.add("LEVEL COMPLETED!", size = InfoList.SIZE_L)
+        AudioManager.add(levelCompleteSound)
     }
 
     /**
-     * Triggers the level completed state. Displays a floating announcement
-     * on the screen and plays the victory jingle via the audio manager.
+     * Navigates the player back to the main menu screen container.
+     * Ensures any outstanding active session records are safely submitted to leaderboards
+     * before swapping the visibility focus via [ChangMemory.menuScreen].
      */
-    private fun doLevelCompleted() {
-        log.debug { "doLevelCompleted() --> Level: $level" }
-        InfoList.instance.add("LEVEL COMPLETED!", size = InfoList.SIZE_L)
-        AudioManager.instance.add(levelCompleteSound)
-    }
-
-    fun doShowMenuScreen() {
+    private fun doShowMenuScreen() {
         log.debug { "doShowMenuScreen()" }
-        if (!controller.scoreSubmit) controller.submitScore()
+
+        if (!controller.scoreSubmit) {
+            controller.submitScore()
+        }
 
         gamePaused = false
         controller.gamePaused = false
@@ -445,46 +524,78 @@ class CardScreen(game: ChangMemory) : AbstractScreen(game) {
         game.setScreen(ChangMemory.menuScreen)
     }
 
-    fun doShowSettingsScreen() {
+    /**
+     * Navigates the player to the settings configuration panel overlay.
+     * Caches the current screen context inside [ChangMemory.prevScreen] to secure
+     * frictionless backward navigation routing.
+     */
+    private fun doShowSettingsScreen() {
         log.debug { "doShowSettingsScreen()" }
         settingsScreenShow = true
         ChangMemory.prevScreen = this
         game.setScreen(ChangMemory.settingsScreen)
     }
 
+    /**
+     * Navigates the player to the highscore leaderboard overlay screen.
+     * Caches the current screen context inside [ChangMemory.prevScreen] to secure
+     * frictionless backward navigation routing.
+     */
     private fun doShowScoreScreen() {
-        scoresScreenShow = true
         log.debug { "doShowScoreScreen()" }
+        scoresScreenShow = true
         ChangMemory.prevScreen = this
         game.setScreen(ChangMemory.scoreScreen)
     }
 
-    private fun doLuckStrikeSet(a: Card, b: Card) {
-        log.debug { "doLuckStrikeSet()" }
+    /**
+     * Triggers the specialized lucky strike sequence once a blind match pair validates successfully.
+     * Enqueues high-priority floating point announcements via [InfoList] and triggers audio feedback cues.
+     *
+     * @param firstCard The first matching [Card] actor selection.
+     * @param secondCard The second matching [Card] actor selection.
+     */
+    private fun doLuckStrikeSet(firstCard: Card, secondCard: Card) { // Parameter sprechender benannt
+        log.debug { "doLuckStrikeSet() -> Match: ${firstCard.cardName}" }
 
-        InfoList.instance.add(a.cardName, size = InfoList.SIZE_L, color = Color.RED)
-        InfoList.instance.add("+${a.time + b.time} sec", size = InfoList.SIZE_L)
-        InfoList.instance.add("+${a.score + b.score} POINTS", size = InfoList.SIZE_L)
-        InfoList.instance.add("")
+        // TODO: InfoList & AudioManager bei Gelegenheit auf echte Kotlin 'object' Singletons umstellen!
+        InfoList.add(firstCard.cardName, size = InfoList.SIZE_L, color = Color.RED)
+        InfoList.add("+${firstCard.time + secondCard.time} sec", size = InfoList.SIZE_L)
+        InfoList.add("+${firstCard.score + secondCard.score} POINTS", size = InfoList.SIZE_L)
+        InfoList.add("")
 
-        InfoList.instance.add("LUCKY TRY!", flash = true, size = InfoList.SIZE_XL)
-        InfoList.instance.add("+100 EXTRA POINTS", size = InfoList.SIZE_L)
+        InfoList.add("LUCKY TRY!", flash = true, size = InfoList.SIZE_XL)
+        InfoList.add("+100 EXTRA POINTS", size = InfoList.SIZE_L)
 
-        a.playCardSolvedSound()
-        AudioManager.instance.play(luckyTrySound)
+        firstCard.playCardSolvedSound()
+        AudioManager.play(luckyTrySound)
     }
 
-    private fun doCardSolved(a: Card, b: Card) {
-        log.debug { "doCardSolved()" }
+    /**
+     * Processes standard successful card match sequences.
+     * Computes incremental stat bonuses and enqueues corresponding floating text
+     * overlays via [InfoList] before triggering victory audio cues.
+     *
+     * @param firstCard The first matching [Card] actor selection.
+     * @param secondCard The second matching [Card] actor selection.
+     */
+    private fun doCardSolved(firstCard: Card, secondCard: Card) {
+        log.debug { "doCardSolved() -> Match: ${firstCard.cardName}" }
 
-        InfoList.instance.add(a.cardName, size = InfoList.SIZE_L)
+        // TODO: InfoList bei Gelegenheit auf ein echtes Kotlin 'object' Singleton umstellen!
+        InfoList.add(firstCard.cardName, size = InfoList.SIZE_L)
 
-        val ti = a.time + b.time
-        if (ti >= 1) InfoList.instance.add("+$ti sec", size = InfoList.SIZE_L)
+        val timeIncrement = firstCard.time + secondCard.time
+        if (timeIncrement >= 1) {
+            InfoList.add("+$timeIncrement sec", size = InfoList.SIZE_L)
+        }
 
-        val sc = a.score + b.score
-        if (sc > 0) InfoList.instance.add("+$sc POINTS", size = InfoList.SIZE_L)
+        val scoreIncrement = firstCard.score + secondCard.score
+        if (scoreIncrement > 0) {
+            InfoList.add("+$scoreIncrement POINTS", size = InfoList.SIZE_L)
+        }
 
-        a.playCardSolvedSound()
+        firstCard.playCardSolvedSound()
     }
+
 }

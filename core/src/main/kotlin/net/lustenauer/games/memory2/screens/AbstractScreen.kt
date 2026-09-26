@@ -1,29 +1,38 @@
 package net.lustenauer.games.memory2.screens
 
-import com.badlogic.gdx.Game
 import com.badlogic.gdx.Screen
+import ktx.log.logger
 import net.lustenauer.games.memory2.ChangMemory
 import net.lustenauer.games.memory2.game.Assets
-import com.badlogic.gdx.Gdx
 
+/**
+ * A standardized abstract base implementation of the LibGDX [Screen] interface.
+ * Coordinates global game reference bindings, asset synchronization routines,
+ * and unified lifecycle tracking.
+ *
+ * @property game The central game coordinator instance mapping screen switches.
+ * @author Patric Hollenstein
+ */
 abstract class AbstractScreen(protected val game: ChangMemory) : Screen {
 
-    abstract override fun show()
-    abstract override fun resize(width: Int, height: Int)
-    abstract override fun pause()
-    abstract override fun hide()
+    private val log = logger<AbstractScreen>()
 
-    /* PUBLIC METHODS */ /* =============== */
+    /**
+     * Synchronizes the underlying asset management engine updates upon application resume states.
+     * Blocks thread execution strictly until queue updates resolve successfully.
+     */
     override fun resume() {
-        while (!Assets.manager.update()) {
-            Gdx.app.debug(this.javaClass.getName(), "Asset manager is updating ....")
-        }
+        log.debug { "Resuming screen context [${javaClass.simpleName}] -> Synchronizing asset manager pipeline..." }
+        Assets.manager.finishLoading()
     }
 
-    override fun render(deltaTime: Float) {
-    }
-
+    /**
+     * Releases active layout allocations owned by individual instances.
+     *
+     * NOTE: Global [Assets] resource teardowns are explicitly banned here to prevent
+     * severe reference destruction during screen transition cycles.
+     */
     override fun dispose() {
-        Assets.dispose()
+        log.debug { "Disposing screen context allocations for [${javaClass.simpleName}]..." }
     }
 }

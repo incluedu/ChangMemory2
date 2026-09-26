@@ -132,7 +132,7 @@ class SettingsScreen(game: ChangMemory) : AbstractScreen(game) {
         val layer = Table()
 
         var lbl = Label(
-            "CHANG MEMORY",
+            "CHANG MEMORY II",
             skinWindow,
             "font48",
             Color.YELLOW
@@ -141,7 +141,7 @@ class SettingsScreen(game: ChangMemory) : AbstractScreen(game) {
         layer.addActor(lbl)
 
         lbl = Label(
-            "(c) 2015 BY Lustenauer Net",
+            "(c) 2015 - 2026 BY lustenauer.net",
             skinWindow,
             "font24",
             Color.YELLOW
@@ -236,7 +236,7 @@ class SettingsScreen(game: ChangMemory) : AbstractScreen(game) {
             GamePreferences.instance.volMusic = sldMusic.value
             GamePreferences.instance.volSound = sldSound.value
 
-            AudioManager.instance.onSettingsUpdated()
+            AudioManager.onSettingsUpdated()
 
             lblMusicPercent!!.setText((sldMusic.value * 100).toInt().toString() + "%")
             lblSoundPercent!!.setText((sldSound.value * 100).toInt().toString() + "%")

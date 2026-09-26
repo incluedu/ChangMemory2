@@ -24,6 +24,9 @@ All notable changes and version milestones of this project will be documented in
 * `[+]` Refactored interactive game buttons (`BtnBack`, Google Play services UI) into minimalist, crash-safe KTX **`onClick`** lambda listeners.
 * `[+]` Cleaned up and modularized complex layout containers (`WindowGameOver`, `WindowPause`) using specialized Kotlin scope functions (`.apply`) and localized string constants.
 * `[+]` Fully overhauled the global asset management (`Assets.kt` & `AssetCard.kt`), implementing type-safe generic resource loading (`manager.load<T>`), automated array disposers (`cardAssetList.dispose`), and central companion object configurations for all game sounds.
+* `[+]` Converted `AudioManager` and `InfoList` into native Kotlin **`object`** singletons, completely eradicating legacy Java `.instance` boilerplate and private constructor wrappers.
+* `[+]` Modernized background music loading by swapping the old Java utility framework randomizers with highly efficient, zero-allocation native Kotlin **`Random.nextInt()`** loops.
+* `[+]` Implemented formal, rich KDoc documentation with strict Markdown backtick syntax configurations to protect IDE symbol expansion compilers from crashing on reserved keywords.
 
 ### Changed
 * `[c]` Rebranded the project from *ChangMemory* to **ChangMemory II**.
@@ -32,6 +35,8 @@ All notable changes and version milestones of this project will be documented in
 * `[c]` Transformed `Assets` and `ScoreList` into native, robust Kotlin **`object`** singletons, removing the legacy `.instance` boilerplate.
 * `[c]` Refactored the leaderboard rendering (`scorePane`) into a declarative, responsive UI layout via **KTX Scene2D DSL**.
 * `[c]` Migrated legacy `Gdx.app.debug` statements inside asset classes and core handlers to zero-allocation **`ktx-log`** inline lambdas.
+* `[c]` Decoupled `SoundListObject` from its heavy parent singleton scope by stripping the redundant **`inner`** modifier, transforming it into a lightweight, standalone Kotlin **`data class`** to drastically reduce garbage collection overhead on mobile architectures.
+* `[c]` Unified input processor polling hooks across the frame initialization stream by utilizing flat, expression-based Kotlin `if-else` return pipelines.
 
 ### Fixed
 * `[f]` Fixed a critical runtime crash on the score screen where an unresolved `LabelStyle` identifier name (`font16`) caused skin deployment crashes; fixed by binding directly to the default chalkboard typography font context.
@@ -40,6 +45,9 @@ All notable changes and version milestones of this project will be documented in
 * `[f]` Resolved critical input crashes by synchronizing `stage.clear()` execution order to fire strictly before fresh asset deployment.
 * `[f]` Fixed a game statistics bug where the final count of solved cards incorrectly displayed as `0` on the Game Over screen due to a premature variable reset during level advancements. This was resolved by tracking a new persistent `totalCardSetSolvedCount` in the `GameController`.
 * `[c]` Consolidated state reset routines by removing redundant `prepareManualRestart` hooks in favor of atomic, unified variable clearing.
+* `[f]` Fixed a dangerous hidden logic bug in `AudioManager.update()` where a bitwise **`and`** operator was erroneously used instead of a proper short-circuit logical **`&&`** evaluation during frame queue checks.
+* `[f]` Fixed a critical Java-Base module restriction failure (`Symbol is declared in module java.base which does not export package...`) caused by accidental IDE auto-imports of internal JDK system drivers (`BMPSet.BACK`). All inputs now reference explicit LibGDX key registers (`com.badlogic.gdx.Input.Keys`).
+* `[f]` Fixed a core user experience flow oversight in `CardScreen.resume()` where minimizing or interrupting the application background layer forced gameplay to continue instantly even if the player had manually locked focus inside the modal pause window overlay.
 
 ---
 

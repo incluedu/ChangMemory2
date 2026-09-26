@@ -69,7 +69,7 @@ private constructor() : Game() {
         Gdx.app.debug(TAG, "dispose()")
         ScoreList.save()
         GamePreferences.instance.save()
-        AudioManager.instance.stopMusic()
+        AudioManager.stopMusic()
         super.dispose()
         _instance = null
     }
@@ -78,9 +78,9 @@ private constructor() : Game() {
      * Play the background sound
      */
     private fun initMusicLoop() {
-        if (AudioManager.instance.hasMusic()) return
+        if (AudioManager.hasMusic()) return
         Gdx.app.debug("AbstractScreen", "initMusicLoop()")
-        AudioManager.instance.startRandomMusic()
+        AudioManager.startRandomMusic()
     }
 
     companion object {

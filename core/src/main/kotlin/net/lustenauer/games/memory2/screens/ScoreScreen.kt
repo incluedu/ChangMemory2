@@ -141,7 +141,7 @@ class ScoreScreen(game: ChangMemory) : AbstractScreen(game) {
         var lbl: com.badlogic.gdx.scenes.scene2d.ui.Label?
 
         lbl = com.badlogic.gdx.scenes.scene2d.ui.Label(
-            "CHANG MEMORY",
+            "CHANG MEMORY II",
             windowSkin,
             "font48",
             com.badlogic.gdx.graphics.Color.YELLOW
@@ -150,7 +150,7 @@ class ScoreScreen(game: ChangMemory) : AbstractScreen(game) {
         layer.addActor(lbl)
 
         lbl = com.badlogic.gdx.scenes.scene2d.ui.Label(
-            "(c) 2015 BY Lustenauer Net",
+            "(c) 2015 - 2026 BY lustenauer.net",
             windowSkin,
             "font24",
             com.badlogic.gdx.graphics.Color.YELLOW

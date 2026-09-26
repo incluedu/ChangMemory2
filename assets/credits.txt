@@ -8,7 +8,7 @@
 
 
  C H A N G   M E M O R Y II
-(c) 2015 - 2026 by Lustenauer Net
+(c) 2015 - 2026 by lustenauer.net
 
 app.lustenauer.net
 

@@ -109,7 +109,7 @@ class LoadingScreen(game: ChangMemory) : AbstractScreen(game) {
         val layer = com.badlogic.gdx.scenes.scene2d.ui.Table()
 
         var lbl = Label(
-            "CHANG MEMORY",
+            "CHANG MEMORY II",
             windowSkin,
             "font48",
             com.badlogic.gdx.graphics.Color.YELLOW
@@ -118,7 +118,7 @@ class LoadingScreen(game: ChangMemory) : AbstractScreen(game) {
         layer.addActor(lbl)
 
         lbl = Label(
-            "(c) 2015 BY Lustenauer Net",
+            "(c) 2015 - 2026 BY lustenauer.net",
             windowSkin,
             "font24",
             com.badlogic.gdx.graphics.Color.YELLOW
