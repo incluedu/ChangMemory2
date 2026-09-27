@@ -6,12 +6,8 @@ import com.badlogic.gdx.Input.Keys.BACK
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.EventListener
-import com.badlogic.gdx.scenes.scene2d.ui.CheckBox
-import com.badlogic.gdx.scenes.scene2d.ui.Image
-import com.badlogic.gdx.scenes.scene2d.ui.Label
-import com.badlogic.gdx.scenes.scene2d.ui.Slider
-import com.badlogic.gdx.scenes.scene2d.ui.Stack
-import com.badlogic.gdx.scenes.scene2d.ui.Table
+import com.badlogic.gdx.scenes.scene2d.Stage
+import com.badlogic.gdx.scenes.scene2d.ui.*
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener
 import com.badlogic.gdx.utils.Align
 import com.badlogic.gdx.utils.viewport.StretchViewport
@@ -21,19 +17,20 @@ import net.lustenauer.games.memory2.game.actors.BtnBack
 import net.lustenauer.games.memory2.game.actors.BtnGooglePlusSignIn
 import net.lustenauer.games.memory2.game.actors.BtnGooglePlusSignOut
 import net.lustenauer.games.memory2.utils.AudioManager
-import net.lustenauer.games.memory2.utils.Constants
+import net.lustenauer.games.memory2.utils.Constants.Fonts.FONT_M
+import net.lustenauer.games.memory2.utils.Constants.Fonts.FONT_S
+import net.lustenauer.games.memory2.utils.Constants.Fonts.FONT_XL
 import net.lustenauer.games.memory2.utils.Constants.Viewport
 import net.lustenauer.games.memory2.utils.GamePreferences
 
 class SettingsScreen(game: ChangMemory) : AbstractScreen(game) {
     private val TAG: String = this.javaClass.getName()
 
-    private var stage: com.badlogic.gdx.scenes.scene2d.Stage? = null
-    private var skinWindow: com.badlogic.gdx.scenes.scene2d.ui.Skin? = null
+    private var stage: Stage? = null
+    private var skinWindow: Skin? = null
     private var lblSoundPercent: Label? = null
     private var lblMusicPercent: Label? = null
 
-    // Statt: private var sldSound: Slider? = null
     private lateinit var chkSound: CheckBox
     private lateinit var sldSound: Slider
     private lateinit var chkMusic: CheckBox
@@ -50,7 +47,7 @@ class SettingsScreen(game: ChangMemory) : AbstractScreen(game) {
         Gdx.gl.glClearColor(0.0f, 0.0f, 0.0f, 1.0f)
         Gdx.gl.glClear(com.badlogic.gdx.graphics.GL20.GL_COLOR_BUFFER_BIT)
 
-        update(deltaTime)
+        update()
         stage!!.act(deltaTime)
         stage!!.draw()
     }
@@ -62,7 +59,7 @@ class SettingsScreen(game: ChangMemory) : AbstractScreen(game) {
     override fun show() {
         Gdx.app.debug(TAG, "show()")
         ChangMemory.instance.actionResolver?.setTrackerScreenName(TAG)
-        stage = com.badlogic.gdx.scenes.scene2d.Stage(
+        stage = Stage(
             StretchViewport(
                 Viewport.GUI_WIDTH,
                 Viewport.GUI_HEIGHT
@@ -81,7 +78,6 @@ class SettingsScreen(game: ChangMemory) : AbstractScreen(game) {
     override fun pause() {
     }
 
-    /* PRIVATE METHODS */ /* ================ */
     private fun init() {
         skinWindow = Assets.skinWindow
 
@@ -98,7 +94,7 @@ class SettingsScreen(game: ChangMemory) : AbstractScreen(game) {
         stack.add(layerControls)
     }
 
-    private fun update(deltaTime: Float) {
+    private fun update() {
         updateInputs()
     }
 
@@ -109,7 +105,6 @@ class SettingsScreen(game: ChangMemory) : AbstractScreen(game) {
         }
     }
 
-    /* LAYERS AND ACTORS */ /* ================= */
     private fun buildLayerBackground(): Table {
         val layer = Table()
         val imgBackground = Image(skinWindow, "background4")
@@ -134,7 +129,7 @@ class SettingsScreen(game: ChangMemory) : AbstractScreen(game) {
         var lbl = Label(
             "CHANG MEMORY II",
             skinWindow,
-            "font48",
+            FONT_XL,
             Color.YELLOW
         )
         lbl.setPosition((Viewport.GUI_WIDTH - lbl.getWidth()) / 2, 700f)
@@ -143,7 +138,7 @@ class SettingsScreen(game: ChangMemory) : AbstractScreen(game) {
         lbl = Label(
             "(c) 2015 - 2026 BY lustenauer.net",
             skinWindow,
-            "font24",
+            FONT_M,
             Color.YELLOW
         )
         lbl.setPosition((Viewport.GUI_WIDTH - lbl.getWidth()) / 2, 660f)
@@ -161,26 +156,24 @@ class SettingsScreen(game: ChangMemory) : AbstractScreen(game) {
         tbl.align(Align.topLeft)
         tbl.pad(20f)
 
-        // + Title: "Audio:"
         val lblAudio = Label(
             "Audio",
             skinWindow,
-            "font24",
+            FONT_M,
             Color.WHITE
         )
 
-        // + Checkbox, "Sound" label, sound volume slider
         chkSound = CheckBox("", skinWindow)
         val lblSound = Label(
             "Sound",
             skinWindow,
-            "font16",
+            FONT_S,
             Color.LIGHT_GRAY
         )
         lblSoundPercent = Label(
             "${(GamePreferences.instance.volSound * 100).toInt()}%",
             skinWindow,
-            "font16",
+            FONT_S,
             Color.LIGHT_GRAY
         )
         sldSound = Slider(0.0f, 1.0f, 0.1f, false, skinWindow)
@@ -191,18 +184,17 @@ class SettingsScreen(game: ChangMemory) : AbstractScreen(game) {
         chkSound.addListener(myChangeListener)
         sldSound.addListener(myChangeListener)
 
-        // + Checkbox, "Music" label, music volume slider
         chkMusic = CheckBox("", skinWindow)
         val lblMusic = Label(
             "Music",
             skinWindow,
-            "font16",
+            FONT_S,
             Color.LIGHT_GRAY
         )
         lblMusicPercent = Label(
             "${(GamePreferences.instance.volMusic * 100).toInt()}%",
             skinWindow,
-            "font16",
+            FONT_S,
             Color.LIGHT_GRAY
         )
         sldMusic = Slider(0.0f, 1.0f, 0.1f, false, skinWindow)
@@ -228,7 +220,6 @@ class SettingsScreen(game: ChangMemory) : AbstractScreen(game) {
         return tbl
     }
 
-    /* HANDLER METHODS */ /* ================ */
     private inner class MyChangeListener : ChangeListener() {
         override fun changed(event: ChangeEvent?, actor: Actor?) {
             GamePreferences.instance.music = chkMusic.isChecked()

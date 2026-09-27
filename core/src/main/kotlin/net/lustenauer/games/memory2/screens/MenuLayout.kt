@@ -1,8 +1,8 @@
 package net.lustenauer.games.memory2.screens
 
-import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.Color.GREEN
 import com.badlogic.gdx.graphics.Color.RED
+import com.badlogic.gdx.graphics.Color.WHITE
 import com.badlogic.gdx.graphics.Color.YELLOW
 import com.badlogic.gdx.scenes.scene2d.actions.Actions
 import com.badlogic.gdx.scenes.scene2d.ui.Button
@@ -13,12 +13,11 @@ import com.badlogic.gdx.utils.Align
 import ktx.actors.onClick
 import net.lustenauer.games.memory2.game.Assets
 import net.lustenauer.games.memory2.game.actors.BtnGooglePlusSignIn
-import net.lustenauer.games.memory2.utils.Constants
+import net.lustenauer.games.memory2.utils.Constants.Fonts.FONT_L
+import net.lustenauer.games.memory2.utils.Constants.Fonts.FONT_M
+import net.lustenauer.games.memory2.utils.Constants.Fonts.FONT_XL
 import net.lustenauer.games.memory2.utils.Constants.Skins.BTN_BLUE
 import net.lustenauer.games.memory2.utils.Constants.Skins.BTN_BLUE_BIG
-import net.lustenauer.games.memory2.utils.Constants.Skins.FONT_24
-import net.lustenauer.games.memory2.utils.Constants.Skins.FONT_32
-import net.lustenauer.games.memory2.utils.Constants.Skins.FONT_48
 import net.lustenauer.games.memory2.utils.Constants.Skins.IMG_GOOGLE_PLAY
 
 /**
@@ -41,20 +40,19 @@ class MenuLayout(actionsHandler: MenuActionHandler) : Table(Assets.skinWindow) {
     }
 
     init {
-
         setFillParent(true)
         center()
 
         val logoTable = Table().apply {
-            add(Label("CHANG MEMORY II", Assets.skinWindow, FONT_48, YELLOW)).row()
-            add(Label("(c) 2015 - 2026 BY lustenauer.net", Assets.skinWindow, FONT_24, YELLOW))
+            add(Label("CHANG MEMORY II", Assets.skinWindow, FONT_XL, YELLOW)).row()
+            add(Label("(c) 2015 - 2026 BY lustenauer.net", Assets.skinWindow, FONT_M, YELLOW))
         }
         add(logoTable).padTop(40f).padBottom(30f)
         row()
 
         val controlsTable = Table(Assets.skinWindow).apply {
             val btnStart = Button(Assets.skinWindow, BTN_BLUE_BIG).apply {
-                val lbl = Label("PLAY", Assets.skinWindow, FONT_32, Color.WHITE).apply {
+                val lbl = Label("PLAY", Assets.skinWindow, FONT_L, WHITE).apply {
                     setupPulsingColorAction()
                 }
                 add(lbl)

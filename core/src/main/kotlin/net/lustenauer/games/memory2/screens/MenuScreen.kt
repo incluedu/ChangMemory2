@@ -100,8 +100,6 @@ class MenuScreen(game: ChangMemory) : AbstractScreen(game), MenuLayout.MenuActio
         super.dispose()
     }
 
-    // --- IMPLEMENTIERUNG DER UI-KLICK-HANDLER ---
-
     /**
      * Route the user focus directly into the core card matching gameplay arena loop.
      */

@@ -1,12 +1,13 @@
 package net.lustenauer.games.memory2.game.windows
 
-import com.badlogic.gdx.graphics.Color
+import com.badlogic.gdx.graphics.Color.RED
 import com.badlogic.gdx.scenes.scene2d.ui.Button
 import com.badlogic.gdx.scenes.scene2d.ui.Image
 import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import ktx.actors.onClick
 import net.lustenauer.games.memory2.game.Assets
+import net.lustenauer.games.memory2.utils.Constants.Fonts.FONT_M
 import net.lustenauer.games.memory2.utils.Constants.Skins
 import net.lustenauer.gdx.scenes.scene2d.Command.Companion.CMD_MENU
 import net.lustenauer.gdx.scenes.scene2d.Command.Companion.CMD_RESTART
@@ -51,7 +52,7 @@ class WindowPause(cmdListener: CommandListener?) : AbstractCommandWindow(cmdList
             rotation = 30f
         })
 
-        addActor(Label(TEXT_TITLE, skinWindow, Skins.FONT_32, Color.RED).apply {
+        addActor(Label(TEXT_TITLE, skinWindow, FONT_M, RED).apply {
             setPosition(20f, 325f)
         })
 

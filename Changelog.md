@@ -24,6 +24,7 @@ All notable changes and version milestones of this project will be documented in
 * `[+]` Centralized the global engine versioning by introducing a unified `APP_VERSION` compile-time constant inside core `Constants.kt`, creating a single source of truth for all platform modules.
 * `[+]` Created a dedicated `DesktopActionResolver.kt` file within the `lwjgl3` module to cleanly separate launcher configurations from desktop-specific no-op cloud overrides.
 * `[+]` Introduced **`MenuLayout.kt`** to handle all standalone layout compositions, label scalings, and button matrices for the main menu hub.
+* `[+]` Created a semantic **`Fonts`** resource container inside `Constants.kt` with full KDoc integrations to map dynamic vector sizes abstractly (`FONT_MINI` to `FONT_HUGE`).
 
 ### Changed
 * `[c]` Rebranded the project from *ChangMemory* to **ChangMemory II**.
@@ -31,7 +32,7 @@ All notable changes and version milestones of this project will be documented in
 * `[c]` Radically downsized `CardScreen` by decoupling UI event handling and routing click actions directly into `WindowPause` and `WindowGameOver`.
 * `[c]` Transformed `Assets` and `ScoreList` into native, robust Kotlin **`object`** singletons, removing the legacy `.instance` boilerplate.
 * `[c]` Refactored the leaderboard rendering (`scorePane`) into a declarative, responsive UI layout via **KTX Scene2D DSL**.
-* `[c]` Migrated legacy `Gdx.app.debug` statements inside asset classes and core handlers to zero-allocation **`Iktx-log`** inline lambdas.
+* `[c]` Migrated legacy `Gdx.app.debug` statements inside asset classes and core handlers to zero-allocation **`ktx-log`** inline lambdas.
 * `[c]` Decoupled `SoundListObject` from its heavy parent singleton scope by stripping the redundant **`inner`** modifier, transforming it into a lightweight, standalone Kotlin **`data class`** to drastically reduce garbage collection overhead on mobile architectures.
 * `[c]` Unified input processor polling hooks across the frame initialization stream by utilizing flat, expression-based Kotlin `if-else` return pipelines.
 * `[c]` Re-licensed the entire *ChangMemory II* codebase from Apache 2.0 to the simpler, more community-friendly **MIT License**.
@@ -41,14 +42,17 @@ All notable changes and version milestones of this project will be documented in
 * `[c]` Upgraded the card array evaluation pipeline inside `processVisibleCards()` to utilize type-safe, readable KTX **`.first()`** and **`.last()`** collection operators.
 * `[c]` Consolidated all scattered balancing configuration variables (base timers, scores, penalties) into structured, central **`companion object`** constants.
 * `[c]` Fully migrated the `android` module's native launcher class from Java to a 100% pure **Kotlin implementation (`AndroidLauncher.kt`)**, successfully eliminating legacy Java setter boilerplate (`setActionResolver`) in favor of type-safe Kotlin property syntax.
-* `[c]` Upgraded diagnostics inside the Android runtime environment to use zero-allocation, high-performance **`Iktx-log`** inline lambdas to significantly reduce mobile garbage collection overhead.
+* `[c]` Upgraded diagnostics inside the Android runtime environment to use zero-allocation, high-performance **`ktx-log`** inline lambdas to significantly reduce mobile garbage collection overhead.
 * `[c]` Refactored the core **`MenuScreen.kt`** lifecycle structure to utilize zero-allocation **`ktx-log`** diagnostics, removing the legacy static `TAG` string string-builders.
 * `[c]` Consolidated input processing pipelines inside the menu update ticks by replacing bitwise evaluations with clean logical short-circuit pathways.
 * `[c]` Decoupled the **`MenuScreen.kt`** handler architecture by completely separating structural UI designs from systemic libGDX screen lifecycle operations.
+* `[c]` Refactored **`Assets.kt`** to utilize a highly streamlined, parameterized extension function (`generator.create()`), removing all local variables and duplicate layout filter declarations.
+* `[c]` Optimized the visual proportions of **`MenuLayout.kt`** by applying the newly structured semantic typography tokens, preventing clipping on virtual chalkboard overlays.
 
 ### Removed
 * `[-]` Permanently removed all legacy AdMob mobile advertising layout containers, banner configuration instances, and network permission hooks from the Android codebase to ensure an ad-free user experience.
 * `[-]` Deleted the obsolete `license.apache2` template file to maintain a single, clean licensing architecture across the repository.
+* `[-]` Deleted all legacy static bitmap font assets (`.fnt` and `.png` pairings) from the `assets/fonts/` directory, completely migrating the typesetting engine to dynamic TrueType vector rendering.
 
 ### Fixed
 * `[f]` Fixed a critical runtime crash on the score screen where an unresolved `LabelStyle` identifier name (`font16`) caused skin deployment crashes; fixed by binding directly to the default chalkboard typography font context.
@@ -56,15 +60,8 @@ All notable changes and version milestones of this project will be documented in
 * `[f]` Fixed a hidden state freeze where exiting a paused game left flags active, causing subsequent matches to lock instantly.
 * `[f]` Resolved critical input crashes by synchronizing `stage.clear()` execution order to fire strictly before fresh asset deployment.
 * `[f]` Fixed a game statistics bug where the final count of solved cards incorrectly displayed as `0` on the Game Over screen due to a premature variable reset during level advancements. This was resolved by tracking a new persistent `totalCardSetSolvedCount` in the `GameController`.
-* `[f]` Consolidated state reset routines by removing redundant `prepareManualRestart` hooks in favor of atomic, unified variable clearing.
-* `[f]` Fixed a dangerous hidden logic bug in `AudioManager.update()` where a bitwise **`and`** operator was erroneously used instead of a proper short-circuit logical **`&&`** evaluation during frame queue checks.
-* `[f]` Fixed a critical Java-Base module restriction failure (`Symbol is declared in module java.base...`) caused by accidental IDE auto-imports of internal JDK system drivers (`BMPSet.BACK`). All inputs now reference explicit LibGDX key registers (`com.badlogic.gdx.Input.Keys`).
-* `[f]` Fixed a core user experience flow oversight in `CardScreen.resume()` where minimizing or interrupting the application background layer forced gameplay to continue instantly even if the player had manually locked focus inside the modal pause window overlay.
-* `[f]` Fixed a significant analytical statistics bug where `cardSetTries` incorrectly registered a double penalty iteration (+2) instead of a proper singular pass (+1) upon failed card match attempts.
-* `[f]` Fixed a subtle sound displacement issue inside the lucky strike trigger chain by routing audio execution safely back into the deferred **`AudioManager.add()`** delay register.
-* `[f]` Corrected a minor textual layout spelling mistake inside the notification announcement stream from `"TO MANY TRY"` to grammatically sound **`"TOO MANY TRIES"`**.
-* `[f]` Resolved a critical multi-platform compiler error chain by routing all core screen and actor service configurations through the modern synchronized instance reference bridge (`ChangMemory.instance.actionResolver`).
-* `[f]` Fixed a critical structural runtime freeze by shifting the memory cleanup routine (`stage.dispose()`) from the temporary `hide()` method into the official, permanent `dispose()` engine lifecycle hook.
+* `[f]` Consolidated state reset routines by removing redundant `prepareManualRestart` hooks in favor of atomic, unified variations.
+* `[f]` Fixed an initialization boot loop crash inside **`LoadingScreen.kt`** by shifting `Assets.loadTextures()` execution triggers to precede nested JSON atlas parsing.
 
 ---
 
