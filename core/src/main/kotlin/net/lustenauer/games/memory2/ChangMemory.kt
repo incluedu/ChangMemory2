@@ -39,9 +39,9 @@ class ChangMemory private constructor() : Game() {
 
         AchievementManager.init()
         ScoreList.init()
-        GamePreferences.instance.load()
+        GamePreferences.load()
 
-        if (GamePreferences.instance.googleSignIn) {
+        if (GamePreferences.googleSignIn) {
             actionResolver?.signIn()
         }
 
@@ -78,7 +78,7 @@ class ChangMemory private constructor() : Game() {
     override fun dispose() {
         log.debug { "dispose()" }
         ScoreList.save()
-        GamePreferences.instance.save()
+        GamePreferences.save()
         AudioManager.stopMusic()
         super.dispose()
         _instance = null

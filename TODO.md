@@ -4,11 +4,10 @@ Diese Liste dokumentiert die verbleibenden Schritte, um *ChangMemory II* auf ein
 
 ---
 
-## 🟥 Priorität 1 — Target: [2.0.0-alpha.1] (Aktueller Sprint / Jetzt fällig)
+## 🟥 Priorität 1 — Target: [2.0.0-alpha.1] (Aktueller Sprint)
 Ziel: Das Fundament für Einstellungen glattziehen und verbleibende Compiler-Warnungen auslöschen, um die erste Alpha-Version stabil abzuschließen.
 
-- [ ] **`GamePreferences.kt` (Einstellungen speichern)**
-    - [ ] Die Einstellungs-Klasse in ein echtes Kotlin-**`object`**-Singleton umwandeln, um das alte `.Companion.instance`-Muster endgültig loszuwerden.
+*Alle Tickets für diesen Meilenstein wurden erfolgreich abgeschlossen!* 🎉
 
 ---
 
@@ -47,7 +46,7 @@ Ziel: Speicherfressende Strukturen optimieren, Google Play Games Services v2 auf
 - [ ] **`Card.kt` & `CardState.kt` (Karten-Architektur splitten)**
     - [ ] **Klassen-Split:** Core-Spielzustände (Karten-IDs, Aufgedeckte Status) vollständig aus dem Scene2D-`Actor` heraustrennen und in eine leichtgewichtige, allokationsfreie Kotlin-Datenklasse auslagern. `GameController` auf `CardState` umstellen.
 - [ ] **`AssetCard.kt` (Ressourcen-Bereinigung)**
-    - [ ] **Modul-Verschiebung:** Die reine Datenstruktur aus `game.objects` heraustrennen und als Hilfsklasse in die `Assets.kt` integrieren. Umbenennung in `CardAsset` zur Einhaltung einheitlicher Namenskonventionen.
+    - [ ] **Modul-Verschiebung:** Die reine Datenstruktur aus `game.objects` heraustrennen und als Hilfsklasse in die `Assets.kt` integrate. Umbenennung in `CardAsset` zur Einhaltung einheitlicher Namenskonventionen.
 - [ ] **`FlashLabel.kt` (UI-Paketierung)**
     - [ ] **Paket-Verschiebung:** Das blinkende Textfeld aus dem Logikkern `game.objects` entfernen und an seinen rechtmäßigen Platz im visuellen Paket `ui.actors` verschieben.
 - [ ] **Build-System finalisieren (Groovy-zu-KTS Migration)**
@@ -59,6 +58,7 @@ Ziel: Speicherfressende Strukturen optimieren, Google Play Games Services v2 auf
 ---
 
 ## 🏆 Erledigte Meilensteine (Wall of Fame)
+- [x] **`GamePreferences.kt` runderneuert**: Die Einstellungs-Klasse vollständig in ein echtes Kotlin-**`object`** umgewandelt, das alte `Companion.instance`-Muster eliminiert, `by lazy`-Injektion für das Preferences-Backend integriert und ungenutzte Achievement-Kommentare entfernt.
 - [x] Das gesamte Build-System erfolgreich auf **Kotlin DSL (`.gradle.kts`)** umgestellt.
 - [x] Veralteten LWJGL2-Desktop-Launcher durch eine moderne **LWJGL3-Engine** ersetzt.
 - [x] `Assets`, `ScoreList`, `AudioManager`, `InfoList` und `AchievementManager` in native Kotlin-**`object` Singletons** verwandelt.

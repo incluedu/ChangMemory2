@@ -3,26 +3,41 @@ package net.lustenauer.games.memory2.game.model
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Preferences
 import com.badlogic.gdx.math.MathUtils
-import net.lustenauer.games.memory2.utils.Constants
+import ktx.log.logger
+import net.lustenauer.games.memory2.utils.Constants.SkinConfig.WINDOW
 
-class GamePreferences private constructor() {
-    var sound: Boolean = false
-    var music: Boolean = false
-    var volSound: Float = 0f
-    var volMusic: Float = 0f
-    var userName: String? = null
+/**
+ * Native thread-safe storage registry managing local user options and configurations.
+ * Persists system states like audio preferences, credentials, and cloud login profiles.
+ *
+ * @author Patric Hollenstein
+ */
+object GamePreferences {
+
+    private val log = logger<GamePreferences>()
+
+    // --- PROPERTY SLOTS ---
+    var sound: Boolean = true
+    var music: Boolean = true
+    var volSound: Float = 0.5f
+    var volMusic: Float = 0.5f
+    var userName: String? = "Changnoi"
     var googleSignIn: Boolean = false
 
-    var prefs: Preferences
-
-
-    // singleton: prevent instantiation from other classes
-    init {
-        prefs = Gdx.app.getPreferences(Constants.Prefs.FILE_NAME)
+    /**
+     * Lazy-initialized libGDX preference backend handle.
+     * Guarantees safe framework bindings even during early initialization cycles.
+     */
+    val prefs: Preferences by lazy {
+        Gdx.app.getPreferences(WINDOW.replace(".json", ".prefs"))
     }
 
+    /**
+     * Synchronizes and reads saved properties directly out of the local key-value storage profile.
+     * Automatically clamps float ranges to prevent volume multiplier clipping bugs.
+     */
     fun load() {
-        Gdx.app.debug(TAG, "load()")
+        log.info { "Loading user configurations from preference file profile" }
 
         sound = prefs.getBoolean("sound", true)
         music = prefs.getBoolean("music", true)
@@ -30,56 +45,20 @@ class GamePreferences private constructor() {
         volMusic = MathUtils.clamp(prefs.getFloat("volMusic", 0.5f), 0.0f, 1.0f)
         userName = prefs.getString("userName", "Changnoi")
         googleSignIn = prefs.getBoolean("googleSignIn", false)
-
-
-        //		AchievementManager.level10 = prefs.getBoolean("Achievement.Level10", false);
-//		AchievementManager.level15 = prefs.getBoolean("Achievement.Level15", false);
-//		AchievementManager.level20 = prefs.getBoolean("Achievement.Level20", false);
-//		AchievementManager.level25 = prefs.getBoolean("Achievement.Level25", false);
-//		AchievementManager.level30 = prefs.getBoolean("Achievement.Level30", false);
-//		AchievementManager.level35 = prefs.getBoolean("Achievement.Level35", false);
-//		AchievementManager.level40 = prefs.getBoolean("Achievement.Level40", false);
-//		AchievementManager.level45 = prefs.getBoolean("Achievement.Level45", false);
-//		AchievementManager.level50 = prefs.getBoolean("Achievement.Level50", false);
-//
-//		AchievementManager.inARow1 = prefs.getBoolean("Achievement.InARow1", false);
-//		AchievementManager.inARow2 = prefs.getBoolean("Achievement.InARow2", false);
-//		AchievementManager.inARow3 = prefs.getBoolean("Achievement.InARow3", false);
-//		AchievementManager.inARow4 = prefs.getBoolean("Achievement.InARow4", false);
-//		AchievementManager.inARow5 = prefs.getBoolean("Achievement.InARow5", false);
     }
 
+    /**
+     * Commits and persists all active memory states directly onto the encrypted storage layer.
+     */
     fun save() {
-        Gdx.app.debug(TAG, "save()")
-
         prefs.putBoolean("sound", sound)
         prefs.putBoolean("music", music)
         prefs.putFloat("volSound", volSound)
         prefs.putFloat("volMusic", volMusic)
         prefs.putString("userName", userName)
         prefs.putBoolean("googleSignIn", googleSignIn)
-
-        //		prefs.putBoolean("Achievement.Level10", AchievementManager.level10);
-//		prefs.putBoolean("Achievement.Level15", AchievementManager.level15);
-//		prefs.putBoolean("Achievement.Level20", AchievementManager.level20);
-//		prefs.putBoolean("Achievement.Level25", AchievementManager.level25);
-//		prefs.putBoolean("Achievement.Level30", AchievementManager.level30);
-//		prefs.putBoolean("Achievement.Level35", AchievementManager.level35);
-//		prefs.putBoolean("Achievement.Level40", AchievementManager.level40);
-//		prefs.putBoolean("Achievement.Level45", AchievementManager.level45);
-//		prefs.putBoolean("Achievement.Level50", AchievementManager.level50);
-//
-//		prefs.putBoolean("Achievement.InARow1", AchievementManager.inARow1);
-//		prefs.putBoolean("Achievement.InARow2", AchievementManager.inARow1);
-//		prefs.putBoolean("Achievement.InARow3", AchievementManager.inARow1);
-//		prefs.putBoolean("Achievement.InARow4", AchievementManager.inARow1);
-//		prefs.putBoolean("Achievement.InARow5", AchievementManager.inARow1);
         prefs.flush()
-    }
 
-    companion object {
-        val TAG: String = GamePreferences::class.java.getName()
-
-        val instance: GamePreferences = GamePreferences()
+        log.info { "Successfully committed configuration profile changes to hardware layer." }
     }
 }

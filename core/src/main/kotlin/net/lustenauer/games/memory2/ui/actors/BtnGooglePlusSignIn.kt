@@ -13,7 +13,7 @@ class BtnGooglePlusSignIn : Image(Assets.skinWindow, IMG_GOOGLE_SIGN_IN) {
 
         onClick {
             ChangMemory.instance.actionResolver?.signIn()
-            GamePreferences.instance.googleSignIn = true
+            GamePreferences.googleSignIn = true
         }
     }
 

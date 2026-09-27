@@ -177,15 +177,15 @@ class SettingsScreen(game: ChangMemory) : AbstractScreen(game) {
             Color.LIGHT_GRAY
         )
         lblSoundPercent = Label(
-            "${(GamePreferences.instance.volSound * 100).toInt()}%",
+            "${(GamePreferences.volSound * 100).toInt()}%",
             skinWindow,
             FONT_S,
             Color.LIGHT_GRAY
         )
         sldSound = Slider(0.0f, 1.0f, 0.1f, false, skinWindow)
 
-        chkSound.setChecked(GamePreferences.instance.sound)
-        sldSound.setValue(GamePreferences.instance.volSound)
+        chkSound.setChecked(GamePreferences.sound)
+        sldSound.setValue(GamePreferences.volSound)
 
         chkSound.addListener(myChangeListener)
         sldSound.addListener(myChangeListener)
@@ -198,15 +198,15 @@ class SettingsScreen(game: ChangMemory) : AbstractScreen(game) {
             Color.LIGHT_GRAY
         )
         lblMusicPercent = Label(
-            "${(GamePreferences.instance.volMusic * 100).toInt()}%",
+            "${(GamePreferences.volMusic * 100).toInt()}%",
             skinWindow,
             FONT_S,
             Color.LIGHT_GRAY
         )
         sldMusic = Slider(0.0f, 1.0f, 0.1f, false, skinWindow)
 
-        chkMusic.setChecked(GamePreferences.instance.music)
-        sldMusic.setValue(GamePreferences.instance.volMusic)
+        chkMusic.setChecked(GamePreferences.music)
+        sldMusic.setValue(GamePreferences.volMusic)
 
         chkMusic.addListener(myChangeListener)
         sldMusic.addListener(myChangeListener)
@@ -228,10 +228,10 @@ class SettingsScreen(game: ChangMemory) : AbstractScreen(game) {
 
     private inner class MyChangeListener : ChangeListener() {
         override fun changed(event: ChangeEvent?, actor: Actor?) {
-            GamePreferences.instance.music = chkMusic.isChecked()
-            GamePreferences.instance.sound = chkSound.isChecked()
-            GamePreferences.instance.volMusic = sldMusic.value
-            GamePreferences.instance.volSound = sldSound.value
+            GamePreferences.music = chkMusic.isChecked()
+            GamePreferences.sound = chkSound.isChecked()
+            GamePreferences.volMusic = sldMusic.value
+            GamePreferences.volSound = sldSound.value
 
             AudioManager.onSettingsUpdated()
 

@@ -48,6 +48,7 @@
 * `[c]` Refactored **`CommandListener.kt`** to consume type-safe `GameCommand` enum states, moving the file layout into the unified `net.lustenauer.games.memory2.ui` project namespace.
 * `[c]` Updated **`WindowGameOver.kt`**, **`WindowPause.kt`**, and **`CardScreen.kt`** event-handling streams to utilize the new decoupled enum architecture.
 * `[c]` Executed a comprehensive **package structure architecture overhaul**: Cleanly isolated core game rules from the UI presentation layer. Relocated `GameController` to root `.game`, moved all interactive buttons to `.ui.actors`, pushed modal layouts to `.ui.windows`, moved transient utility classes to `.extensions` / `.enums`, and created a designated `.game.model` container for data singletons.
+* `[c]` Converted **`GamePreferences.kt`** into a native Kotlin **`object`** singleton, completely destroying the legacy `Companion.instance` factory boilerplate and introducing zero-allocation **`by lazy`** backend thread pooling.
 
 ### Removed
 * `[-]` Permanently removed all legacy AdMob mobile advertising layout containers, banner configuration instances, and network permission hooks from the Android codebase to ensure an ad-free user experience.

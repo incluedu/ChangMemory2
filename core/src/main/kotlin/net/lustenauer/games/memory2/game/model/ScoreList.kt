@@ -45,7 +45,7 @@ object ScoreList {
         log.debug { "init()" }
         scores.clear()
 
-        val prefs = GamePreferences.Companion.instance.prefs
+        val prefs = GamePreferences.prefs
 
         for (i in 0..9) {
             val name = prefs.getString("Rank${i + 1}.Name", FALLBACK_NAME)
@@ -76,7 +76,7 @@ object ScoreList {
     fun addScore(score: Int, level: Int, time: Float): Int {
         log.debug { "addScore($score)" }
 
-        val safeName = GamePreferences.Companion.instance.userName ?: ScoreEntry.DEFAULT_NAME
+        val safeName = GamePreferences.userName ?: ScoreEntry.DEFAULT_NAME
         val entry = ScoreEntry(safeName, score, level, time, Instant.now())
 
         scores.add(entry)
@@ -160,7 +160,7 @@ object ScoreList {
      * Commits all current active score entries back into the encrypted local preferences storage node.
      */
     fun save() {
-        val prefs = GamePreferences.Companion.instance.prefs
+        val prefs = GamePreferences.prefs
 
         for (i in 0 until scores.size) {
             val entry = scores[i]

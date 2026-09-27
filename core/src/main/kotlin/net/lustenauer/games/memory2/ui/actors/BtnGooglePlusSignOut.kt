@@ -13,7 +13,7 @@ class BtnGooglePlusSignOut : Image(Assets.skinWindow, IMG_GOOGLE_SIGN_OUT) {
 
         onClick {
             ChangMemory.instance.actionResolver?.signOut()
-            GamePreferences.instance.googleSignIn = false
+            GamePreferences.googleSignIn = false
         }
     }
 

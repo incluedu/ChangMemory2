@@ -44,8 +44,8 @@ object AudioManager {
      */
     @JvmOverloads
     fun play(sound: Sound, volume: Float = 1f, pitch: Float = 1f, pan: Float = 0f) {
-        if (!GamePreferences.instance.sound) return
-        sound.play(GamePreferences.instance.volSound * volume, pitch, pan)
+        if (!GamePreferences.sound) return
+        sound.play(GamePreferences.volSound * volume, pitch, pan)
     }
 
     /**
@@ -107,8 +107,8 @@ object AudioManager {
         log.debug { "play(Music)" }
         playingMusic = music
 
-        if (GamePreferences.instance.music) {
-            music.volume = GamePreferences.instance.volMusic
+        if (GamePreferences.music) {
+            music.volume = GamePreferences.volMusic
             music.play()
         }
     }
@@ -131,8 +131,8 @@ object AudioManager {
         log.debug { "onSettingsUpdated()" }
         val music = playingMusic ?: return
 
-        music.volume = GamePreferences.instance.volMusic
-        if (GamePreferences.instance.music) {
+        music.volume = GamePreferences.volMusic
+        if (GamePreferences.music) {
             if (!music.isPlaying) music.play()
         } else {
             music.pause()
