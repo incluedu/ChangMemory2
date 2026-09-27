@@ -1,8 +1,9 @@
-package net.lustenauer.games.memory2.game
+package net.lustenauer.games.memory2.game.objects
 
 import com.badlogic.gdx.audio.Sound
 import ktx.assets.load
 import ktx.log.logger
+import net.lustenauer.games.memory2.game.Assets
 
 /**
  * Manages individual sound assets within the game.

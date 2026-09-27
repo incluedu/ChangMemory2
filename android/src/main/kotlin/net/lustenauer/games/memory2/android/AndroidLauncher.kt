@@ -10,7 +10,7 @@ import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration
 import ktx.log.logger
 import net.lustenauer.games.memory2.ChangMemory
 import net.lustenauer.games.memory2.utils.ActionResolver
-import net.lustenauer.games.memory2.utils.GameAchievement
+import net.lustenauer.games.memory2.enums.GameAchievement
 import net.lustenauer.games.memory2.utils.AchievementManager
 import net.lustenauer.games.memory2.utils.Constants
 

@@ -1,26 +1,21 @@
-package net.lustenauer.games.memory2.game
+package net.lustenauer.games.memory2.game.model
 
-import com.badlogic.gdx.graphics.Color.ORANGE
-import com.badlogic.gdx.graphics.Color.WHITE
+import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.ui.Label
-import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.utils.Align
-import com.badlogic.gdx.utils.Align.left
+import com.badlogic.gdx.utils.Array
 import ktx.log.logger
 import ktx.scene2d.label
 import ktx.scene2d.scene2d
 import ktx.scene2d.table
-import net.lustenauer.games.memory2.utils.Constants.Fonts.FONT_S
-import net.lustenauer.games.memory2.utils.Constants.Fonts.FONT_XS
-import net.lustenauer.games.memory2.utils.Constants.Skins.BACKGROUND_6
-import net.lustenauer.games.memory2.utils.GamePreferences
-import net.lustenauer.games.memory2.utils.toTimeString
+import net.lustenauer.games.memory2.game.Assets
+import net.lustenauer.games.memory2.utils.Constants
+import net.lustenauer.games.memory2.extensions.toTimeString
 import java.time.Instant
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
-import java.util.*
-import com.badlogic.gdx.utils.Array as GdxArray
+import java.util.Locale
 
 /**
  * Manages the highscore list of the game. Handles loading, saving, and
@@ -40,7 +35,7 @@ object ScoreList {
     /**
      * The continuous container storing the top ranking score records.
      */
-    private val scores = GdxArray<ScoreEntry>()
+    private val scores = Array<ScoreEntry>()
 
     /**
      * Initializes the score list by reading saved entries from the local game preferences.
@@ -50,7 +45,7 @@ object ScoreList {
         log.debug { "init()" }
         scores.clear()
 
-        val prefs = GamePreferences.instance.prefs
+        val prefs = GamePreferences.Companion.instance.prefs
 
         for (i in 0..9) {
             val name = prefs.getString("Rank${i + 1}.Name", FALLBACK_NAME)
@@ -81,7 +76,7 @@ object ScoreList {
     fun addScore(score: Int, level: Int, time: Float): Int {
         log.debug { "addScore($score)" }
 
-        val safeName = GamePreferences.instance.userName ?: ScoreEntry.DEFAULT_NAME
+        val safeName = GamePreferences.Companion.instance.userName ?: ScoreEntry.DEFAULT_NAME
         val entry = ScoreEntry(safeName, score, level, time, Instant.now())
 
         scores.add(entry)
@@ -99,16 +94,16 @@ object ScoreList {
 
     /**
      * Compiles and layout-structures the highscore leaderboard visual representation
-     * into a scene2d [Table] actor utilizing the type-safe KTX Scene2D DSL.
+     * into a scene2d [com.badlogic.gdx.scenes.scene2d.ui.Table] actor utilizing the type-safe KTX Scene2D DSL.
      */
     val scorePane: Actor
         get() {
-            val mainHeaderStyle = Label.LabelStyle(Assets.skinWindow.getFont(FONT_S), ORANGE)
-            val columnHeaderStyle = Label.LabelStyle(Assets.skinWindow.getFont(FONT_XS), ORANGE)
-            val rowStyle = Label.LabelStyle(Assets.skinWindow.getFont(FONT_XS), WHITE)
+            val mainHeaderStyle = Label.LabelStyle(Assets.skinWindow.getFont(Constants.Fonts.FONT_S), Color.ORANGE)
+            val columnHeaderStyle = Label.LabelStyle(Assets.skinWindow.getFont(Constants.Fonts.FONT_XS), Color.ORANGE)
+            val rowStyle = Label.LabelStyle(Assets.skinWindow.getFont(Constants.Fonts.FONT_XS), Color.WHITE)
 
             return scene2d.table {
-                background = Assets.skinWindow.getDrawable(BACKGROUND_6)
+                background = Assets.skinWindow.getDrawable(Constants.Skins.BACKGROUND_6)
                 setSize(460f, 450f)
                 setPosition(10f, 200f)
                 align(Align.topLeft)
@@ -122,7 +117,7 @@ object ScoreList {
                 listOf("Rank", "Score", "Level", "Game-Time", "Date").forEach { header ->
                     label(header) {
                         style = columnHeaderStyle
-                    }.cell(align = left, padRight = 10f, padBottom = 12f)
+                    }.cell(align = Align.left, padRight = 10f, padBottom = 12f)
                 }
                 row()
 
@@ -131,27 +126,27 @@ object ScoreList {
                         val formattedDate = DATE_FORMATTER.format(e.date)
 
                         label("#${scores.indexOf(e, true) + 1}") { style = rowStyle }.cell(
-                            align = left,
+                            align = Align.left,
                             padRight = 10f,
                             padBottom = 4f
                         )
                         label("${e.score}") { style = rowStyle }.cell(
-                            align = left,
+                            align = Align.left,
                             padRight = 10f,
                             padBottom = 4f
                         )
                         label("${e.level}") { style = rowStyle }.cell(
-                            align = left,
+                            align = Align.left,
                             padRight = 10f,
                             padBottom = 4f
                         )
                         label(e.time.toTimeString) { style = rowStyle }.cell(
-                            align = left,
+                            align = Align.left,
                             padRight = 10f,
                             padBottom = 4f
                         )
                         label(formattedDate) { style = rowStyle }.cell(
-                            align = left,
+                            align = Align.left,
                             padRight = 10f,
                             padBottom = 4f
                         )
@@ -165,7 +160,7 @@ object ScoreList {
      * Commits all current active score entries back into the encrypted local preferences storage node.
      */
     fun save() {
-        val prefs = GamePreferences.instance.prefs
+        val prefs = GamePreferences.Companion.instance.prefs
 
         for (i in 0 until scores.size) {
             val entry = scores[i]

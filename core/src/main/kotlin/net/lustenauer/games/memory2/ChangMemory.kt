@@ -9,12 +9,12 @@ import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.graphics.Texture
 import ktx.log.logger
 import net.lustenauer.games.memory2.game.Assets
-import net.lustenauer.games.memory2.game.ScoreList
+import net.lustenauer.games.memory2.game.model.ScoreList
 import net.lustenauer.games.memory2.screens.*
 import net.lustenauer.games.memory2.utils.AchievementManager
 import net.lustenauer.games.memory2.utils.ActionResolver
 import net.lustenauer.games.memory2.utils.AudioManager
-import net.lustenauer.games.memory2.utils.GamePreferences
+import net.lustenauer.games.memory2.game.model.GamePreferences
 import kotlin.concurrent.thread
 
 /**

@@ -1,4 +1,4 @@
-package net.lustenauer.games.memory2.game.windows
+package net.lustenauer.games.memory2.ui.windows
 
 import com.badlogic.gdx.graphics.Color.RED
 import com.badlogic.gdx.scenes.scene2d.ui.Button
@@ -13,10 +13,10 @@ import net.lustenauer.games.memory2.utils.Constants.Skins.BTN_BLUE
 import net.lustenauer.games.memory2.utils.Constants.Skins.BTN_BLUE_BIG
 import net.lustenauer.games.memory2.utils.Constants.Skins.IMG_BUTTERFLY
 import net.lustenauer.games.memory2.utils.Constants.Skins.IMG_FROG
-import net.lustenauer.games.memory2.utils.GameCommand.MENU
-import net.lustenauer.games.memory2.utils.GameCommand.RESTART
-import net.lustenauer.games.memory2.utils.GameCommand.RESUME
-import net.lustenauer.games.memory2.utils.GameCommand.SETTINGS
+import net.lustenauer.games.memory2.enums.GameCommand.MENU
+import net.lustenauer.games.memory2.enums.GameCommand.RESTART
+import net.lustenauer.games.memory2.enums.GameCommand.RESUME
+import net.lustenauer.games.memory2.enums.GameCommand.SETTINGS
 import net.lustenauer.games.memory2.ui.CommandListener
 import net.lustenauer.games.memory2.ui.CommandListener.CommandEvent
 

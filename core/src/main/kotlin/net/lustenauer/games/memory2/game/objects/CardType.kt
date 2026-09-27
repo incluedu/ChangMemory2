@@ -1,4 +1,4 @@
-package net.lustenauer.games.memory2.game
+package net.lustenauer.games.memory2.game.objects
 
 /**
  * Defines the standard card pool types with their associated texture asset keys,

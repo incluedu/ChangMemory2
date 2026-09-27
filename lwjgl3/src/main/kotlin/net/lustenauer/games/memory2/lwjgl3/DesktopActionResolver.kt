@@ -3,7 +3,7 @@ package net.lustenauer.games.memory2.lwjgl3
 import ktx.log.logger
 import net.lustenauer.games.memory2.utils.ActionResolver
 import net.lustenauer.games.memory2.utils.Constants
-import net.lustenauer.games.memory2.utils.GameAchievement
+import net.lustenauer.games.memory2.enums.GameAchievement
 
 /**
  * Desktop-specific implementation of the [ActionResolver] interface layer.

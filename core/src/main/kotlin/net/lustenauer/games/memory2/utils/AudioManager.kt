@@ -6,7 +6,8 @@ import com.badlogic.gdx.audio.Sound
 import com.badlogic.gdx.utils.Array as GdxArray
 import ktx.log.logger
 import net.lustenauer.games.memory2.ChangMemory
-import net.lustenauer.games.memory2.game.AssetSound
+import net.lustenauer.games.memory2.game.model.GamePreferences
+import net.lustenauer.games.memory2.game.objects.AssetSound
 import kotlin.random.Random
 
 /**

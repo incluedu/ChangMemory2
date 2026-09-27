@@ -1,11 +1,11 @@
-package net.lustenauer.games.memory2.game.actors
+package net.lustenauer.games.memory2.ui.actors
 
 import com.badlogic.gdx.scenes.scene2d.ui.Image
 import ktx.actors.onClick
 import net.lustenauer.games.memory2.ChangMemory
 import net.lustenauer.games.memory2.game.Assets
 import net.lustenauer.games.memory2.utils.Constants.Skins.IMG_GOOGLE_SIGN_OUT
-import net.lustenauer.games.memory2.utils.GamePreferences
+import net.lustenauer.games.memory2.game.model.GamePreferences
 
 class BtnGooglePlusSignOut : Image(Assets.skinWindow, IMG_GOOGLE_SIGN_OUT) {
     init {

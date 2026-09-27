@@ -2,6 +2,7 @@ package net.lustenauer.games.memory2.utils
 
 import ktx.log.logger
 import net.lustenauer.games.memory2.ChangMemory
+import net.lustenauer.games.memory2.enums.GameAchievement
 import net.lustenauer.games.memory2.game.Assets
 import net.lustenauer.games.memory2.game.InfoList
 import com.badlogic.gdx.utils.Array as GdxArray

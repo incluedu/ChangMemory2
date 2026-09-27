@@ -13,8 +13,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.utils.viewport.StretchViewport
 import net.lustenauer.games.memory2.ChangMemory
 import net.lustenauer.games.memory2.game.Assets
-import net.lustenauer.games.memory2.game.actors.BtnBack
-import net.lustenauer.games.memory2.game.actors.BtnGooglePlusSignIn
+import net.lustenauer.games.memory2.ui.actors.BtnBack
+import net.lustenauer.games.memory2.ui.actors.BtnGooglePlusSignIn
 import net.lustenauer.games.memory2.utils.Constants.Fonts.FONT_M
 import net.lustenauer.games.memory2.utils.Constants.Fonts.FONT_XL
 import net.lustenauer.games.memory2.utils.Constants.Fonts.FONT_XXS

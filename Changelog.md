@@ -1,9 +1,3 @@
-# Changelog - ChangMemory II
-
-All notable changes and version milestones of this project will be documented in this file. This project is based on the historical Java predecessor *ChangMemory* (2015).
-
----
-
 ## [2.0.0-alpha.1] - In Development (Unreleased)
 ### Added
 * `[+]` Complete porting of the entire game source code from Java to **Kotlin**.
@@ -43,7 +37,7 @@ All notable changes and version milestones of this project will be documented in
 * `[c]` Upgraded the card array evaluation pipeline inside `processVisibleCards()` to utilize type-safe, readable KTX **`.first()`** and **`.last()`** collection operators.
 * `[c]` Consolidated all scattered balancing configuration variables (base timers, scores, penalties) into structured, central **`companion object`** constants.
 * `[c]` Fully migrated the `android` module's native launcher class from Java to a 100% pure **Kotlin implementation (`AndroidLauncher.kt`)**, successfully eliminating legacy Java setter boilerplate (`setActionResolver`) in favor of type-safe Kotlin property syntax.
-* `[c]` Upgraded diagnostics inside the Android runtime environment to use zero-allocation, high-performance **`ktx-log`** inline lambdas to significantly reduce mobile garbage collection overhead.
+* `[c]` Upgraded diagnostics inside the Android runtime environment to use zero-allocation, high-performance **`Iktx-log`** inline lambdas to significantly reduce mobile garbage collection overhead.
 * `[c]` Refactored the core **`MenuScreen.kt`** lifecycle structure to utilize zero-allocation **`ktx-log`** diagnostics, removing the legacy static `TAG` string string-builders.
 * `[c]` Consolidated input processing pipelines inside the menu update ticks by replacing bitwise evaluations with clean logical short-circuit pathways.
 * `[c]` Decoupled the **`MenuScreen.kt`** handler architecture by completely separating structural UI designs from systemic libGDX screen lifecycle operations.
@@ -53,6 +47,7 @@ All notable changes and version milestones of this project will be documented in
 * `[c]` Converted the legacy time formatting utility into a type-safe Kotlin extension property (`Float.toTimeString`), forcing explicit `Locale.ENGLISH` formatting to prevent platform-specific runtime localization bugs.
 * `[c]` Refactored **`CommandListener.kt`** to consume type-safe `GameCommand` enum states, moving the file layout into the unified `net.lustenauer.games.memory2.ui` project namespace.
 * `[c]` Updated **`WindowGameOver.kt`**, **`WindowPause.kt`**, and **`CardScreen.kt`** event-handling streams to utilize the new decoupled enum architecture.
+* `[c]` Executed a comprehensive **package structure architecture overhaul**: Cleanly isolated core game rules from the UI presentation layer. Relocated `GameController` to root `.game`, moved all interactive buttons to `.ui.actors`, pushed modal layouts to `.ui.windows`, moved transient utility classes to `.extensions` / `.enums`, and created a designated `.game.model` container for data singletons.
 
 ### Removed
 * `[-]` Permanently removed all legacy AdMob mobile advertising layout containers, banner configuration instances, and network permission hooks from the Android codebase to ensure an ad-free user experience.
@@ -66,7 +61,7 @@ All notable changes and version milestones of this project will be documented in
 * `[f]` Fixed deep Z-index rendering bugs where the interactive pause button was obscured by background image swaps during difficulty increments.
 * `[f]` Fixed a hidden state freeze where exiting a paused game left flags active, causing subsequent matches to lock instantly.
 * `[f]` Resolved critical input crashes by synchronizing `stage.clear()` execution order to fire strictly before fresh asset deployment.
-* `[f]` Fixed a game statistics bug where the final count of solved cards incorrectly displayed as `0` on the Game Over screen due to a premature variable reset during level advancements. This was resolved by tracking a new persistent `totalCardSetSolvedCount` in the `GameController`.
+* `[f]` Fixed a game statistics bug where the final count of solved cards incorrectly displays as `0` on the Game Over screen due to a premature variable reset during level advancements. This was resolved by tracking a new persistent `totalCardSetSolvedCount` in the `GameController`.
 * `[f]` Consolidated state reset routines by removing redundant `prepareManualRestart` hooks in favor of atomic, unified variations.
 * `[f]` Fixed an initialization boot loop crash inside **`LoadingScreen.kt`** by shifting `Assets.loadTextures()` execution triggers to precede nested JSON atlas parsing.
 

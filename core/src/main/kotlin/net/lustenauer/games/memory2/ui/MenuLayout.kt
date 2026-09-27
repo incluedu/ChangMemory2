@@ -1,7 +1,6 @@
-package net.lustenauer.games.memory2.screens
+package net.lustenauer.games.memory2.ui
 
-import com.badlogic.gdx.graphics.Color.GREEN
-import com.badlogic.gdx.graphics.Color.RED
+import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.Color.WHITE
 import com.badlogic.gdx.graphics.Color.YELLOW
 import com.badlogic.gdx.scenes.scene2d.actions.Actions
@@ -12,13 +11,13 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.utils.Align
 import ktx.actors.onClick
 import net.lustenauer.games.memory2.game.Assets
-import net.lustenauer.games.memory2.game.actors.BtnGooglePlusSignIn
+import net.lustenauer.games.memory2.ui.actors.BtnGooglePlusSignIn
 import net.lustenauer.games.memory2.utils.Constants.Fonts.FONT_L
 import net.lustenauer.games.memory2.utils.Constants.Fonts.FONT_M
 import net.lustenauer.games.memory2.utils.Constants.Fonts.FONT_XL
+import net.lustenauer.games.memory2.utils.Constants.Skins
 import net.lustenauer.games.memory2.utils.Constants.Skins.BTN_BLUE
 import net.lustenauer.games.memory2.utils.Constants.Skins.BTN_BLUE_BIG
-import net.lustenauer.games.memory2.utils.Constants.Skins.IMG_GOOGLE_PLAY
 
 /**
  * Technical UI layout container for the main menu.
@@ -45,7 +44,14 @@ class MenuLayout(actionsHandler: MenuActionHandler) : Table(Assets.skinWindow) {
 
         val logoTable = Table().apply {
             add(Label("CHANG MEMORY II", Assets.skinWindow, FONT_XL, YELLOW)).row()
-            add(Label("(c) 2015 - 2026 BY lustenauer.net", Assets.skinWindow, FONT_M, YELLOW))
+            add(
+                Label(
+                    "(c) 2015 - 2026 BY lustenauer.net",
+                    Assets.skinWindow,
+                    FONT_M,
+                    YELLOW
+                )
+            )
         }
         add(logoTable).padTop(40f).padBottom(30f)
         row()
@@ -91,7 +97,7 @@ class MenuLayout(actionsHandler: MenuActionHandler) : Table(Assets.skinWindow) {
         val socialTable = Table().apply {
             add(BtnGooglePlusSignIn()).padRight(20f)
 
-            val imgGooglePlay = Image(Assets.skinWindow, IMG_GOOGLE_PLAY)
+            val imgGooglePlay = Image(Assets.skinWindow, Skins.IMG_GOOGLE_PLAY)
             add(imgGooglePlay).align(Align.bottom)
         }
         add(socialTable).padBottom(30f)
@@ -104,8 +110,8 @@ class MenuLayout(actionsHandler: MenuActionHandler) : Table(Assets.skinWindow) {
         addAction(
             Actions.forever(
                 Actions.sequence(
-                    Actions.color(RED, 0.7f),
-                    Actions.color(GREEN, 0.7f)
+                    Actions.color(Color.RED, 0.7f),
+                    Actions.color(Color.GREEN, 0.7f)
                 )
             )
         )

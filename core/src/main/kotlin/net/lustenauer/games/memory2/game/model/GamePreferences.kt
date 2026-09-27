@@ -1,8 +1,9 @@
-package net.lustenauer.games.memory2.utils
+package net.lustenauer.games.memory2.game.model
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Preferences
 import com.badlogic.gdx.math.MathUtils
+import net.lustenauer.games.memory2.utils.Constants
 
 class GamePreferences private constructor() {
     var sound: Boolean = false

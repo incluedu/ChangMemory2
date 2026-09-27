@@ -1,4 +1,4 @@
-package net.lustenauer.games.memory2.utils
+package net.lustenauer.games.memory2.enums
 
 /**
  * Type-safe architectural command registry routing UI button triggers

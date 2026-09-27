@@ -1,4 +1,4 @@
-package net.lustenauer.games.memory2.utils
+package net.lustenauer.games.memory2.enums
 
 /**
  * Defines all unlockable achievements in ChangMemory II.

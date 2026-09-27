@@ -1,4 +1,4 @@
-package net.lustenauer.games.memory2.game
+package net.lustenauer.games.memory2.game.model
 
 import java.time.Instant
 

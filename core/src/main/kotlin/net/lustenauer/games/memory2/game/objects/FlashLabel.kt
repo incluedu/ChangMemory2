@@ -1,7 +1,9 @@
 package net.lustenauer.games.memory2.game.objects
 
 import com.badlogic.gdx.graphics.Color
-import com.badlogic.gdx.scenes.scene2d.actions.Actions.*
+import com.badlogic.gdx.scenes.scene2d.actions.Actions.color
+import com.badlogic.gdx.scenes.scene2d.actions.Actions.forever
+import com.badlogic.gdx.scenes.scene2d.actions.Actions.sequence
 import com.badlogic.gdx.scenes.scene2d.ui.Label
 
 /**

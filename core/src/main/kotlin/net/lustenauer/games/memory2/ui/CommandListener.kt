@@ -2,7 +2,7 @@ package net.lustenauer.games.memory2.ui
 
 import com.badlogic.gdx.scenes.scene2d.Event
 import com.badlogic.gdx.scenes.scene2d.EventListener
-import net.lustenauer.games.memory2.utils.GameCommand
+import net.lustenauer.games.memory2.enums.GameCommand
 
 /**
  * An abstract event listener that filters and handles UI control events based on typsisichere GameCommands.
@@ -33,7 +33,7 @@ abstract class CommandListener : EventListener {
     abstract fun performCommand(event: CommandEvent?): Boolean
 
     /**
-     * Custom event containing a [net.lustenauer.games.memory2.utils.GameCommand] representing a specific UI action.
+     * Custom event containing a [GameCommand] representing a specific UI action.
      *
      * @property command The unique enum identifier token for the triggered action (e.g., GameCommand.RESTART).
      */

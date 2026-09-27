@@ -1,4 +1,4 @@
-package net.lustenauer.games.memory2.screens
+package net.lustenauer.games.memory2.ui.components
 
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.scenes.scene2d.Stage
@@ -14,7 +14,7 @@ import net.lustenauer.games.memory2.utils.Constants
  * Handles the initialization, positioning, formatting, and text updates of all
  * score, level, timer, and technical debug labels rendered on the [hudStage].
  *
- * Implements [Disposable] to ensure clean lifecycle destruction of attached stage resources.
+ * Implements [com.badlogic.gdx.utils.Disposable] to ensure clean lifecycle destruction of attached stage resources.
  *
  * @property hudStage The dedicated scene2d rendering layer for user interface overlays.
  * @property skinWindow The central UI skin layout sheet configuration node.

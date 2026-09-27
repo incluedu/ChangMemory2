@@ -19,15 +19,15 @@ import com.badlogic.gdx.utils.Align
 import com.badlogic.gdx.utils.viewport.StretchViewport
 import net.lustenauer.games.memory2.ChangMemory
 import net.lustenauer.games.memory2.game.Assets
-import net.lustenauer.games.memory2.game.actors.BtnBack
-import net.lustenauer.games.memory2.game.actors.BtnGooglePlusSignIn
-import net.lustenauer.games.memory2.game.actors.BtnGooglePlusSignOut
+import net.lustenauer.games.memory2.ui.actors.BtnBack
+import net.lustenauer.games.memory2.ui.actors.BtnGooglePlusSignIn
+import net.lustenauer.games.memory2.ui.actors.BtnGooglePlusSignOut
 import net.lustenauer.games.memory2.utils.AudioManager
 import net.lustenauer.games.memory2.utils.Constants.Fonts.FONT_M
 import net.lustenauer.games.memory2.utils.Constants.Fonts.FONT_S
 import net.lustenauer.games.memory2.utils.Constants.Fonts.FONT_XL
 import net.lustenauer.games.memory2.utils.Constants.Viewport
-import net.lustenauer.games.memory2.utils.GamePreferences
+import net.lustenauer.games.memory2.game.model.GamePreferences
 
 class SettingsScreen(game: ChangMemory) : AbstractScreen(game) {
     private val TAG: String = this.javaClass.getName()

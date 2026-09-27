@@ -19,6 +19,9 @@ import ktx.assets.load
 import ktx.freetype.generateFont
 import ktx.log.logger
 import net.lustenauer.games.memory2.game.Assets.skinWindow
+import net.lustenauer.games.memory2.game.objects.AssetCard
+import net.lustenauer.games.memory2.game.objects.AssetSound
+import net.lustenauer.games.memory2.game.objects.CardType
 import net.lustenauer.games.memory2.utils.Constants.Atlas
 import net.lustenauer.games.memory2.utils.Constants.Fonts.FONT_DEFAULT
 import net.lustenauer.games.memory2.utils.Constants.Fonts.FONT_L
@@ -51,7 +54,7 @@ object Assets : Disposable, AssetErrorListener {
     /** Dynamic array pooling all extracted memory card graphics configurations. */
     val cardAssetList = Array<AssetCard>()
 
-    /** The [AssetSound] instance assigned to primary UI click feedback actions. */
+    /** The [net.lustenauer.games.memory2.game.objects.AssetSound] instance assigned to primary UI click feedback actions. */
     val clickSound by lazy { AssetSound(this, SOUND_CLICK, 0.8f) }
 
     /** The [AssetSound] instance assigned to base card flipping actions. */

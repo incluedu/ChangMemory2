@@ -17,19 +17,21 @@ import com.badlogic.gdx.utils.viewport.StretchViewport
 import ktx.actors.onClick
 import ktx.log.logger
 import net.lustenauer.games.memory2.ChangMemory
-import net.lustenauer.games.memory2.game.AssetSound
+import net.lustenauer.games.memory2.game.objects.AssetSound
 import net.lustenauer.games.memory2.game.Assets
 import net.lustenauer.games.memory2.game.InfoList
 import net.lustenauer.games.memory2.game.objects.Card
-import net.lustenauer.games.memory2.game.windows.WindowGameOver
-import net.lustenauer.games.memory2.game.windows.WindowPause
+import net.lustenauer.games.memory2.ui.windows.WindowGameOver
+import net.lustenauer.games.memory2.ui.windows.WindowPause
 import net.lustenauer.games.memory2.utils.AchievementEntry
 import net.lustenauer.games.memory2.utils.AchievementManager
 import net.lustenauer.games.memory2.utils.AudioManager
 import net.lustenauer.games.memory2.utils.Constants.Skins.BACKGROUND_4
 import net.lustenauer.games.memory2.utils.Constants.Viewport
-import net.lustenauer.games.memory2.utils.GameCommand
+import net.lustenauer.games.memory2.enums.GameCommand
+import net.lustenauer.games.memory2.game.GameController
 import net.lustenauer.games.memory2.ui.CommandListener
+import net.lustenauer.games.memory2.ui.components.GameHUD
 import com.badlogic.gdx.utils.Array as GdxArray
 
 /**

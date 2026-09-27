@@ -10,13 +10,14 @@ import com.badlogic.gdx.utils.viewport.StretchViewport
 import ktx.log.logger
 import net.lustenauer.games.memory2.ChangMemory
 import net.lustenauer.games.memory2.game.Assets
+import net.lustenauer.games.memory2.ui.MenuLayout
 import net.lustenauer.games.memory2.utils.AudioManager
 import net.lustenauer.games.memory2.utils.Constants
 import net.lustenauer.games.memory2.utils.Constants.Viewport
 
 /**
  * Lifecycle and input router manager for the main menu screen.
- * Delegates visual layouts entirely onto [MenuLayout].
+ * Delegates visual layouts entirely onto [net.lustenauer.games.memory2.ui.MenuLayout].
  *
  * @author Patric Hollenstein
  */

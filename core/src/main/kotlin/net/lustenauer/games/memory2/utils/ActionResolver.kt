@@ -1,5 +1,7 @@
 package net.lustenauer.games.memory2.utils
 
+import net.lustenauer.games.memory2.enums.GameAchievement
+
 /**
  * Platform abstraction interface layer orchestrating cross-platform hardware features
  * like mobile advertisements, leaderboards, analytical trackers, and achievement subsystems.
@@ -50,7 +52,7 @@ interface ActionResolver {
     /** Displays the platform's achievement overview interface panel layer. */
     fun showAchievements()
 
-    /** Unlocks a specific [GameAchievement] safely using platform-native store triggers. */
+    /** Unlocks a specific [net.lustenauer.games.memory2.enums.GameAchievement] safely using platform-native store triggers. */
     fun unlockAchievement(achievement: GameAchievement)
 
     /** Increments an ongoing milestone tracker achievement safely by a specified [step]. */

@@ -1,13 +1,14 @@
-package net.lustenauer.games.memory2.game
+package net.lustenauer.games.memory2.game.objects
 
-import com.badlogic.gdx.graphics.Texture.TextureFilter.Linear
+import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.TextureAtlas
 import com.badlogic.gdx.utils.Disposable
 import ktx.log.logger
+import net.lustenauer.games.memory2.game.Assets
 
 /**
  * Represents a single wrapped card asset wrapper containing its texture region and optional victory sound effects.
- * Implements [Disposable] to properly release underlying native audio resources during screen changes.
+ * Implements [com.badlogic.gdx.utils.Disposable] to properly release underlying native audio resources during screen changes.
  *
  * @property desc The localized description or name template identifying the match payload type.
  * @param assets The central asset management coordinator instance.
@@ -37,7 +38,7 @@ class AssetCard @JvmOverloads constructor(
         log.debug { "add card --> $assetName" }
 
         card = atlas.findRegion(assetName).apply {
-            texture.setFilter(Linear, Linear)
+            texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear)
             if (!notFlip) flip(true, false)
         }
 

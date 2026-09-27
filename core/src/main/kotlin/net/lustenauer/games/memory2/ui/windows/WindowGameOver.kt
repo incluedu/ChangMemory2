@@ -1,4 +1,4 @@
-package net.lustenauer.games.memory2.game.windows
+package net.lustenauer.games.memory2.ui.windows
 
 import com.badlogic.gdx.graphics.Color.BLACK
 import com.badlogic.gdx.graphics.Color.RED
@@ -14,10 +14,10 @@ import net.lustenauer.games.memory2.utils.Constants.Fonts.FONT_M
 import net.lustenauer.games.memory2.utils.Constants.Fonts.FONT_XS
 import net.lustenauer.games.memory2.utils.Constants.Skins.BACKGROUND_3
 import net.lustenauer.games.memory2.utils.Constants.Skins.BTN_BLUE
-import net.lustenauer.games.memory2.utils.GameCommand.MENU
-import net.lustenauer.games.memory2.utils.GameCommand.RESTART
-import net.lustenauer.games.memory2.utils.GameCommand.SCORE
-import net.lustenauer.games.memory2.utils.toTimeString
+import net.lustenauer.games.memory2.enums.GameCommand.MENU
+import net.lustenauer.games.memory2.enums.GameCommand.RESTART
+import net.lustenauer.games.memory2.enums.GameCommand.SCORE
+import net.lustenauer.games.memory2.extensions.toTimeString
 
 /**
  * An overlay window displayed when the game finishes or the player loses.

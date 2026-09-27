@@ -1,4 +1,4 @@
-package net.lustenauer.games.memory2.utils
+package net.lustenauer.games.memory2.extensions
 
 import java.time.Duration
 import java.util.Locale

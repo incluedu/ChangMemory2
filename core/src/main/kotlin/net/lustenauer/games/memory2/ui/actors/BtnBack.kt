@@ -1,4 +1,4 @@
-package net.lustenauer.games.memory2.game.actors
+package net.lustenauer.games.memory2.ui.actors
 
 import com.badlogic.gdx.Screen
 import com.badlogic.gdx.scenes.scene2d.ui.Image

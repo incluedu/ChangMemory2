@@ -1,15 +1,13 @@
-package net.lustenauer.games.memory2.screens
+package net.lustenauer.games.memory2.game
 
-import com.badlogic.gdx.graphics.Color.RED
+import com.badlogic.gdx.graphics.Color
+import com.badlogic.gdx.utils.Array
 import com.badlogic.gdx.utils.TimeUtils
 import ktx.log.logger
 import net.lustenauer.games.memory2.ChangMemory
-import net.lustenauer.games.memory2.game.CardList
-import net.lustenauer.games.memory2.game.InfoList
-import net.lustenauer.games.memory2.game.ScoreList
+import net.lustenauer.games.memory2.game.model.ScoreList
 import net.lustenauer.games.memory2.game.objects.Card
 import net.lustenauer.games.memory2.utils.AchievementManager
-import com.badlogic.gdx.utils.Array as GdxArray
 
 /**
  * Manages the analytical gameplay state, score evaluations, and rules for CardScreen.
@@ -50,9 +48,9 @@ class GameController {
     var scoreSubmit = false
 
     // --- CARD CONTAINERS ---
-    var visibleCards = GdxArray<Card>()
+    var visibleCards = Array<Card>()
     val cardList = CardList()
-    var gameSet = GdxArray<Card>()
+    var gameSet = Array<Card>()
 
     /**
      * Resets all numerical state monitors back to default milestone scales
@@ -84,7 +82,7 @@ class GameController {
      * Advances the active level index and triggers standard preparation
      * announcements to display inside the info pooling overlays.
      */
-    fun startNextLevel(): GdxArray<Card> {
+    fun startNextLevel(): Array<Card> {
         cardSetSolvedCount = 0
         cardSetTries = 0
         luckyStrikeInARowCount = 0
@@ -117,7 +115,7 @@ class GameController {
             playBeepSound()
 
             InfoList.add("WARNING", flash = true, size = InfoList.SIZE_XXXL)
-            InfoList.add("30 SEC LEFT", size = InfoList.SIZE_XL, color = RED)
+            InfoList.add("30 SEC LEFT", size = InfoList.SIZE_XL, color = Color.RED)
         }
 
         if (timeLeft.toInt() <= THRESHOLD_WARN_HIGH) timeLeft10Seconds = true
@@ -199,7 +197,7 @@ class GameController {
      * Local score calculation anchor that commits metrics back into the leaderboards.
      */
     fun submitScore() {
-        ChangMemory.instance.actionResolver?.submitScore(
+        ChangMemory.Companion.instance.actionResolver?.submitScore(
             score, level, cardFlipCount, cardSetSolvedCount, luckyStrikeCount
         )
         ScoreList.addScore(score, level, totalTime)
