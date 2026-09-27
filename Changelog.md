@@ -49,6 +49,7 @@ All notable changes and version milestones of this project will be documented in
 * `[c]` Refactored **`Assets.kt`** to utilize a highly streamlined, parameterized extension function (`generator.create()`), removing all local variables and duplicate layout filter declarations.
 * `[c]` Optimized the visual proportions of **`MenuLayout.kt`** by applying the newly structured semantic typography tokens, preventing clipping on virtual chalkboard overlays.
 * `[c]` Completely overhauled **`WindowGameOver.kt`** and **`WindowPause.kt`** to inherit directly from native `Table` elements, establishing zero-leak Kotlin constructors and clean prefixless static named imports.
+* `[c]` Converted the legacy time formatting utility into a type-safe Kotlin extension property (`Float.toTimeString`), forcing explicit `Locale.ENGLISH` formatting to prevent platform-specific runtime localization bugs.
 
 ### Removed
 * `[-]` Permanently removed all legacy AdMob mobile advertising layout containers, banner configuration instances, and network permission hooks from the Android codebase to ensure an ad-free user experience.

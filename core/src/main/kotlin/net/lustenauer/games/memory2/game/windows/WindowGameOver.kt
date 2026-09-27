@@ -17,7 +17,7 @@ import net.lustenauer.gdx.scenes.scene2d.Command.Companion.CMD_RESTART
 import net.lustenauer.gdx.scenes.scene2d.Command.Companion.CMD_SCORE
 import net.lustenauer.gdx.scenes.scene2d.CommandListener
 import net.lustenauer.gdx.scenes.scene2d.CommandListener.CommandEvent
-import net.lustenauer.utils.Time
+import net.lustenauer.games.memory2.utils.toTimeString
 
 /**
  * An overlay window displayed when the game finishes or the player loses.
@@ -103,7 +103,7 @@ class WindowGameOver(cmdListener: CommandListener?) : Table(Assets.skinWindow) {
     fun setScore(score: Int) = lblScore.setText(score.toString())
 
     /** Updates the displayed game duration, formatting seconds into a time string. */
-    fun setTime(totalTime: Float) = lblTime.setText(Time.formatSeconds(totalTime))
+    fun setTime(totalTime: Float) = lblTime.setText(totalTime.toTimeString)
 
     /** Updates the displayed number of consecutive correct card matches. */
     fun setLuckStrikeCount(luckyStrikeCount: Int) = lblLuckyStrikeCount.setText(luckyStrikeCount.toString())

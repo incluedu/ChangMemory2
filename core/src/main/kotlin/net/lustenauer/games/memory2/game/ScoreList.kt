@@ -6,6 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.utils.Align
+import com.badlogic.gdx.utils.Align.left
 import ktx.log.logger
 import ktx.scene2d.label
 import ktx.scene2d.scene2d
@@ -14,7 +15,7 @@ import net.lustenauer.games.memory2.utils.Constants.Fonts.FONT_S
 import net.lustenauer.games.memory2.utils.Constants.Fonts.FONT_XS
 import net.lustenauer.games.memory2.utils.Constants.Skins.BACKGROUND_6
 import net.lustenauer.games.memory2.utils.GamePreferences
-import net.lustenauer.utils.Time
+import net.lustenauer.games.memory2.utils.toTimeString
 import java.time.Instant
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
@@ -121,7 +122,7 @@ object ScoreList {
                 listOf("Rank", "Score", "Level", "Game-Time", "Date").forEach { header ->
                     label(header) {
                         style = columnHeaderStyle
-                    }.cell(align = Align.left, padRight = 10f, padBottom = 12f)
+                    }.cell(align = left, padRight = 10f, padBottom = 12f)
                 }
                 row()
 
@@ -129,11 +130,31 @@ object ScoreList {
                     if (e.score > 0) {
                         val formattedDate = DATE_FORMATTER.format(e.date)
 
-                        label("#${scores.indexOf(e, true) + 1}") { style = rowStyle }.cell(align = Align.left, padRight = 10f, padBottom = 4f)
-                        label("${e.score}") { style = rowStyle }.cell(align = Align.left, padRight = 10f, padBottom = 4f)
-                        label("${e.level}") { style = rowStyle }.cell(align = Align.left, padRight = 10f, padBottom = 4f)
-                        label(Time.formatSeconds(e.time)) { style = rowStyle }.cell(align = Align.left, padRight = 10f, padBottom = 4f)
-                        label(formattedDate) { style = rowStyle }.cell(align = Align.left, padRight = 10f, padBottom = 4f)
+                        label("#${scores.indexOf(e, true) + 1}") { style = rowStyle }.cell(
+                            align = left,
+                            padRight = 10f,
+                            padBottom = 4f
+                        )
+                        label("${e.score}") { style = rowStyle }.cell(
+                            align = left,
+                            padRight = 10f,
+                            padBottom = 4f
+                        )
+                        label("${e.level}") { style = rowStyle }.cell(
+                            align = left,
+                            padRight = 10f,
+                            padBottom = 4f
+                        )
+                        label(e.time.toTimeString) { style = rowStyle }.cell(
+                            align = left,
+                            padRight = 10f,
+                            padBottom = 4f
+                        )
+                        label(formattedDate) { style = rowStyle }.cell(
+                            align = left,
+                            padRight = 10f,
+                            padBottom = 4f
+                        )
                         row()
                     }
                 }
