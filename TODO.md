@@ -4,7 +4,7 @@ Diese Liste dokumentiert die verbleibenden Schritte, um *ChangMemory II* auf ein
 
 ---
 
-## 🟥 Priorität 1 — Target: [2.0.0-alpha.1] (Aktueller Sprint)
+## 🟥 Priorität 1 — Target: [2.0.0-alpha.1] (Aktuelle Entwicklungsphase)
 Ziel: Das Fundament für Einstellungen glattziehen und verbleibende Compiler-Warnungen auslöschen, um die erste Alpha-Version stabil abzuschließen.
 
 *Alle Tickets für diesen Meilenstein wurden erfolgreich abgeschlossen!* 🎉
@@ -46,11 +46,11 @@ Ziel: Speicherfressende Strukturen optimieren, Google Play Games Services v2 auf
 - [ ] **`Card.kt` & `CardState.kt` (Karten-Architektur splitten)**
     - [ ] **Klassen-Split:** Core-Spielzustände (Karten-IDs, Aufgedeckte Status) vollständig aus dem Scene2D-`Actor` heraustrennen und in eine leichtgewichtige, allokationsfreie Kotlin-Datenklasse auslagern. `GameController` auf `CardState` umstellen.
 - [ ] **`AssetCard.kt` (Ressourcen-Bereinigung)**
-    - [ ] **Modul-Verschiebung:** Die reine Datenstruktur aus `game.objects` heraustrennen und als Hilfsklasse in die `Assets.kt` integrate. Umbenennung in `CardAsset` zur Einhaltung einheitlicher Namenskonventionen.
+    - [ ] **Modul-Verschiebung:** Die reine Datenstruktur aus `game.objects` heraustrennen und als Hilfsklasse in die `Assets.kt` integrieren. Umbenennung in `CardAsset` zur Einhaltung einheitlicher Namenskonventionen.
 - [ ] **`FlashLabel.kt` (UI-Paketierung)**
     - [ ] **Paket-Verschiebung:** Das blinkende Textfeld aus dem Logikkern `game.objects` entfernen und an seinen rechtmäßigen Platz im visuellen Paket `ui.actors` verschieben.
 - [ ] **Build-System finalisieren (Groovy-zu-KTS Migration)**
-    - [ ] Die verbleibenden Build-Skripte von `lwjgl3/build.gradle` und `android/build.gradle` auf das moderne Kotlin DSL-Format (`.gradle.kts`) umstellen.
+    - [ ] Die verbleibenden Build-Skripte von `lwjgl3/build.gradle` and `android/build.gradle` auf das moderne Kotlin DSL-Format (`.gradle.kts`) umstellen.
 - [ ] **Google Play Games Services (GPGS) v2 einbinden**
     - [ ] Die aktuelle Google Play Games v2 SDK-Abhängigkeit einbinden.
     - [ ] Den modernen `PlayGames.getLeaderboardsClient(this)` und `getAchievementsClient(this)` in der `AndroidLauncher.kt` aktivieren.
