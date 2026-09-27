@@ -1,14 +1,18 @@
 package net.lustenauer.games.memory2.game
 
-import com.badlogic.gdx.graphics.Color
+import com.badlogic.gdx.graphics.Color.ORANGE
+import com.badlogic.gdx.graphics.Color.WHITE
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.ui.Label
+import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.utils.Align
 import ktx.log.logger
 import ktx.scene2d.label
 import ktx.scene2d.scene2d
 import ktx.scene2d.table
-import net.lustenauer.games.memory2.utils.Constants.Skins
+import net.lustenauer.games.memory2.utils.Constants.Fonts.FONT_S
+import net.lustenauer.games.memory2.utils.Constants.Fonts.FONT_XS
+import net.lustenauer.games.memory2.utils.Constants.Skins.BACKGROUND_6
 import net.lustenauer.games.memory2.utils.GamePreferences
 import net.lustenauer.utils.Time
 import java.time.Instant
@@ -16,9 +20,6 @@ import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.util.*
 import com.badlogic.gdx.utils.Array as GdxArray
-import com.badlogic.gdx.scenes.scene2d.ui.Table
-
-
 
 /**
  * Manages the highscore list of the game. Handles loading, saving, and
@@ -101,28 +102,26 @@ object ScoreList {
      */
     val scorePane: Actor
         get() {
-            val defaultStyle = Assets.skinWindow.get(Label.LabelStyle::class.java)
-            val baseFont = defaultStyle.font
-
-            val headerStyle = Label.LabelStyle(baseFont, Color.ORANGE)
-            val rowStyle = Label.LabelStyle(baseFont, Color.WHITE)
+            val mainHeaderStyle = Label.LabelStyle(Assets.skinWindow.getFont(FONT_S), ORANGE)
+            val columnHeaderStyle = Label.LabelStyle(Assets.skinWindow.getFont(FONT_XS), ORANGE)
+            val rowStyle = Label.LabelStyle(Assets.skinWindow.getFont(FONT_XS), WHITE)
 
             return scene2d.table {
-                background = Assets.skinWindow.getDrawable(Skins.BACKGROUND_6)
+                background = Assets.skinWindow.getDrawable(BACKGROUND_6)
                 setSize(460f, 450f)
                 setPosition(10f, 200f)
                 align(Align.topLeft)
-                pad(20f)
+                pad(25f, 20f, 20f, 20f)
 
                 label("Highscore") {
-                    style = headerStyle
-                }.cell(colspan = 5, padBottom = 25f)
+                    style = mainHeaderStyle
+                }.cell(colspan = 5, padBottom = 20f, align = Align.center)
                 row()
 
                 listOf("Rank", "Score", "Level", "Game-Time", "Date").forEach { header ->
                     label(header) {
-                        style = headerStyle
-                    }.cell(align = Align.left, padRight = 10f, padBottom = 15f)
+                        style = columnHeaderStyle
+                    }.cell(align = Align.left, padRight = 10f, padBottom = 12f)
                 }
                 row()
 
@@ -130,11 +129,11 @@ object ScoreList {
                     if (e.score > 0) {
                         val formattedDate = DATE_FORMATTER.format(e.date)
 
-                        label("#${scores.indexOf(e, true) + 1}") { style = rowStyle }.cell(align = Align.left, padRight = 10f, padBottom = 5f)
-                        label("${e.score}") { style = rowStyle }.cell(align = Align.left, padRight = 10f, padBottom = 5f)
-                        label("${e.level}") { style = rowStyle }.cell(align = Align.left, padRight = 10f, padBottom = 5f)
-                        label(Time.formatSeconds(e.time)) { style = rowStyle }.cell(align = Align.left, padRight = 10f, padBottom = 5f)
-                        label(formattedDate) { style = rowStyle }.cell(align = Align.left, padRight = 10f, padBottom = 5f)
+                        label("#${scores.indexOf(e, true) + 1}") { style = rowStyle }.cell(align = Align.left, padRight = 10f, padBottom = 4f)
+                        label("${e.score}") { style = rowStyle }.cell(align = Align.left, padRight = 10f, padBottom = 4f)
+                        label("${e.level}") { style = rowStyle }.cell(align = Align.left, padRight = 10f, padBottom = 4f)
+                        label(Time.formatSeconds(e.time)) { style = rowStyle }.cell(align = Align.left, padRight = 10f, padBottom = 4f)
+                        label(formattedDate) { style = rowStyle }.cell(align = Align.left, padRight = 10f, padBottom = 4f)
                         row()
                     }
                 }
@@ -145,8 +144,6 @@ object ScoreList {
      * Commits all current active score entries back into the encrypted local preferences storage node.
      */
     fun save() {
-        log.debug { "save()" }
-
         val prefs = GamePreferences.instance.prefs
 
         for (i in 0 until scores.size) {
@@ -159,6 +156,7 @@ object ScoreList {
         }
         prefs.flush()
 
-        log.debug { "save() -> flush preferences success." }
+        log.info { "Successfully persisted ${scores.size} highscore records to local preferences storage." }
     }
+
 }

@@ -1,17 +1,13 @@
 package net.lustenauer.games.memory2.screens
 
-import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.utils.Align
 import com.badlogic.gdx.utils.Disposable
-import net.lustenauer.games.memory2.ChangMemory
-import net.lustenauer.games.memory2.game.Assets
 import net.lustenauer.games.memory2.game.objects.FlashLabel
-import net.lustenauer.games.memory2.utils.AudioManager
-import net.lustenauer.games.memory2.utils.Constants.Skins
+import net.lustenauer.games.memory2.utils.Constants
 
 /**
  * Manages the Heads-Up Display (HUD) overlay layer for the gameplay screen.
@@ -34,25 +30,17 @@ class GameHUD(
     private val lblTimeLeft: FlashLabel
 
     init {
-        val hudLabelStyle = Label.LabelStyle().apply {
-            font = Assets.fonts.font24
-            fontColor = Color.WHITE
-        }
+        val hudStyle = skinWindow.get(Constants.Fonts.FONT_M, Label.LabelStyle::class.java)
 
-        val infoLabelStyle = Label.LabelStyle().apply {
-            font = Assets.fonts.font12 // Greift direkt auf deine AssetFonts.font12 zu!
-            fontColor = Color.WHITE
-        }
-
-        lblLevel = Label("LEVEL: 000", hudLabelStyle).apply {
+        lblLevel = Label("LEVEL: 000", hudStyle).apply {
             setPosition(440f, 765f, Align.right)
         }
 
-        lblScore = Label("SCORE: 0000000000", hudLabelStyle).apply {
+        lblScore = Label("SCORE: 0000000000", hudStyle).apply {
             setPosition(20f, 765f, Align.left)
         }
 
-        lblTimeLeft = FlashLabel("TIME LEFT: 00:00:00", hudLabelStyle).apply {
+        lblTimeLeft = FlashLabel("TIME LEFT: 00:00:00", hudStyle).apply {
             setPosition(20f, 735f, Align.left)
         }
 

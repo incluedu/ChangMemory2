@@ -5,20 +5,38 @@ import com.badlogic.gdx.assets.AssetDescriptor
 import com.badlogic.gdx.assets.AssetErrorListener
 import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.audio.Sound
+import com.badlogic.gdx.graphics.Color.WHITE
+import com.badlogic.gdx.graphics.Texture.TextureFilter.Linear
+import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.g2d.TextureAtlas
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator
+import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.utils.Array
 import com.badlogic.gdx.utils.Disposable
 import ktx.assets.dispose
 import ktx.assets.load
+import ktx.freetype.generateFont
 import ktx.log.logger
+import net.lustenauer.games.memory2.game.Assets.skinWindow
 import net.lustenauer.games.memory2.utils.Constants.Atlas
+import net.lustenauer.games.memory2.utils.Constants.Fonts.FONT_DEFAULT
+import net.lustenauer.games.memory2.utils.Constants.Fonts.FONT_L
+import net.lustenauer.games.memory2.utils.Constants.Fonts.FONT_M
+import net.lustenauer.games.memory2.utils.Constants.Fonts.FONT_S
+import net.lustenauer.games.memory2.utils.Constants.Fonts.FONT_XL
+import net.lustenauer.games.memory2.utils.Constants.Fonts.FONT_XS
+import net.lustenauer.games.memory2.utils.Constants.Fonts.FONT_XXL
+import net.lustenauer.games.memory2.utils.Constants.Fonts.FONT_XXS
+import net.lustenauer.games.memory2.utils.Constants.Fonts.FONT_XXXL
 import net.lustenauer.games.memory2.utils.Constants.SkinConfig
 
 /**
  * Central asset management singleton orchestrating asset tracking, asynchronous loading pipelines,
- * texture atlas slicing, skin bindings, and audio map initialization.
+ * texture atlas slicing, skin bindings, and dynamic FreeType vector font generation.
  * Implements [Disposable] and [AssetErrorListener] to secure fail-safe hardware memory teardowns.
+ *
+ * @author Patric Hollenstein
  */
 object Assets : Disposable, AssetErrorListener {
 
@@ -26,9 +44,6 @@ object Assets : Disposable, AssetErrorListener {
 
     /** Core manager handling internal asynchronous loading loops. */
     lateinit var manager: AssetManager
-
-    /** Pack container tracking all custom size configurations of layout fonts. */
-    lateinit var fonts: AssetFonts
 
     /** Central UI theme skin configuration mapped to window containers. */
     lateinit var skinWindow: Skin
@@ -81,19 +96,38 @@ object Assets : Disposable, AssetErrorListener {
 
     /**
      * Enqueues core visual components, blocks frames until completion,
-     * and binds the default KTX scene skin layout profiles.
+     * and triggers dynamic high-definition TrueType vector font generation pipelines.
      */
     fun loadTextures() {
         manager.load<TextureAtlas>(Atlas.CARDS)
         manager.load<TextureAtlas>(Atlas.WINDOWS)
         manager.finishLoading()
 
-        fonts = AssetFonts()
+        skinWindow = Skin().apply {
+            addRegions(manager.get(Atlas.WINDOWS))
+        }
 
-        skinWindow = Skin(
-            Gdx.files.internal(SkinConfig.WINDOW),
-            manager.get(Atlas.WINDOWS)
-        )
+        val fontFile = Gdx.files.internal("fonts/ArchitectsDaughter.ttf")
+        if (!fontFile.exists()) {
+            log.error { "CRITICAL: 'assets/fonts/ArchitectsDaughter.ttf' not found!" }
+            return
+        }
+
+        val generator = FreeTypeFontGenerator(fontFile)
+
+        generator.create(16, FONT_DEFAULT)
+        generator.create(12, FONT_XXS)
+        generator.create(14, FONT_XS)
+        generator.create(16, FONT_S)
+        generator.create(24, FONT_M)
+        generator.create(32, FONT_L)
+        generator.create(36, FONT_XL)
+        generator.create(44, FONT_XXL)
+        generator.create(56, FONT_XXXL)
+
+        generator.dispose()
+
+        skinWindow.load(Gdx.files.internal(SkinConfig.WINDOW))
 
         ktx.scene2d.Scene2DSkin.defaultSkin = skinWindow
     }
@@ -107,6 +141,21 @@ object Assets : Disposable, AssetErrorListener {
             finishLoading()
         }
     }
+
+    /**
+     * Renders a high-definition TrueType size slice and registers both
+     * the raw font and its matching text style inside [skinWindow].
+     */
+    private fun FreeTypeFontGenerator.create(targetSize: Int, fontKey: String) {
+        val generatedFont = this.generateFont {
+            size = targetSize
+            minFilter = Linear
+            magFilter = Linear
+        }
+        skinWindow.add(fontKey, generatedFont, BitmapFont::class.java)
+        skinWindow.add(fontKey, LabelStyle(generatedFont, WHITE), LabelStyle::class.java)
+    }
+
 
     /**
      * Fetches the card texture sheet from storage mappings and builds the complete asset payload array.
@@ -157,7 +206,6 @@ object Assets : Disposable, AssetErrorListener {
         manager.dispose()
         cardAssetList.dispose()
         skinWindow.dispose()
-        fonts.dispose()
     }
 
     /**

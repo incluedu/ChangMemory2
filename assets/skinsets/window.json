@@ -1,14 +1,4 @@
 {
-com.badlogic.gdx.graphics.g2d.BitmapFont: { 
-	font12: 		{ file: fonts/font12.fnt },
-	font16:			{ file: fonts/font16.fnt },
-	font24: 		{ file: fonts/font24.fnt },
-	font32: 		{ file: fonts/font32.fnt },
-	font48: 		{ file: fonts/font48.fnt },
-	font56: 		{ file: fonts/font56.fnt },
-	font72: 		{ file: fonts/font72.fnt },
-	default-font: 	{ file: fonts/font16.fnt }
-},
 com.badlogic.gdx.graphics.Color: {
 	green: 			{ a: 1, b: 0, g: 1, r: 0 },
 	white: 			{ a: 1, b: 1, g: 1, r: 1 },
@@ -22,40 +12,40 @@ com.badlogic.gdx.scenes.scene2d.ui.Button$ButtonStyle: {
 	pause:			{ down: pause, up: pause},
 	pausePlay:		{ down: pause, up: pause, checked: play},
 	play:			{ down: play, up: play},
-	gSignIn:		{ down: imgGoogleSignIn, up: imgGoogleSignIn, checked: imgGoogleSignOut}		
-	
+	gSignIn:		{ down: imgGoogleSignIn, up: imgGoogleSignIn, checked: imgGoogleSignOut}
+
 },
 com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle: {
-	default: 		{ 	font: default-font, 
+	default: 		{ 	font: FONT_DEFAULT,
 						fontColor: white
 					}
 },
 com.badlogic.gdx.scenes.scene2d.ui.CheckBox$CheckBoxStyle: {
-	default:		{	checkboxOn: checkBoxOn, 
-						checkboxOff: checkBoxOff, 
-						font: default-font, 
-						fontColor: white 
+	default:		{	checkboxOn: checkBoxOn,
+						checkboxOff: checkBoxOff,
+						font: FONT_DEFAULT,
+						fontColor: white
 					}
 },
 com.badlogic.gdx.scenes.scene2d.ui.Slider$SliderStyle: {
-	default-horizontal:	
-					{ 
-						background: slider, 
-						knob: slider-knob 
+	default-horizontal:
+					{
+						background: slider,
+						knob: slider-knob
 					}
 },
 com.badlogic.gdx.scenes.scene2d.ui.ScrollPane$ScrollPaneStyle: {
-    default: 		{ 	vScroll: 		scroll, 
-    					hScrollKnob: 	roundLarge, 
-    					hScroll:		scroll, 
-    					vScrollKnob: 	roundLarge 
+    default: 		{ 	vScroll: 		scroll,
+    					hScrollKnob: 	roundLarge,
+    					hScroll:		scroll,
+    					vScrollKnob: 	roundLarge
     				}
 },
 com.badlogic.gdx.scenes.scene2d.ui.TextField$TextFieldStyle: {
-	default: 		{ 	selection: 		selection, 
-						font: 			default-font, 
-						fontColor: 		white, 
-						cursor: 		cursor 
+	default: 		{ 	selection: 		selection,
+						font: 			FONT_DEFAULT,
+						fontColor: 		white,
+						cursor: 		cursor
 					}
 }
 com.badlogic.gdx.scenes.scene2d.ui.Image: {
@@ -67,13 +57,13 @@ com.badlogic.gdx.scenes.scene2d.ui.Image: {
 	btnResume:					{ drawable: btnResume },
 	btnSettings:				{ drawable: btnSettings },
 	btnEmptySmall:				{ drawable: btnEmptySmall },
-	butterfly: 					{ drawable: butterfly },	
+	butterfly: 					{ drawable: butterfly },
 	elephant: 					{ drawable: elephant },
 	frog: 						{ drawable: frog },
-	imgGooglePlay: 				{ drawable: imgGooglePlay },		
-	imgGoogleLeaderboardsWhite:	{ drawable: imgGoogleLeaderboardsWhite },		
-	imgGoogleAchievementsWhite:	{ drawable: imgGoogleAchievementsWhite },		
-	imgGoogleSignIn:			{ drawable: imgGoogleSignIn },		
+	imgGooglePlay: 				{ drawable: imgGooglePlay },
+	imgGoogleLeaderboardsWhite:	{ drawable: imgGoogleLeaderboardsWhite },
+	imgGoogleAchievementsWhite:	{ drawable: imgGoogleAchievementsWhite },
+	imgGoogleSignIn:			{ drawable: imgGoogleSignIn },
 	imgGoogleSignOut:			{ drawable: imgGoogleSignOut },
 	symBack:					{ drawable: symBack },
 	symHome:					{ drawable: symHome },

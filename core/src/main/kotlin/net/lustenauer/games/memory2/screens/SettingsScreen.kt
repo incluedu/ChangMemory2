@@ -6,12 +6,7 @@ import com.badlogic.gdx.Input.Keys.BACK
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.EventListener
-import com.badlogic.gdx.scenes.scene2d.ui.CheckBox
-import com.badlogic.gdx.scenes.scene2d.ui.Image
-import com.badlogic.gdx.scenes.scene2d.ui.Label
-import com.badlogic.gdx.scenes.scene2d.ui.Slider
-import com.badlogic.gdx.scenes.scene2d.ui.Stack
-import com.badlogic.gdx.scenes.scene2d.ui.Table
+import com.badlogic.gdx.scenes.scene2d.ui.*
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener
 import com.badlogic.gdx.utils.Align
 import com.badlogic.gdx.utils.viewport.StretchViewport
@@ -21,7 +16,8 @@ import net.lustenauer.games.memory2.game.actors.BtnBack
 import net.lustenauer.games.memory2.game.actors.BtnGooglePlusSignIn
 import net.lustenauer.games.memory2.game.actors.BtnGooglePlusSignOut
 import net.lustenauer.games.memory2.utils.AudioManager
-import net.lustenauer.games.memory2.utils.Constants
+import net.lustenauer.games.memory2.utils.Constants.Fonts.FONT_S
+import net.lustenauer.games.memory2.utils.Constants.Fonts.FONT_XL
 import net.lustenauer.games.memory2.utils.Constants.Viewport
 import net.lustenauer.games.memory2.utils.GamePreferences
 
@@ -50,7 +46,7 @@ class SettingsScreen(game: ChangMemory) : AbstractScreen(game) {
         Gdx.gl.glClearColor(0.0f, 0.0f, 0.0f, 1.0f)
         Gdx.gl.glClear(com.badlogic.gdx.graphics.GL20.GL_COLOR_BUFFER_BIT)
 
-        update(deltaTime)
+        update()
         stage!!.act(deltaTime)
         stage!!.draw()
     }
@@ -98,7 +94,7 @@ class SettingsScreen(game: ChangMemory) : AbstractScreen(game) {
         stack.add(layerControls)
     }
 
-    private fun update(deltaTime: Float) {
+    private fun update() {
         updateInputs()
     }
 
@@ -134,7 +130,7 @@ class SettingsScreen(game: ChangMemory) : AbstractScreen(game) {
         var lbl = Label(
             "CHANG MEMORY II",
             skinWindow,
-            "font48",
+            FONT_XL,
             Color.YELLOW
         )
         lbl.setPosition((Viewport.GUI_WIDTH - lbl.getWidth()) / 2, 700f)
@@ -174,13 +170,13 @@ class SettingsScreen(game: ChangMemory) : AbstractScreen(game) {
         val lblSound = Label(
             "Sound",
             skinWindow,
-            "font16",
+            FONT_S,
             Color.LIGHT_GRAY
         )
         lblSoundPercent = Label(
             "${(GamePreferences.instance.volSound * 100).toInt()}%",
             skinWindow,
-            "font16",
+            FONT_S,
             Color.LIGHT_GRAY
         )
         sldSound = Slider(0.0f, 1.0f, 0.1f, false, skinWindow)
@@ -196,13 +192,13 @@ class SettingsScreen(game: ChangMemory) : AbstractScreen(game) {
         val lblMusic = Label(
             "Music",
             skinWindow,
-            "font16",
+            FONT_S,
             Color.LIGHT_GRAY
         )
         lblMusicPercent = Label(
             "${(GamePreferences.instance.volMusic * 100).toInt()}%",
             skinWindow,
-            "font16",
+            FONT_S,
             Color.LIGHT_GRAY
         )
         sldMusic = Slider(0.0f, 1.0f, 0.1f, false, skinWindow)
@@ -228,7 +224,6 @@ class SettingsScreen(game: ChangMemory) : AbstractScreen(game) {
         return tbl
     }
 
-    /* HANDLER METHODS */ /* ================ */
     private inner class MyChangeListener : ChangeListener() {
         override fun changed(event: ChangeEvent?, actor: Actor?) {
             GamePreferences.instance.music = chkMusic.isChecked()

@@ -1,12 +1,15 @@
 package net.lustenauer.games.memory2.game.windows
 
 import com.badlogic.gdx.graphics.Color
+import com.badlogic.gdx.graphics.Color.BLACK
 import com.badlogic.gdx.scenes.scene2d.Group
 import com.badlogic.gdx.scenes.scene2d.ui.Button
 import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import ktx.actors.onClick
 import net.lustenauer.games.memory2.game.Assets
+import net.lustenauer.games.memory2.utils.Constants.Fonts.FONT_XS
+import net.lustenauer.games.memory2.utils.Constants.Fonts.FONT_M
 import net.lustenauer.games.memory2.utils.Constants.Skins
 import net.lustenauer.gdx.scenes.scene2d.Command.Companion.CMD_MENU
 import net.lustenauer.gdx.scenes.scene2d.Command.Companion.CMD_RESTART
@@ -55,7 +58,7 @@ class WindowGameOver(cmdListener: CommandListener?) : AbstractCommandWindow(cmdL
         isVisible = false
         sizeBy(400f, 250f)
 
-        addActor(Label(TEXT_TITLE, skinWindow, Skins.FONT_32, Color.RED).apply {
+        addActor(Label(TEXT_TITLE, skinWindow, FONT_M, Color.RED).apply {
             setPosition(100f, 190f)
         })
 
@@ -95,10 +98,10 @@ class WindowGameOver(cmdListener: CommandListener?) : AbstractCommandWindow(cmdL
     private fun buildStatRow(title: String, x: Float, y: Float, assignTo: (Label) -> Unit) {
         val grp = Group().apply { setPosition(x, y) }
 
-        val lblTitle = Label(title, skinWindow, Skins.FONT_16, Color.BLACK).apply {
+        val lblTitle = Label(title, skinWindow, FONT_XS, BLACK).apply {
             setPosition(20f, 0f)
         }
-        val valueLabel = Label("0", skinWindow, Skins.FONT_16, Color.BLACK).apply {
+        val valueLabel = Label("0", skinWindow, FONT_XS, BLACK).apply {
             setPosition(170f, 0f)
         }
 

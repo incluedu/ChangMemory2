@@ -6,7 +6,14 @@ import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.actions.Actions
 import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.ui.Table
-import net.lustenauer.games.memory2.utils.Constants.Skins
+import net.lustenauer.games.memory2.utils.Constants.Fonts.FONT_DEFAULT
+import net.lustenauer.games.memory2.utils.Constants.Fonts.FONT_XS
+import net.lustenauer.games.memory2.utils.Constants.Fonts.FONT_S
+import net.lustenauer.games.memory2.utils.Constants.Fonts.FONT_M
+import net.lustenauer.games.memory2.utils.Constants.Fonts.FONT_L
+import net.lustenauer.games.memory2.utils.Constants.Fonts.FONT_XL
+import net.lustenauer.games.memory2.utils.Constants.Fonts.FONT_XXL
+import net.lustenauer.games.memory2.utils.Constants.Fonts.FONT_XXXL
 import com.badlogic.gdx.utils.Array as GdxArray
 
 /**
@@ -88,14 +95,14 @@ object InfoList {
         val baseColor = if (flash) Color.WHITE else (color ?: Color.WHITE)
 
         val styleName = when (size) {
-            SIZE_XS   -> Skins.FONT_16
-            SIZE_S    -> Skins.FONT_16
-            SIZE_M    -> Skins.FONT_24
-            SIZE_L    -> Skins.FONT_32
-            SIZE_XL   -> Skins.FONT_48
-            SIZE_XXL  -> Skins.FONT_56
-            SIZE_XXXL -> Skins.FONT_72
-            else      -> Skins.DEFAULT_FONT
+            SIZE_XS   -> FONT_XS
+            SIZE_S    -> FONT_S
+            SIZE_M    -> FONT_M
+            SIZE_L    -> FONT_L
+            SIZE_XL   -> FONT_XL
+            SIZE_XXL  -> FONT_XXL
+            SIZE_XXXL -> FONT_XXXL
+            else      -> FONT_DEFAULT
         }
 
         return Label(text, Assets.skinWindow, styleName, baseColor).apply {

@@ -18,6 +18,9 @@ Ziel: Alten Java-Layout-Boilerplate-Code entfernen, anonyme Listener durch flach
     - [ ] Die Scroll-Mechanik der Rangliste mit sauberen LibKTX-Bindings optimieren.
 - [ ] **`CreditsScreen.kt`** & **`LoadingScreen.kt`**
     - [ ] Text-Anzeigen modernisieren und die Lade-Sequenzen für visuelle Assets aufräumen.
+- [ ] **Scoreboard-Typografie verfeinern (Optisches Upgrade)**
+  - [ ] Eine passende Kreide-Schriftart im **Monospace-Format** (.ttf) einbinden, damit die Zahlenkolonnen (Scores/Zeiten) auf der Tafel exakt vertikal untereinander fluchten.
+
 
 ---
 
@@ -31,6 +34,9 @@ Ziel: Speicherfressende Strukturen optimieren und die Update-Schleifen allokatio
     - [ ] Die Logik für das Zufallsmuster der Karten optimieren, um Ruckler bei höheren Schwierigkeitsgraden zu verhindern.
 - [ ] **`GamePreferences.kt` (Einstellungen speichern)**
     - [ ] Die Einstellungs-Klasse in ein echtes Kotlin-**`object`**-Singleton umwandeln, um das alte `.Companion.instance`-Muster endgültig loszuwerden.
+- [ ] **Build-System finalisieren (Groovy-zu-KTS Migration)**
+    - [ ] Die verbleibenden Build-Skripte von `lwjgl3/build.gradle` und `android/build.gradle` auf das moderne Kotlin DSL-Format (`.gradle.kts`) umstellen.
+
 
 ---
 

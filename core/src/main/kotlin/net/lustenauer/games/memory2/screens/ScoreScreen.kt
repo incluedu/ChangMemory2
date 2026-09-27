@@ -1,11 +1,20 @@
 package net.lustenauer.games.memory2.screens
 
 import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.graphics.g2d.TextureAtlas
+import com.badlogic.gdx.Input
+import com.badlogic.gdx.graphics.Color
+import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.scenes.scene2d.Stage
+import com.badlogic.gdx.scenes.scene2d.ui.Image
+import com.badlogic.gdx.scenes.scene2d.ui.Label
+import com.badlogic.gdx.scenes.scene2d.ui.Skin
+import com.badlogic.gdx.scenes.scene2d.ui.Stack
 import com.badlogic.gdx.scenes.scene2d.ui.Table
+import com.badlogic.gdx.utils.Array
 import com.badlogic.gdx.utils.viewport.StretchViewport
+import ktx.log.logger
 import net.lustenauer.games.memory2.ChangMemory
+import net.lustenauer.games.memory2.game.Assets
 import net.lustenauer.games.memory2.game.ScoreList
 import net.lustenauer.games.memory2.game.actors.BtnBack
 import net.lustenauer.games.memory2.game.actors.BtnGooglePlusSignIn
@@ -15,36 +24,41 @@ import net.lustenauer.games.memory2.game.actors.BtnPlayLeaderboards
 import net.lustenauer.games.memory2.utils.AchievementEntry
 import net.lustenauer.games.memory2.utils.AchievementManager
 import net.lustenauer.games.memory2.utils.Constants
-import net.lustenauer.games.memory2.utils.Constants.Atlas
-import net.lustenauer.games.memory2.utils.Constants.SkinConfig
+import net.lustenauer.games.memory2.utils.Constants.Fonts.FONT_XL
 
+/**
+ * Chalkboard highscore leaderboard ledger screen context.
+ * Compiles local memory arrays into a readable matrix separate from active gameplay loop updates.
+ *
+ * @author Patric Hollenstein
+ */
 class ScoreScreen(game: ChangMemory) : AbstractScreen(game) {
-    private val TAG: kotlin.String = this.javaClass.getName()
+
+    private val log = logger<ScoreScreen>()
 
     private var stage: Stage? = null
-    private var windowSkin: com.badlogic.gdx.scenes.scene2d.ui.Skin? = null
+    private var windowSkin: Skin? = null
 
-    private lateinit var achList: com.badlogic.gdx.utils.Array<AchievementEntry>
+    private lateinit var achList: Array<AchievementEntry>
     private lateinit var btnAchievements: BtnPlayAchievements
     private lateinit var btnLeaderboards: BtnPlayLeaderboards
 
-    public override fun render(deltaTime: kotlin.Float) {
+    override fun render(delta: Float) {
         Gdx.gl.glClearColor(0.0f, 0.0f, 0.0f, 1.0f)
-        Gdx.gl.glClear(com.badlogic.gdx.graphics.GL20.GL_COLOR_BUFFER_BIT)
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
 
-        update(deltaTime)
-        stage!!.act(deltaTime)
-        stage!!.draw()
+        update()
+        stage?.act(delta)
+        stage?.draw()
     }
 
-    public override fun resize(width: kotlin.Int, height: kotlin.Int) {
-        stage!!.getViewport().update(width, height, true)
+    override fun resize(width: Int, height: Int) {
+        stage?.viewport?.update(width, height, true)
     }
 
     override fun show() {
-        Gdx.app.debug(TAG, "show()")
-
-        ChangMemory.instance.actionResolver?.setTrackerScreenName(TAG)
+        log.debug { "show()" }
+        ChangMemory.instance.actionResolver?.setTrackerScreenName("ScoreScreen")
 
         achList = AchievementManager.getAchievements()
 
@@ -55,59 +69,56 @@ class ScoreScreen(game: ChangMemory) : AbstractScreen(game) {
             )
         )
 
-        // 4. Moderner GDX-Aufruf für den Back-Key (falls BACK rot ist, vollen Pfad nutzen)
-        Gdx.input.setCatchKey(com.badlogic.gdx.Input.Keys.BACK, true)
-        Gdx.input.setInputProcessor(stage)
+        Gdx.input.setCatchKey(Input.Keys.BACK, true)
+        Gdx.input.inputProcessor = stage
 
         init()
     }
 
-
-    public override fun hide() {
-        Gdx.app.debug(TAG, "hide()")
-        stage!!.dispose()
+    override fun hide() {
+        log.debug { "hide()" }
     }
 
-    public override fun pause() {
-        Gdx.app.debug(TAG, "pause()")
+    override fun pause() {
+        log.debug { "pause()" }
     }
 
-    /* PRIVATE METHODES */ /* ================ */
+    override fun dispose() {
+        log.debug { "dispose() -> Destroying ScoreScreen contexts" }
+        stage?.dispose()
+        super.dispose()
+    }
+
     private fun init() {
-        windowSkin = com.badlogic.gdx.scenes.scene2d.ui.Skin(
-            Gdx.files.internal(SkinConfig.WINDOW),
-            TextureAtlas(Atlas.WINDOWS)
-        )
+        windowSkin = Assets.skinWindow
 
         val layerBackground = buildLayerBackground()
         val layerLogo = buildLayerLogo()
         val layerControls = buildLayerControls()
 
-        stage!!.clear()
-        val stack = com.badlogic.gdx.scenes.scene2d.ui.Stack()
-        stage!!.addActor(stack)
+        stage?.clear()
+        val stack = Stack()
+        stage?.addActor(stack)
         stack.setSize(Constants.Viewport.GUI_WIDTH, Constants.Viewport.GUI_HEIGHT)
         stack.add(layerBackground)
         stack.add(layerLogo)
         stack.add(layerControls)
     }
 
-    private fun update(deltaTime: kotlin.Float) {
+    private fun update() {
         updateInputs()
         updateButtons()
     }
 
     private fun updateButtons() {
         val signedIn = ChangMemory.instance.actionResolver?.isSignedIn ?: false
-
         btnAchievements.isVisible = signedIn
         btnLeaderboards.isVisible = signedIn
     }
 
-
     private fun updateInputs() {
-        // return to menu Screen
-        if (Gdx.input.isKeyJustPressed(com.badlogic.gdx.Input.Keys.ESCAPE) or Gdx.input.isKeyPressed(com.badlogic.gdx.Input.Keys.BACK)) {
+        // BEHOBEN: 'or' durch logisches Kurzschluss-Oder '||' ersetzt
+        if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE) || Gdx.input.isKeyJustPressed(Input.Keys.BACK)) {
             doShowPrevScreen()
         }
     }
@@ -115,8 +126,8 @@ class ScoreScreen(game: ChangMemory) : AbstractScreen(game) {
     /* LAYERS AND ACTORS */ /* ================= */
     private fun buildLayerBackground(): Table {
         val layer = Table()
-        val imgBackground = com.badlogic.gdx.scenes.scene2d.ui.Image(windowSkin, "background4")
-        layer.add<com.badlogic.gdx.scenes.scene2d.ui.Image?>(imgBackground)
+        val imgBackground = Image(windowSkin, "background4")
+        layer.add(imgBackground)
         return layer
     }
 
@@ -138,32 +149,27 @@ class ScoreScreen(game: ChangMemory) : AbstractScreen(game) {
 
     private fun buildLayerLogo(): Table {
         val layer = Table()
-        var lbl: com.badlogic.gdx.scenes.scene2d.ui.Label?
 
-        lbl = com.badlogic.gdx.scenes.scene2d.ui.Label(
-            "CHANG MEMORY II",
-            windowSkin,
-            "font48",
-            com.badlogic.gdx.graphics.Color.YELLOW
-        )
-        lbl.setPosition((Constants.Viewport.GUI_WIDTH - lbl.getWidth()) / 2, 700f)
-        layer.addActor(lbl)
+        // 1. HAUPTTITEL (Nutzt Kotlin-Property .width und exakte Skins-Konstanten)
+        val lblTitle = Label("CHANG MEMORY II", windowSkin, FONT_XL, Color.YELLOW).apply {
+            // OPTIMIERT: Positionierung leicht erhöht für mehr Abstand zum Copyright
+            setPosition((Constants.Viewport.GUI_WIDTH - width) / 2, 725f)
+        }
+        layer.addActor(lblTitle)
 
-        lbl = com.badlogic.gdx.scenes.scene2d.ui.Label(
-            "(c) 2015 - 2026 BY lustenauer.net",
-            windowSkin,
-            "font24",
-            com.badlogic.gdx.graphics.Color.YELLOW
-        )
-        lbl.setPosition((Constants.Viewport.GUI_WIDTH - lbl.getWidth()) / 2, 660f)
-        layer.addActor(lbl)
+        // 2. COPYRIGHT
+        val lblCopyright = Label("(c) 2015 - 2026 BY lustenauer.net", windowSkin, Constants.Fonts.FONT_M, Color.YELLOW).apply {
+            // OPTIMIERT: Mehr vertikaler Freiraum zur Highscore-Tafel hin
+            setPosition((Constants.Viewport.GUI_WIDTH - width) / 2, 675f)
+        }
+        layer.addActor(lblCopyright)
 
         return layer
     }
 
-    /* HANDLER METHODES */ /* ================ */
+    /* HANDLER METHODS */ /* ================ */
     private fun doShowPrevScreen() {
-        Gdx.app.debug(TAG, "doShowPrevScreen()")
+        log.debug { "doShowPrevScreen()" }
         game.setScreen(ChangMemory.prevScreen)
     }
 }

@@ -1,6 +1,6 @@
 package net.lustenauer.games.memory2.screens
 
-import com.badlogic.gdx.graphics.Color
+import com.badlogic.gdx.graphics.Color.RED
 import com.badlogic.gdx.utils.TimeUtils
 import ktx.log.logger
 import net.lustenauer.games.memory2.ChangMemory
@@ -111,17 +111,17 @@ class GameController {
             timeLeft -= delta
         }
 
-        if (timeLeft >= THRESHOLD_WARN_30 + 1) timeLeft30Seconds = false
-        if (timeLeft.toInt() <= THRESHOLD_WARN_30 && !timeLeft30Seconds) {
+        if (timeLeft >= THRESHOLD_WARN_LOW + 1) timeLeft30Seconds = false
+        if (timeLeft.toInt() <= THRESHOLD_WARN_LOW && !timeLeft30Seconds) {
             timeLeft30Seconds = true
             playBeepSound()
 
             InfoList.add("WARNING", flash = true, size = InfoList.SIZE_XXXL)
-            InfoList.add("30 SEC LEFT", size = InfoList.SIZE_XL, color = Color.RED)
+            InfoList.add("30 SEC LEFT", size = InfoList.SIZE_XL, color = RED)
         }
 
-        if (timeLeft.toInt() <= THRESHOLD_WARN_10) timeLeft10Seconds = true
-        if (timeLeft.toInt() >= THRESHOLD_WARN_10 + 1) timeLeft10Seconds = false
+        if (timeLeft.toInt() <= THRESHOLD_WARN_HIGH) timeLeft10Seconds = true
+        if (timeLeft.toInt() >= THRESHOLD_WARN_HIGH + 1) timeLeft10Seconds = false
 
         if (timeLeft10Seconds && (TimeUtils.nanoTime() - startTime) > ONE_SECOND_NANOS) {
             playBeepSound()
@@ -169,7 +169,7 @@ class GameController {
                     luckyStrikeSet = (firstCard.viewed == 0 && secondCard.viewed == 0)
 
                     if (luckyStrikeSet) {
-                        score += 100
+                        score += BONUS_LUCKY_STRIKE
                         luckyStrikeInARowCount++
                         luckyStrikeCount++
                         AchievementManager.checkLuckyStrikeAchievements(luckyStrikeInARowCount)
@@ -212,8 +212,8 @@ class GameController {
         private const val PENALTY_SECONDS = 5f
         private const val BONUS_LUCKY_STRIKE = 100
 
-        private const val THRESHOLD_WARN_30 = 30
-        private const val THRESHOLD_WARN_10 = 10
+        private const val THRESHOLD_WARN_LOW = 30
+        private const val THRESHOLD_WARN_HIGH = 10
         private const val ONE_SECOND_NANOS = 1_000_000_000L
     }
 }
