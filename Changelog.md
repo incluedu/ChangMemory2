@@ -23,6 +23,7 @@ All notable changes and version milestones of this project will be documented in
 * `[+]` Implemented formal, rich KDoc documentation with strict Markdown backtick syntax configurations to protect IDE symbol expansion compilers from crashing on reserved keywords.
 * `[+]` Centralized the global engine versioning by introducing a unified `APP_VERSION` compile-time constant inside core `Constants.kt`, creating a single source of truth for all platform modules.
 * `[+]` Created a dedicated `DesktopActionResolver.kt` file within the `lwjgl3` module to cleanly separate launcher configurations from desktop-specific no-op cloud overrides.
+* `[+]` Introduced **`MenuLayout.kt`** to handle all standalone layout compositions, label scalings, and button matrices for the main menu hub.
 
 ### Changed
 * `[c]` Rebranded the project from *ChangMemory* to **ChangMemory II**.
@@ -43,6 +44,7 @@ All notable changes and version milestones of this project will be documented in
 * `[c]` Upgraded diagnostics inside the Android runtime environment to use zero-allocation, high-performance **`Iktx-log`** inline lambdas to significantly reduce mobile garbage collection overhead.
 * `[c]` Refactored the core **`MenuScreen.kt`** lifecycle structure to utilize zero-allocation **`ktx-log`** diagnostics, removing the legacy static `TAG` string string-builders.
 * `[c]` Consolidated input processing pipelines inside the menu update ticks by replacing bitwise evaluations with clean logical short-circuit pathways.
+* `[c]` Decoupled the **`MenuScreen.kt`** handler architecture by completely separating structural UI designs from systemic libGDX screen lifecycle operations.
 
 ### Removed
 * `[-]` Permanently removed all legacy AdMob mobile advertising layout containers, banner configuration instances, and network permission hooks from the Android codebase to ensure an ad-free user experience.
