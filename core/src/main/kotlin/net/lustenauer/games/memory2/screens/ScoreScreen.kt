@@ -117,13 +117,11 @@ class ScoreScreen(game: ChangMemory) : AbstractScreen(game) {
     }
 
     private fun updateInputs() {
-        // BEHOBEN: 'or' durch logisches Kurzschluss-Oder '||' ersetzt
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE) || Gdx.input.isKeyJustPressed(Input.Keys.BACK)) {
             doShowPrevScreen()
         }
     }
 
-    /* LAYERS AND ACTORS */ /* ================= */
     private fun buildLayerBackground(): Table {
         val layer = Table()
         val imgBackground = Image(windowSkin, "background4")
@@ -150,16 +148,12 @@ class ScoreScreen(game: ChangMemory) : AbstractScreen(game) {
     private fun buildLayerLogo(): Table {
         val layer = Table()
 
-        // 1. HAUPTTITEL (Nutzt Kotlin-Property .width und exakte Skins-Konstanten)
         val lblTitle = Label("CHANG MEMORY II", windowSkin, FONT_XL, Color.YELLOW).apply {
-            // OPTIMIERT: Positionierung leicht erhöht für mehr Abstand zum Copyright
             setPosition((Constants.Viewport.GUI_WIDTH - width) / 2, 725f)
         }
         layer.addActor(lblTitle)
 
-        // 2. COPYRIGHT
         val lblCopyright = Label("(c) 2015 - 2026 BY lustenauer.net", windowSkin, Constants.Fonts.FONT_M, Color.YELLOW).apply {
-            // OPTIMIERT: Mehr vertikaler Freiraum zur Highscore-Tafel hin
             setPosition((Constants.Viewport.GUI_WIDTH - width) / 2, 675f)
         }
         layer.addActor(lblCopyright)
@@ -167,7 +161,6 @@ class ScoreScreen(game: ChangMemory) : AbstractScreen(game) {
         return layer
     }
 
-    /* HANDLER METHODS */ /* ================ */
     private fun doShowPrevScreen() {
         log.debug { "doShowPrevScreen()" }
         game.setScreen(ChangMemory.prevScreen)

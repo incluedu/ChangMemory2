@@ -29,7 +29,6 @@ class AssetSound @JvmOverloads constructor(
      * and blocks the execution thread until the asset is fully loaded.
      */
     fun loadSound() {
-        // Modernes KTX-Logging ohne manuelles TAG
         log.debug { "loadSound() --> Path: $soundPath" }
 
         if (soundPath != null) {

@@ -4,17 +4,21 @@ import com.badlogic.gdx.graphics.Color.RED
 import com.badlogic.gdx.scenes.scene2d.ui.Button
 import com.badlogic.gdx.scenes.scene2d.ui.Image
 import com.badlogic.gdx.scenes.scene2d.ui.Label
-import com.badlogic.gdx.scenes.scene2d.ui.Skin
+import com.badlogic.gdx.scenes.scene2d.ui.Table
 import ktx.actors.onClick
 import net.lustenauer.games.memory2.game.Assets
 import net.lustenauer.games.memory2.utils.Constants.Fonts.FONT_M
-import net.lustenauer.games.memory2.utils.Constants.Skins
+import net.lustenauer.games.memory2.utils.Constants.Skins.BACKGROUND_3
+import net.lustenauer.games.memory2.utils.Constants.Skins.BTN_BLUE
+import net.lustenauer.games.memory2.utils.Constants.Skins.BTN_BLUE_BIG
+import net.lustenauer.games.memory2.utils.Constants.Skins.IMG_BUTTERFLY
+import net.lustenauer.games.memory2.utils.Constants.Skins.IMG_FROG
 import net.lustenauer.gdx.scenes.scene2d.Command.Companion.CMD_MENU
 import net.lustenauer.gdx.scenes.scene2d.Command.Companion.CMD_RESTART
 import net.lustenauer.gdx.scenes.scene2d.Command.Companion.CMD_RESUME
 import net.lustenauer.gdx.scenes.scene2d.Command.Companion.CMD_SETTINGS
 import net.lustenauer.gdx.scenes.scene2d.CommandListener
-import net.lustenauer.gdx.scenes.scene2d.ui.AbstractCommandWindow
+import net.lustenauer.gdx.scenes.scene2d.CommandListener.CommandEvent
 
 /**
  * An overlay window displayed when the game is paused.
@@ -22,79 +26,69 @@ import net.lustenauer.gdx.scenes.scene2d.ui.AbstractCommandWindow
  * Provides UI controls for resuming, restarting, opening settings, or returning to the main menu.
  * Communicates actions back to the controller via a [CommandListener].
  *
- * @param cmdListener The listener that handles the fired [CommandListener.CommandEvent]s.
+ * @author Patric Hollenstein
  */
-class WindowPause(cmdListener: CommandListener?) : AbstractCommandWindow(cmdListener) {
+class WindowPause(cmdListener: CommandListener?) : Table(Assets.skinWindow) {
 
-    /** The texture skin resource container specifically assigned to window elements. */
-    private lateinit var skinWindow: Skin
+    init {
+        if (cmdListener != null) {
+            addListener(cmdListener)
+        }
 
-    /**
-     * Initializes the pause window layout, visual assets, labels, and command buttons.
-     */
-    override fun init() {
-        skinWindow = Assets.skinWindow
-        skin = skinWindow
-        setBackground(Skins.BACKGROUND_3)
+        background = skin.getDrawable(BACKGROUND_3)
+
         isVisible = false
         setPosition(40f, 220f)
         setSize(400f, 400f)
 
-        addActor(Image(skinWindow, Skins.IMG_FROG).apply {
+        addActor(Image(skin, IMG_FROG).apply {
             setPosition(235f, 40f)
-            setScale(0.7f)
+            scaleX = 0.7f
+            scaleY = 0.7f
             rotation = -10f
         })
 
-        addActor(Image(skinWindow, Skins.IMG_BUTTERFLY).apply {
+        addActor(Image(skin, IMG_BUTTERFLY).apply {
             setPosition(325f, 220f)
-            setScale(0.35f)
+            scaleX = 0.35f
+            scaleY = 0.35f
             rotation = 30f
         })
 
-        addActor(Label(TEXT_TITLE, skinWindow, FONT_M, RED).apply {
+        addActor(Label(TEXT_TITLE, skin, FONT_M, RED).apply {
             setPosition(20f, 325f)
         })
 
-        addActor(Button(skinWindow, Skins.BTN_BLUE_BIG).apply {
+        addActor(Button(skin, BTN_BLUE_BIG).apply {
             add(TEXT_BTN_RESUME)
             setPosition(20f, 200f)
-            onClick { fire(CommandListener.CommandEvent(CMD_RESUME)) }
+            onClick { fire(CommandEvent(CMD_RESUME)) }
         })
 
-        addActor(Button(skinWindow, Skins.BTN_BLUE).apply {
+        addActor(Button(skin, BTN_BLUE).apply {
             add(TEXT_BTN_RESTART)
             setPosition(20f, 120f)
-            onClick { fire(CommandListener.CommandEvent(CMD_RESTART)) }
+            onClick { fire(CommandEvent(CMD_RESTART)) }
         })
 
-        addActor(Button(skinWindow, Skins.BTN_BLUE).apply {
+        addActor(Button(skin, BTN_BLUE).apply {
             add(TEXT_BTN_MENU)
             setPosition(20f, 70f)
-            onClick { fire(CommandListener.CommandEvent(CMD_MENU)) }
+            onClick { fire(CommandEvent(CMD_MENU)) }
         })
 
-        addActor(Button(skinWindow, Skins.BTN_BLUE).apply {
+        addActor(Button(skin, BTN_BLUE).apply {
             add(TEXT_BTN_SETTINGS)
             setPosition(20f, 20f)
-            onClick { fire(CommandListener.CommandEvent(CMD_SETTINGS)) }
+            onClick { fire(CommandEvent(CMD_SETTINGS)) }
         })
     }
 
     companion object {
-        /** Title banner text displayed at the top of the pause overlay. */
         private const val TEXT_TITLE = "G A M E   P A U S E D"
-
-        /** Label text assigned to the resume gameplay option button. */
         private const val TEXT_BTN_RESUME = "RESUME"
-
-        /** Label text assigned to the match reset option button. */
         private const val TEXT_BTN_RESTART = "RESTART"
-
-        /** Label text assigned to the main menu navigation button. */
         private const val TEXT_BTN_MENU = "MENU"
-
-        /** Label text assigned to the game settings panel button. */
         private const val TEXT_BTN_SETTINGS = "SETTINGS"
     }
 }

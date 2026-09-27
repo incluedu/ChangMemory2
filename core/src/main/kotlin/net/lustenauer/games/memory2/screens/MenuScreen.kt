@@ -69,7 +69,7 @@ class MenuScreen(game: ChangMemory) : AbstractScreen(game), MenuLayout.MenuActio
     /**
      * Handles window resizing events by updating the boundaries of the active [Stage] viewport.
      *
-     * @param width the fresh virtual pixel width width specification
+     * @param width the fresh virtual pixel width specification
      * @param height the fresh virtual pixel height specification
      */
     override fun resize(width: Int, height: Int) {

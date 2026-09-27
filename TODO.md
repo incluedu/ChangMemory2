@@ -4,15 +4,15 @@ Diese Liste dokumentiert die verbleibenden Schritte, um *ChangMemory II* auf ein
 
 ---
 
-## 🟥 Priorität 1: Datenhaltung & UI-Infrastruktur vorbereiten (Jetzt fällig)
-Ziel: Das Fundament für Einstellungen und globale Layouts glattziehen, um doppelten Code im restlichen Projekt zu verhindern.
+## 🟥 Priorität 1 — Target: [2.0.0-alpha.1] (Aktueller Sprint / Jetzt fällig)
+Ziel: Das Fundament für Einstellungen glattziehen und verbleibende Compiler-Warnungen auslöschen, um die erste Alpha-Version stabil abzuschließen.
 
 - [ ] **`GamePreferences.kt` (Einstellungen speichern)**
     - [ ] Die Einstellungs-Klasse in ein echtes Kotlin-**`object`**-Singleton umwandeln, um das alte `.Companion.instance`-Muster endgültig loszuwerden.
 
 ---
 
-## 🟨 Priorität 2: Screens modernisieren & UI vereinheitlichen
+## 🟨 Priorität 2 — Target: [2.0.0-alpha.2] (Nächste Version / UI-Konsistenz)
 Ziel: Alten Java-Layout-Boilerplate-Code entfernen, anonyme Listener durch flache Kotlin-Lambdas ersetzen und auf KTX Scene2D DSL umstellen.
 
 - [ ] **Globales UI- & Header-Refactoring (Konsistenz-Upgrade)**
@@ -33,13 +33,13 @@ Ziel: Alten Java-Layout-Boilerplate-Code entfernen, anonyme Listener durch flach
 
 ---
 
-## 🟩 Priorität 3: Spielobjekte & Android-Schnittstellen (Später)
+## 🟩 Priorität 3 — Target: [2.0.0-alpha.3] (Spätere Alpha-Phase / Core-Logik)
 Ziel: Speicherfressende Strukturen optimieren und die Google Play Games Services v2 auf den neuesten Stand bringen.
 
 - [ ] **`Card.kt` & `CardList.kt`**
     - [ ] Den Karten-Actor auf unnötige Objekt-Erzeugungen innerhalb der permanenten `update`-Schleife prüfen.
     - [ ] Die Zustandsänderungen in saubere Kotlin-Properties umwandeln.
-- [ ] **Build-System finalisieren (Groovy-zu-KTS Migration)**
+- [ ] **Build-System finalseiten (Groovy-zu-KTS Migration)**
     - [ ] Die verbleibenden Build-Skripte von `lwjgl3/build.gradle` und `android/build.gradle` auf das moderne Kotlin DSL-Format (`.gradle.kts`) umstellen.
 - [ ] **Google Play Games Services (GPGS) v2 einbinden**
     - [ ] Die aktuelle Google Play Games v2 SDK-Abhängigkeit einbinden.
@@ -51,8 +51,10 @@ Ziel: Speicherfressende Strukturen optimieren und die Google Play Games Services
 - [x] Das gesamte Build-System erfolgreich auf **Kotlin DSL (`.gradle.kts`)** umgestellt.
 - [x] Veralteten LWJGL2-Desktop-Launcher durch eine moderne **LWJGL3-Engine** ersetzt.
 - [x] `Assets`, `ScoreList`, `AudioManager`, `InfoList` und `AchievementManager` in native Kotlin-**`object` Singletons** verwandelt.
-- [x] **`MenuScreen.kt`**: Vollständig splittet! Die UI-Strukturen wurden sauber in das neue **`MenuLayout.kt`** ausgelagert, von 54 Warnungen befreit, auf KTX-Logging umgestellt und der zerstörerische `hide()`-Lifecycle-Bug gefixt.
-- [x] **Echtes Vektor-Schriftensystem:** Die alten, klobigen Bitmap-Schriften restlos entfernt und durch den dynamischen **`FreeTypeFontGenerator`** mit deiner neuen Lieblingsschrift **`ArchitectsDaughter.ttf`** ersetzt. Alle Größen werden im RAM über ein ultrakurzes Extension-Befehlsmuster (`generator.create()`) verwaltet.
+- [x] **`MenuScreen.kt`**: Vollständig gesplittet! Die UI-Strukturen wurden sauber in das neue **`MenuLayout.kt`** ausgelagert, von 54 Warnungen befreit, auf KTX-Logging umgestellt und der zerstörerische `hide()`-Lifecycle-Bug gefixt.
+- [x] **Echtes Vektor-Schriftensystem**: Die alten, klobigen Bitmap-Schriften restlos entfernt und durch den dynamischen **`FreeTypeFontGenerator`** mit deiner neuen Lieblingsschrift **`ArchitectsDaughter.ttf`** ersetzt. Alle Größen werden im RAM über ein ultrakurzes Extension-Befehlsmuster (`generator.create()`) verwaltet.
+- [x] **Vernichtung von `AbstractCommandWindow`**: Die klobige, fehleranfällige abstrakte Fenster-Basisklasse restlos gelöscht. **`WindowGameOver.kt`** und **`WindowPause.kt`** erben nun direkt von der nativen `Table`, nutzen fehlerfreie Kotlin-`init`-Blöcke ohne Konstruktor-Leaks und sind komplett auf statische Named-Imports umgestellt.
+- [x] **Code-Analyse-Bereinigung**: Die `Constants.kt` vollständig von ungenutzten Variablen-Leichen (`WIDTH`, `HEIGHT`, `LIBGDX_UI`, `FONTS`) befreit.
 - [x] Den schweren Logik-Fehler behoben, bei dem falsche Karten-Paare `cardSetTries` doppelt (+2 statt +1) bestraft haben.
 - [x] Die Musikallokationen durch Wechsel von bitweisem `and` auf logisches `&&` in der Audio-Schleife korrigiert.
 - [x] `ActionResolver`-Interface komplett plattformunabhängig entkoppelt und ein typensicheres `GameAchievement`-Enum eingeführt.

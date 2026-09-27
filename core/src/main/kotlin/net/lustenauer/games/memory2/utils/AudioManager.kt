@@ -150,7 +150,7 @@ object AudioManager {
     }
 
     /**
-     * Randomizes sound tracks and hooks up automated looping chains upon track termination milestones.
+     * Randomizes soundtracks and hooks up automated looping chains upon track termination milestones.
      */
     fun startRandomMusic() {
         log.debug { "startRandomMusic()" }

@@ -69,7 +69,7 @@ object AchievementManager {
     }
 
     /**
-     * Pulls the current synchronised leaderboard achievements container.
+     * Pulls the current synchronized leaderboard achievements container.
      */
     fun getAchievements(): GdxArray<AchievementEntry> {
         if (achievements.size == 0) {
@@ -134,7 +134,6 @@ object AchievementManager {
     fun checkGameDoneAchievement(score: Int) {
         if (score < 2000) return
 
-        // BEHOBEN: Nutzt jetzt die fehlerfreie, plattformunabhängige Methode des Interfaces
         ChangMemory.instance.actionResolver?.apply {
             incrementAchievement(GameAchievement.WORM, 1)
             incrementAchievement(GameAchievement.MOUSE, 1)

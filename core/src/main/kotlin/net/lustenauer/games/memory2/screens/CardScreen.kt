@@ -190,7 +190,7 @@ class CardScreen(game: ChangMemory) : AbstractScreen(game) {
     }
 
     /**
-     * Orchestrates the primary initialisation and entry routing for the screen session.
+     * Orchestrates the primary initialization and entry routing for the screen session.
      * Prevents destructive resource rebuilds if navigating back from child overlays,
      * calibrates the global input focus via an `if`-expression, and resets navigation flags.
      */
@@ -281,7 +281,7 @@ class CardScreen(game: ChangMemory) : AbstractScreen(game) {
 
     /**
      * Initializes the core visual architecture of the screen session.
-     * Binds pre-loaded skin templates from [Assets], orchestrates the primary game [stage],
+     * Binds preloaded skin templates from [Assets], orchestrates the primary game [stage],
      * initializes responsive viewports, and links the graphical [GameHUD] infrastructure.
      */
     private fun initStage() {
@@ -546,7 +546,6 @@ class CardScreen(game: ChangMemory) : AbstractScreen(game) {
     private fun doLuckStrikeSet(firstCard: Card, secondCard: Card) {
         log.debug { "doLuckStrikeSet() -> Match: ${firstCard.cardName}" }
 
-        // Texte für die Kreidetafel einreihen
         InfoList.add(firstCard.cardName, size = InfoList.SIZE_L, color = Color.RED)
         InfoList.add("+${firstCard.time + secondCard.time} sec", size = InfoList.SIZE_L)
         InfoList.add("+${firstCard.score + secondCard.score} POINTS", size = InfoList.SIZE_L)

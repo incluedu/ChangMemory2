@@ -5,17 +5,18 @@ import com.badlogic.gdx.graphics.Color.BLACK
 import com.badlogic.gdx.scenes.scene2d.Group
 import com.badlogic.gdx.scenes.scene2d.ui.Button
 import com.badlogic.gdx.scenes.scene2d.ui.Label
-import com.badlogic.gdx.scenes.scene2d.ui.Skin
+import com.badlogic.gdx.scenes.scene2d.ui.Table
 import ktx.actors.onClick
 import net.lustenauer.games.memory2.game.Assets
-import net.lustenauer.games.memory2.utils.Constants.Fonts.FONT_XS
 import net.lustenauer.games.memory2.utils.Constants.Fonts.FONT_M
-import net.lustenauer.games.memory2.utils.Constants.Skins
+import net.lustenauer.games.memory2.utils.Constants.Fonts.FONT_XS
+import net.lustenauer.games.memory2.utils.Constants.Skins.BACKGROUND_3
+import net.lustenauer.games.memory2.utils.Constants.Skins.BTN_BLUE
 import net.lustenauer.gdx.scenes.scene2d.Command.Companion.CMD_MENU
 import net.lustenauer.gdx.scenes.scene2d.Command.Companion.CMD_RESTART
 import net.lustenauer.gdx.scenes.scene2d.Command.Companion.CMD_SCORE
 import net.lustenauer.gdx.scenes.scene2d.CommandListener
-import net.lustenauer.gdx.scenes.scene2d.ui.AbstractCommandWindow
+import net.lustenauer.gdx.scenes.scene2d.CommandListener.CommandEvent
 import net.lustenauer.utils.Time
 
 /**
@@ -25,66 +26,52 @@ import net.lustenauer.utils.Time
  * and provides navigation buttons to view scores, return to the menu, or restart.
  * Communicates actions back to the controller via a [CommandListener].
  *
- * @param cmdListener The listener that handles the fired [CommandListener.CommandEvent]s.
+ * @author Patric Hollenstein
  */
-class WindowGameOver(cmdListener: CommandListener?) : AbstractCommandWindow(cmdListener) {
+class WindowGameOver(cmdListener: CommandListener?) : Table(Assets.skinWindow) {
 
-    /** The texture skin resource container specifically assigned to window elements. */
-    private lateinit var skinWindow: Skin
+    private val lblScore: Label
+    private var lblTime: Label
+    private val lblCardFlippedCount: Label
+    private val lblCardSolvedCount: Label
+    private val lblLuckyStrikeCount: Label
 
-    /** Label displaying the player's final accumulated score. */
-    private lateinit var lblScore: Label
+    init {
+        if (cmdListener != null) {
+            addListener(cmdListener)
+        }
 
-    /** Label displaying the total chronological time spent in the match session. */
-    private lateinit var lblTime: Label
-
-    /** Label displaying the total number of manual card flips executed. */
-    private lateinit var lblCardFlippedCount: Label
-
-    /** Label displaying the absolute count of successfully matched card sets. */
-    private lateinit var lblCardSolvedCount: Label
-
-    /** Label displaying the count of lucky strikes triggered during the game. */
-    private lateinit var lblLuckyStrikeCount: Label
-
-    /**
-     * Initializes the game over window layout, sets up action buttons,
-     * and builds the statistics panel rows.
-     */
-    override fun init() {
-        skinWindow = Assets.skinWindow
-        skin = skinWindow
-        setBackground(Skins.BACKGROUND_3)
+        background = skin.getDrawable(BACKGROUND_3)
         isVisible = false
-        sizeBy(400f, 250f)
+        setSize(400f, 250f)
 
-        addActor(Label(TEXT_TITLE, skinWindow, FONT_M, Color.RED).apply {
+        addActor(Label(TEXT_TITLE, skin, FONT_M, Color.RED).apply {
             setPosition(100f, 190f)
         })
 
-        addActor(Button(skinWindow, Skins.BTN_BLUE).apply {
+        addActor(Button(skin, BTN_BLUE).apply {
             add(TEXT_BTN_SCORES)
             setPosition(20f, 20f)
-            onClick { fire(CommandListener.CommandEvent(CMD_SCORE)) }
+            onClick { fire(CommandEvent(CMD_SCORE)) }
         })
 
-        addActor(Button(skinWindow, Skins.BTN_BLUE).apply {
+        addActor(Button(skin, BTN_BLUE).apply {
             add(TEXT_BTN_MENU)
             setPosition(20f, 70f)
-            onClick { fire(CommandListener.CommandEvent(CMD_MENU)) }
+            onClick { fire(CommandEvent(CMD_MENU)) }
         })
 
-        addActor(Button(skinWindow, Skins.BTN_BLUE).apply {
+        addActor(Button(skin, BTN_BLUE).apply {
             add(TEXT_BTN_RESTART)
             setPosition(20f, 120f)
-            onClick { fire(CommandListener.CommandEvent(CMD_RESTART)) }
+            onClick { fire(CommandEvent(CMD_RESTART)) }
         })
 
-        buildStatRow(TEXT_STAT_SCORE, 140f, 140f) { lblScore = it }
-        buildStatRow(TEXT_STAT_TIME, 140f, 120f) { lblTime = it }
-        buildStatRow(TEXT_STAT_SOLVED, 140f, 100f) { lblCardSolvedCount = it }
-        buildStatRow(TEXT_STAT_LUCKY, 140f, 80f) { lblLuckyStrikeCount = it }
-        buildStatRow(TEXT_STAT_FLIPPED, 140f, 60f) { lblCardFlippedCount = it }
+        lblScore = buildStatRow(TEXT_STAT_SCORE, 140f, 140f)
+        lblTime = buildStatRow(TEXT_STAT_TIME, 140f, 120f)
+        lblCardSolvedCount = buildStatRow(TEXT_STAT_SOLVED, 140f, 100f)
+        lblLuckyStrikeCount = buildStatRow(TEXT_STAT_LUCKY, 140f, 80f)
+        lblCardFlippedCount = buildStatRow(TEXT_STAT_FLIPPED, 140f, 60f)
     }
 
     /**
@@ -93,15 +80,15 @@ class WindowGameOver(cmdListener: CommandListener?) : AbstractCommandWindow(cmdL
      * @param title The text description of the statistic.
      * @param x The X position coordinates of the row container.
      * @param y The Y position coordinates of the row container.
-     * @param assignTo Callback function passing the generated value [Label] to bind it to a class reference.
+     * @return The freshly generated value [Label] reference.
      */
-    private fun buildStatRow(title: String, x: Float, y: Float, assignTo: (Label) -> Unit) {
+    private fun buildStatRow(title: String, x: Float, y: Float): Label {
         val grp = Group().apply { setPosition(x, y) }
 
-        val lblTitle = Label(title, skinWindow, FONT_XS, BLACK).apply {
+        val lblTitle = Label(title, skin, FONT_XS, BLACK).apply {
             setPosition(20f, 0f)
         }
-        val valueLabel = Label("0", skinWindow, FONT_XS, BLACK).apply {
+        val valueLabel = Label("0", skin, FONT_XS, BLACK).apply {
             setPosition(170f, 0f)
         }
 
@@ -109,7 +96,7 @@ class WindowGameOver(cmdListener: CommandListener?) : AbstractCommandWindow(cmdL
         grp.addActor(valueLabel)
         addActor(grp)
 
-        assignTo(valueLabel)
+        return valueLabel
     }
 
     /** Updates the displayed total score. */
@@ -128,31 +115,14 @@ class WindowGameOver(cmdListener: CommandListener?) : AbstractCommandWindow(cmdL
     fun setTotalCardSolvedCount(cardSolvedCount: Int) = lblCardSolvedCount.setText(cardSolvedCount.toString())
 
     companion object {
-        /** Title banner text displayed at the top of the game over overlay. */
         private const val TEXT_TITLE = "G A M E   O V E R"
-
-        /** Label text assigned to the online leaderboard navigation button. */
         private const val TEXT_BTN_SCORES = "SCORES"
-
-        /** Label text assigned to the main menu navigation button. */
         private const val TEXT_BTN_MENU = "MENU"
-
-        /** Label text assigned to the match restart option button. */
         private const val TEXT_BTN_RESTART = "RESTART"
-
-        /** Label header description tracking the final score metric row. */
         private const val TEXT_STAT_SCORE = "TOTAL SCORE:"
-
-        /** Label header description tracking the gameplay time metric row. */
         private const val TEXT_STAT_TIME = "TOTAL TIME:"
-
-        /** Label header description tracking matched card pairs across levels. */
         private const val TEXT_STAT_SOLVED = "CARDS SOLVED:"
-
-        /** Label header description tracking consecutive blind matches. */
         private const val TEXT_STAT_LUCKY = "LUCKY STRIKES:"
-
-        /** Label header description tracking the total interactive flip count. */
         private const val TEXT_STAT_FLIPPED = "CARDS FLIPPED:"
     }
 }

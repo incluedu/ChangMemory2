@@ -48,11 +48,13 @@ All notable changes and version milestones of this project will be documented in
 * `[c]` Decoupled the **`MenuScreen.kt`** handler architecture by completely separating structural UI designs from systemic libGDX screen lifecycle operations.
 * `[c]` Refactored **`Assets.kt`** to utilize a highly streamlined, parameterized extension function (`generator.create()`), removing all local variables and duplicate layout filter declarations.
 * `[c]` Optimized the visual proportions of **`MenuLayout.kt`** by applying the newly structured semantic typography tokens, preventing clipping on virtual chalkboard overlays.
+* `[c]` Completely overhauled **`WindowGameOver.kt`** and **`WindowPause.kt`** to inherit directly from native `Table` elements, establishing zero-leak Kotlin constructors and clean prefixless static named imports.
 
 ### Removed
 * `[-]` Permanently removed all legacy AdMob mobile advertising layout containers, banner configuration instances, and network permission hooks from the Android codebase to ensure an ad-free user experience.
 * `[-]` Deleted the obsolete `license.apache2` template file to maintain a single, clean licensing architecture across the repository.
 * `[-]` Deleted all legacy static bitmap font assets (`.fnt` and `.png` pairings) from the `assets/fonts/` directory, completely migrating the typesetting engine to dynamic TrueType vector rendering.
+* `[-]` Eradicated the unneeded `AbstractCommandWindow` abstraction layer alongside obsolete dead-code properties (`WIDTH`, `HEIGHT`, `LIBGDX_UI`) inside `Constants.kt`.
 
 ### Fixed
 * `[f]` Fixed a critical runtime crash on the score screen where an unresolved `LabelStyle` identifier name (`font16`) caused skin deployment crashes; fixed by binding directly to the default chalkboard typography font context.
