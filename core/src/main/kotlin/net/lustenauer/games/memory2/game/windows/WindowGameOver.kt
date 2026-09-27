@@ -1,22 +1,22 @@
 package net.lustenauer.games.memory2.game.windows
 
-import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.Color.BLACK
+import com.badlogic.gdx.graphics.Color.RED
 import com.badlogic.gdx.scenes.scene2d.Group
 import com.badlogic.gdx.scenes.scene2d.ui.Button
 import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import ktx.actors.onClick
 import net.lustenauer.games.memory2.game.Assets
+import net.lustenauer.games.memory2.ui.CommandListener
+import net.lustenauer.games.memory2.ui.CommandListener.CommandEvent
 import net.lustenauer.games.memory2.utils.Constants.Fonts.FONT_M
 import net.lustenauer.games.memory2.utils.Constants.Fonts.FONT_XS
 import net.lustenauer.games.memory2.utils.Constants.Skins.BACKGROUND_3
 import net.lustenauer.games.memory2.utils.Constants.Skins.BTN_BLUE
-import net.lustenauer.gdx.scenes.scene2d.Command.Companion.CMD_MENU
-import net.lustenauer.gdx.scenes.scene2d.Command.Companion.CMD_RESTART
-import net.lustenauer.gdx.scenes.scene2d.Command.Companion.CMD_SCORE
-import net.lustenauer.gdx.scenes.scene2d.CommandListener
-import net.lustenauer.gdx.scenes.scene2d.CommandListener.CommandEvent
+import net.lustenauer.games.memory2.utils.GameCommand.MENU
+import net.lustenauer.games.memory2.utils.GameCommand.RESTART
+import net.lustenauer.games.memory2.utils.GameCommand.SCORE
 import net.lustenauer.games.memory2.utils.toTimeString
 
 /**
@@ -45,26 +45,26 @@ class WindowGameOver(cmdListener: CommandListener?) : Table(Assets.skinWindow) {
         isVisible = false
         setSize(400f, 250f)
 
-        addActor(Label(TEXT_TITLE, skin, FONT_M, Color.RED).apply {
+        addActor(Label(TEXT_TITLE, skin, FONT_M, RED).apply {
             setPosition(100f, 190f)
         })
 
         addActor(Button(skin, BTN_BLUE).apply {
             add(TEXT_BTN_SCORES)
             setPosition(20f, 20f)
-            onClick { fire(CommandEvent(CMD_SCORE)) }
+            onClick { fire(CommandEvent(SCORE)) }
         })
 
         addActor(Button(skin, BTN_BLUE).apply {
             add(TEXT_BTN_MENU)
             setPosition(20f, 70f)
-            onClick { fire(CommandEvent(CMD_MENU)) }
+            onClick { fire(CommandEvent(MENU)) }
         })
 
         addActor(Button(skin, BTN_BLUE).apply {
             add(TEXT_BTN_RESTART)
             setPosition(20f, 120f)
-            onClick { fire(CommandEvent(CMD_RESTART)) }
+            onClick { fire(CommandEvent(RESTART)) }
         })
 
         lblScore = buildStatRow(TEXT_STAT_SCORE, 140f, 140f)

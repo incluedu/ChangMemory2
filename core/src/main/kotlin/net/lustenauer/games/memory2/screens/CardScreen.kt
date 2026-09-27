@@ -28,12 +28,8 @@ import net.lustenauer.games.memory2.utils.AchievementManager
 import net.lustenauer.games.memory2.utils.AudioManager
 import net.lustenauer.games.memory2.utils.Constants.Skins.BACKGROUND_4
 import net.lustenauer.games.memory2.utils.Constants.Viewport
-import net.lustenauer.gdx.scenes.scene2d.Command.Companion.CMD_MENU
-import net.lustenauer.gdx.scenes.scene2d.Command.Companion.CMD_RESTART
-import net.lustenauer.gdx.scenes.scene2d.Command.Companion.CMD_RESUME
-import net.lustenauer.gdx.scenes.scene2d.Command.Companion.CMD_SCORE
-import net.lustenauer.gdx.scenes.scene2d.Command.Companion.CMD_SETTINGS
-import net.lustenauer.gdx.scenes.scene2d.CommandListener
+import net.lustenauer.games.memory2.utils.GameCommand
+import net.lustenauer.games.memory2.ui.CommandListener
 import com.badlogic.gdx.utils.Array as GdxArray
 
 /**
@@ -75,7 +71,7 @@ class CardScreen(game: ChangMemory) : AbstractScreen(game) {
 
     /**
      * Triggered once this screen context becomes the active visibility layer inside the game loop.
-     * Calibrates analytics trackers via [ChangMemory.instance.actionResolver], captures the hardware back button,
+     * Calibrates analytics trackers via [ChangMemory.actionResolver], captures the hardware back button,
      * activates background audio streams via [AudioManager], and triggers the core [init] sequence.
      */
     override fun show() {
@@ -241,9 +237,10 @@ class CardScreen(game: ChangMemory) : AbstractScreen(game) {
 
         windowGameOver = WindowGameOver(CommandListener { event ->
             when (event?.command) {
-                CMD_RESTART -> doGameRestart()
-                CMD_MENU -> doShowMenuScreen()
-                CMD_SCORE -> doShowScoreScreen()
+                GameCommand.RESTART -> doGameRestart()
+                GameCommand.MENU -> doShowMenuScreen()
+                GameCommand.SCORE -> doShowScoreScreen()
+                else -> log.error { "Unhandled GameCommand event in WindowGameOver scope: ${event?.command}" }
             }
         })
         hudStage.addActor(windowGameOver)
@@ -257,10 +254,11 @@ class CardScreen(game: ChangMemory) : AbstractScreen(game) {
 
         windowPause = WindowPause(CommandListener { event ->
             when (event?.command) {
-                CMD_RESTART -> doGameRestart()
-                CMD_MENU -> doShowMenuScreen()
-                CMD_SETTINGS -> doShowSettingsScreen()
-                CMD_RESUME -> doGameResume()
+                GameCommand.RESTART -> doGameRestart()
+                GameCommand.MENU -> doShowMenuScreen()
+                GameCommand.SETTINGS -> doShowSettingsScreen()
+                GameCommand.RESUME -> doGameResume()
+                else -> log.error { "Unhandled GameCommand event in WindowPause scope: ${event?.command}" }
             }
         })
         stage.addActor(windowPause)

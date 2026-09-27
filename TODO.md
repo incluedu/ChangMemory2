@@ -12,9 +12,11 @@ Ziel: Das Fundament für Einstellungen glattziehen und verbleibende Compiler-War
 
 ---
 
-## 🟨 Priorität 2 — Target: [2.0.0-alpha.2] (Nächste Version / UI-Konsistenz)
-Ziel: Alten Java-Layout-Boilerplate-Code entfernen, anonyme Listener durch flache Kotlin-Lambdas ersetzen und auf KTX Scene2D DSL umstellen.
+## 🟨 Priorität 2 — Target: [2.0.0-alpha.2] (Nächste Version / UI-Konsistenz & Modul-Splits)
+Ziel: Alten Java-Layout-Boilerplate-Code entfernen, anonyme Listener durch flache Kotlin-Lambdas ersetzen und komplexe Riesen-Klassen entkoppeln.
 
+- [ ] **`CardScreen.kt` (Spiel-Hauptbildschirm splitten)**
+    - [ ] **Klassen-Split:** Den riesigen `CardScreen` radikal aufteilen! Trennung der Core-Spielsteuerung von den HUD-Elementen und Scene2D-Tabellenlayoutern, um die Datei übersichtlich und modular zu halten.
 - [ ] **Globales UI- & Header-Refactoring (Konsistenz-Upgrade)**
     - [ ] **Zentraler Header:** Das Spiellogo („CHANG MEMORY II“ & Copyright) in eine wiederverwendbare Komponente auslagern, um doppelten Code in allen Screens zu verhindern.
     - [ ] **Google-Dienste aktualisieren:** Google Plus (G+) restlos aus dem UI entfernen. Die Google-Play-Buttons so überarbeiten, dass sie am Desktop unsichtbar sind und nur unter Android aktiv schalten.
@@ -39,7 +41,7 @@ Ziel: Speicherfressende Strukturen optimieren und die Google Play Games Services
 - [ ] **`Card.kt` & `CardList.kt`**
     - [ ] Den Karten-Actor auf unnötige Objekt-Erzeugungen innerhalb der permanenten `update`-Schleife prüfen.
     - [ ] Die Zustandsänderungen in saubere Kotlin-Properties umwandeln.
-- [ ] **Build-System finalseiten (Groovy-zu-KTS Migration)**
+- [ ] **Build-System finalisieren (Groovy-zu-KTS Migration)**
     - [ ] Die verbleibenden Build-Skripte von `lwjgl3/build.gradle` und `android/build.gradle` auf das moderne Kotlin DSL-Format (`.gradle.kts`) umstellen.
 - [ ] **Google Play Games Services (GPGS) v2 einbinden**
     - [ ] Die aktuelle Google Play Games v2 SDK-Abhängigkeit einbinden.
@@ -55,6 +57,7 @@ Ziel: Speicherfressende Strukturen optimieren und die Google Play Games Services
 - [x] **Echtes Vektor-Schriftensystem**: Die alten, klobigen Bitmap-Schriften restlos entfernt und durch den dynamischen **`FreeTypeFontGenerator`** mit deiner neuen Lieblingsschrift **`ArchitectsDaughter.ttf`** ersetzt. Alle Größen werden im RAM über ein ultrakurzes Extension-Befehlsmuster (`generator.create()`) verwaltet.
 - [x] **Vernichtung von `AbstractCommandWindow`**: Die klobige, fehleranfällige abstrakte Fenster-Basisklasse restlos gelöscht. **`WindowGameOver.kt`** und **`WindowPause.kt`** erben nun direkt von der nativen `Table`, nutzen fehlerfreie Kotlin-`init`-Blöcke ohne Konstruktor-Leaks und sind komplett auf statische Named-Imports umgestellt.
 - [x] **Code-Analyse-Bereinigung**: Die `Constants.kt` vollständig von ungenutzten Variablen-Leichen (`WIDTH`, `HEIGHT`, `LIBGDX_UI`, `FONTS`) befreit.
+- [x] **Typensicheres Enum-Befehlssystem**: Das alte Interface `Command` gelöscht und durch das moderne `GameCommand`-Enum ersetzt. `CommandListener` umgestellt und in das Kern-UI-Paket integriert.
 - [x] Den schweren Logik-Fehler behoben, bei dem falsche Karten-Paare `cardSetTries` doppelt (+2 statt +1) bestraft haben.
 - [x] Die Musikallokationen durch Wechsel von bitweisem `and` auf logisches `&&` in der Audio-Schleife korrigiert.
 - [x] `ActionResolver`-Interface komplett plattformunabhängig entkoppelt und ein typensicheres `GameAchievement`-Enum eingeführt.

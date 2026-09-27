@@ -13,12 +13,12 @@ import net.lustenauer.games.memory2.utils.Constants.Skins.BTN_BLUE
 import net.lustenauer.games.memory2.utils.Constants.Skins.BTN_BLUE_BIG
 import net.lustenauer.games.memory2.utils.Constants.Skins.IMG_BUTTERFLY
 import net.lustenauer.games.memory2.utils.Constants.Skins.IMG_FROG
-import net.lustenauer.gdx.scenes.scene2d.Command.Companion.CMD_MENU
-import net.lustenauer.gdx.scenes.scene2d.Command.Companion.CMD_RESTART
-import net.lustenauer.gdx.scenes.scene2d.Command.Companion.CMD_RESUME
-import net.lustenauer.gdx.scenes.scene2d.Command.Companion.CMD_SETTINGS
-import net.lustenauer.gdx.scenes.scene2d.CommandListener
-import net.lustenauer.gdx.scenes.scene2d.CommandListener.CommandEvent
+import net.lustenauer.games.memory2.utils.GameCommand.MENU
+import net.lustenauer.games.memory2.utils.GameCommand.RESTART
+import net.lustenauer.games.memory2.utils.GameCommand.RESUME
+import net.lustenauer.games.memory2.utils.GameCommand.SETTINGS
+import net.lustenauer.games.memory2.ui.CommandListener
+import net.lustenauer.games.memory2.ui.CommandListener.CommandEvent
 
 /**
  * An overlay window displayed when the game is paused.
@@ -62,25 +62,25 @@ class WindowPause(cmdListener: CommandListener?) : Table(Assets.skinWindow) {
         addActor(Button(skin, BTN_BLUE_BIG).apply {
             add(TEXT_BTN_RESUME)
             setPosition(20f, 200f)
-            onClick { fire(CommandEvent(CMD_RESUME)) }
+            onClick { fire(CommandEvent(RESUME)) }
         })
 
         addActor(Button(skin, BTN_BLUE).apply {
             add(TEXT_BTN_RESTART)
             setPosition(20f, 120f)
-            onClick { fire(CommandEvent(CMD_RESTART)) }
+            onClick { fire(CommandEvent(RESTART)) }
         })
 
         addActor(Button(skin, BTN_BLUE).apply {
             add(TEXT_BTN_MENU)
             setPosition(20f, 70f)
-            onClick { fire(CommandEvent(CMD_MENU)) }
+            onClick { fire(CommandEvent(MENU)) }
         })
 
         addActor(Button(skin, BTN_BLUE).apply {
             add(TEXT_BTN_SETTINGS)
             setPosition(20f, 20f)
-            onClick { fire(CommandEvent(CMD_SETTINGS)) }
+            onClick { fire(CommandEvent(SETTINGS)) }
         })
     }
 

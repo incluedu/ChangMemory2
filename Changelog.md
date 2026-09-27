@@ -25,6 +25,7 @@ All notable changes and version milestones of this project will be documented in
 * `[+]` Created a dedicated `DesktopActionResolver.kt` file within the `lwjgl3` module to cleanly separate launcher configurations from desktop-specific no-op cloud overrides.
 * `[+]` Introduced **`MenuLayout.kt`** to handle all standalone layout compositions, label scalings, and button matrices for the main menu hub.
 * `[+]` Created a semantic **`Fonts`** resource container inside `Constants.kt` with full KDoc integrations to map dynamic vector sizes abstractly (`FONT_MINI` to `FONT_HUGE`).
+* `[+]` Introduced a type-safe **`GameCommand`** enum registry to cleanly replace legacy integer-based execution flags with immutable compile-time tokens.
 
 ### Changed
 * `[c]` Rebranded the project from *ChangMemory* to **ChangMemory II**.
@@ -50,12 +51,15 @@ All notable changes and version milestones of this project will be documented in
 * `[c]` Optimized the visual proportions of **`MenuLayout.kt`** by applying the newly structured semantic typography tokens, preventing clipping on virtual chalkboard overlays.
 * `[c]` Completely overhauled **`WindowGameOver.kt`** and **`WindowPause.kt`** to inherit directly from native `Table` elements, establishing zero-leak Kotlin constructors and clean prefixless static named imports.
 * `[c]` Converted the legacy time formatting utility into a type-safe Kotlin extension property (`Float.toTimeString`), forcing explicit `Locale.ENGLISH` formatting to prevent platform-specific runtime localization bugs.
+* `[c]` Refactored **`CommandListener.kt`** to consume type-safe `GameCommand` enum states, moving the file layout into the unified `net.lustenauer.games.memory2.ui` project namespace.
+* `[c]` Updated **`WindowGameOver.kt`**, **`WindowPause.kt`**, and **`CardScreen.kt`** event-handling streams to utilize the new decoupled enum architecture.
 
 ### Removed
 * `[-]` Permanently removed all legacy AdMob mobile advertising layout containers, banner configuration instances, and network permission hooks from the Android codebase to ensure an ad-free user experience.
 * `[-]` Deleted the obsolete `license.apache2` template file to maintain a single, clean licensing architecture across the repository.
 * `[-]` Deleted all legacy static bitmap font assets (`.fnt` and `.png` pairings) from the `assets/fonts/` directory, completely migrating the typesetting engine to dynamic TrueType vector rendering.
 * `[-]` Eradicated the unneeded `AbstractCommandWindow` abstraction layer alongside obsolete dead-code properties (`WIDTH`, `HEIGHT`, `LIBGDX_UI`) inside `Constants.kt`.
+* `[-]` Permanently deleted the obsolete Java-style **`Command`** constant-interface file to eradicate the legacy interface-pollution anti-pattern.
 
 ### Fixed
 * `[f]` Fixed a critical runtime crash on the score screen where an unresolved `LabelStyle` identifier name (`font16`) caused skin deployment crashes; fixed by binding directly to the default chalkboard typography font context.

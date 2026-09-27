@@ -1,11 +1,14 @@
-package net.lustenauer.gdx.scenes.scene2d
+package net.lustenauer.games.memory2.ui
 
 import com.badlogic.gdx.scenes.scene2d.Event
 import com.badlogic.gdx.scenes.scene2d.EventListener
+import net.lustenauer.games.memory2.utils.GameCommand
 
 /**
- * An abstract event listener that filters and handles UI control events based on integer commands.
+ * An abstract event listener that filters and handles UI control events based on typsisichere GameCommands.
  * This simplifies communication between UI windows/overlays and their controllers.
+ *
+ * @author Patric Hollenstein
  */
 abstract class CommandListener : EventListener {
 
@@ -24,17 +27,17 @@ abstract class CommandListener : EventListener {
      * Called when a valid [CommandEvent] is received.
      * Implement this to define the action for specific commands.
      *
-     * @param event The triggered command event containing the action ID.
+     * @param event The triggered command event containing the action token.
      * @return true to mark the event as handled and stop it from propagating further.
      */
     abstract fun performCommand(event: CommandEvent?): Boolean
 
     /**
-     * Custom event containing an integer command ID representing a specific UI action.
+     * Custom event containing a [net.lustenauer.games.memory2.utils.GameCommand] representing a specific UI action.
      *
-     * @property command The unique ID identifier for the triggered action (e.g., CMD_RESTART).
+     * @property command The unique enum identifier token for the triggered action (e.g., GameCommand.RESTART).
      */
-    class CommandEvent(var command: Int) : Event()
+    class CommandEvent(var command: GameCommand) : Event()
 
     companion object {
         /**
@@ -45,7 +48,7 @@ abstract class CommandListener : EventListener {
          * ```kotlin
          * val listener = CommandListener { event ->
          *     when (event?.command) {
-         *         CMD_RESTART -> restartGame()
+         *         GameCommand.RESTART -> restartGame()
          *     }
          * }
          * ```
