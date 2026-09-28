@@ -3,7 +3,7 @@ package net.lustenauer.games.memory2.utils
 
 object Constants {
     // ---- APP VERSION ----
-    const val APP_VERSION = "2.0.0-alpha.1"
+    const val APP_VERSION = "2.0.0-alpha.2"
 
     // ---- VIEWPORTS & DIMENSIONS ----
     object Viewport {

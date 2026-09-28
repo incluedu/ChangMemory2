@@ -7,7 +7,7 @@ Diese Liste dokumentiert die verbleibenden Schritte, um *ChangMemory II* auf ein
 ## 🟥 Priorität 1 — Target: [2.0.0-alpha.1] (Aktuelle Entwicklungsphase)
 Ziel: Das Fundament für Einstellungen glattziehen und verbleibende Compiler-Warnungen auslöschen, um die erste Alpha-Version stabil abzuschließen.
 
-*Alle Tickets für diesen Meilenstein wurden erfolgreich abgeschlossen!* 🎉
+*Alle Tickets für diesen Meilenstein wurden erfolgreich abgeschlossen und auf GitHub veröffentlicht!* 🎉
 
 ---
 
@@ -19,7 +19,7 @@ Ziel: Alten Java-Layout-Boilerplate-Code entfernen, anonyme Listener durch flach
 - [ ] **`ScoreList.kt` & `ScorePane.kt` (Highscore-Logik splitten)**
     - [ ] **Klassen-Split:** Die Daten- und Speicherverwaltung strikt vom UI-Layout trennen. Die KTX-Tabelle `scorePane` aus der Datenklasse heraustrennen und als eigenständige UI-Komponente im `ui`-Paket verankern.
 - [ ] **`CardScreen.kt` (Spiel-Hauptbildschirm splitten)**
-    - [ ] **Klassen-Split:** Den riesigen `CardScreen` radikal aufteilen! Trennung der Core-Spielsteuerung von den HUD-Elementen und Scene2D-Tabellenlayoutern, um die Datei übersichtlich und modular zu halten.
+    - [ ] **Klassen-Split:** Den riesigen `CardScreen` radikal aufteilen! Trennung der Core-Spielsteuerung von den HUD-Elementen und Scene2D-Tabellenlayoutern, um die Datei übersichtlich und modular zu halten. *(Teilweise erledigt – GameHUD erfolgreich entkoppelt und typografisch optimiert)*
 - [ ] **Globales UI- & Header-Refactoring (Konsistenz-Upgrade)**
     - [ ] **Zentraler Header:** Das Spiellogo („CHANG MEMORY II“ & Copyright) in eine wiederverwendbare Komponente auslagern, um doppelten Code in allen Screens zu verhindern.
     - [ ] **Google-Dienste aktualisieren:** Google Plus (G+) restlos aus dem UI entfernen. Die Google-Play-Buttons so überarbeiten, dass sie am Desktop unsichtbar sind und nur unter Android aktiv schalten.
@@ -50,7 +50,7 @@ Ziel: Speicherfressende Strukturen optimieren, Google Play Games Services v2 auf
 - [ ] **`FlashLabel.kt` (UI-Paketierung)**
     - [ ] **Paket-Verschiebung:** Das blinkende Textfeld aus dem Logikkern `game.objects` entfernen und an seinen rechtmäßigen Platz im visuellen Paket `ui.actors` verschieben.
 - [ ] **Build-System finalisieren (Groovy-zu-KTS Migration)**
-    - [ ] Die verbleibenden Build-Skripte von `lwjgl3/build.gradle` and `android/build.gradle` auf das moderne Kotlin DSL-Format (`.gradle.kts`) umstellen.
+    - [ ] Die verbleibenden Build-Skripte von `lwjgl3/build.gradle` und `android/build.gradle` auf das moderne Kotlin DSL-Format (`.gradle.kts`) umstellen.
 - [ ] **Google Play Games Services (GPGS) v2 einbinden**
     - [ ] Die aktuelle Google Play Games v2 SDK-Abhängigkeit einbinden.
     - [ ] Den modernen `PlayGames.getLeaderboardsClient(this)` und `getAchievementsClient(this)` in der `AndroidLauncher.kt` aktivieren.

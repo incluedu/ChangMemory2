@@ -1,4 +1,10 @@
-## [2.0.0-alpha.1] - In Development (Unreleased)
+## [2.0.0-alpha.2] - In Development (Unreleased)
+### Changed
+* `[c]` Refactored and optimized **`GameHUD.kt`** typography layout scales, shifting general stats onto the compact `FONT_S` token to maximize vertical screen real estate.
+* `[c]` Enhanced critical timer states within the HUD gameplay loop by dynamically injecting aggressive color triggers (`Color.RED`) beneath the 30-second boundary.
+* `[c]` Standardized all internal component alignments, colors, and layout classes inside the HUD overlay context using clean, prefixless static named imports.
+
+## [2.0.0-alpha.1] - 2026-09-28
 ### Added
 * `[+]` Complete porting of the entire game source code from Java to **Kotlin**.
 * `[+]` Modernized the build system to the current **Gradle** multi-module structure.
