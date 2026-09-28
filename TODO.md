@@ -4,14 +4,14 @@ Diese Liste dokumentiert die verbleibenden Schritte, um *ChangMemory II* auf ein
 
 ---
 
-## 🟥 Priorität 1 — Target: [2.0.0-alpha.1] (Aktuelle Entwicklungsphase)
+## 🟥 Priorität 1 — Target: [2.0.0-alpha.1] (Erfolgreich veröffentlicht)
 Ziel: Das Fundament für Einstellungen glattziehen und verbleibende Compiler-Warnungen auslöschen, um die erste Alpha-Version stabil abzuschließen.
 
-*Alle Tickets für diesen Meilenstein wurden erfolgreich abgeschlossen und auf GitHub veröffentlicht!* 🎉
+*Alle Tickets für diesen Meilenstein wurden am 28.09.2026 vollständig abgeschlossen und auf GitHub veröffentlicht!* 🎉
 
 ---
 
-## 🟨 Priorität 2 — Target: [2.0.0-alpha.2] (Nächste Version / UI-Konsistenz & Modul-Splits)
+## 🟨 Priorität 2 — Target: [2.0.0-alpha.2] (Aktuelle Entwicklungsphase / UI-Konsistenz & Modul-Splits)
 Ziel: Alten Java-Layout-Boilerplate-Code entfernen, anonyme Listener durch flache Kotlin-Lambdas ersetzen und komplexe Riesen-Klassen entkoppeln.
 
 - [ ] **`Assets.kt` (Asset-Zentrale entflechten)**
