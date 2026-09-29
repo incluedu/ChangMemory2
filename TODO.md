@@ -4,16 +4,10 @@ Diese Liste dokumentiert die verbleibenden Schritte, um *ChangMemory II* auf ein
 
 ---
 
-## 🟥 Priorität 1 — Target: [2.0.0-alpha.1] (Erfolgreich veröffentlicht)
-Ziel: Das Fundament für Einstellungen glattziehen und verbleibende Compiler-Warnungen auslöschen, um die erste Alpha-Version stabil abzuschließen.
-
-*Alle Tickets für diesen Meilenstein wurden am 28.09.2026 vollständig abgeschlossen und auf GitHub veröffentlicht!* 🎉
-
----
-
-## 🟨 Priorität 2 — Target: [2.0.0-alpha.2] (Aktuelle Entwicklungsphase / UI-Konsistenz & Modul-Splits)
+## 🟨 Aktuelle Entwicklungsphase — Target: [2.0.0-alpha.2] (UI-Konsistenz & Modul-Splits)
 Ziel: Alten Java-Layout-Boilerplate-Code entfernen, anonyme Listener durch flache Kotlin-Lambdas ersetzen und komplexe Riesen-Klassen entkoppeln.
 
+- [x] **`SettingsScreen.kt` (Einstellungen)**: Vollständig auf modernste **KTX Scene2D DSL**-Syntax umgerüstet! Die ehemals tiefe Verschachtelung wurde über rein deklarative Kotlin-Extension-Properties (`val KTableWidget.build... get()`) flach gebrochen, anonyme Listener durch flache Lambdas ersetzt und die Speicherzugriffe sicher an das neue `GamePreferences`-Object gekoppelt mitsamt Konstanten-Parität.
 - [ ] **`Assets.kt` (Asset-Zentrale entflechten)**
     - [ ] **Klassen-Split:** Die "Gott-Klasse" auflösen. Trennung des asynchronen Kern-Lademanagers von der dynamischen TrueType-Schriftgenerierung (`UiSkinFactory`) und der spielspezifischen Karten-Initialisierung (`CardAssetFactory`).
 - [ ] **`ScoreList.kt` & `ScorePane.kt` (Highscore-Logik splitten)**
@@ -21,13 +15,9 @@ Ziel: Alten Java-Layout-Boilerplate-Code entfernen, anonyme Listener durch flach
 - [ ] **`CardScreen.kt` (Spiel-Hauptbildschirm splitten)**
     - [ ] **Klassen-Split:** Den riesigen `CardScreen` radikal aufteilen! Trennung der Core-Spielsteuerung von den HUD-Elementen und Scene2D-Tabellenlayoutern, um die Datei übersichtlich und modular zu halten. *(Teilweise erledigt – GameHUD erfolgreich entkoppelt und typografisch optimiert)*
 - [ ] **Globales UI- & Header-Refactoring (Konsistenz-Upgrade)**
-    - [ ] **Zentraler Header:** Das Spiellogo („CHANG MEMORY II“ & Copyright) in eine wiederverwendbare Komponente auslagern, um doppelten Code in allen Screens zu verhindern.
+    - [ ] **Zentraler Header (`GameHeader.kt`):** Den sich ständig wiederholenden Header („CHANG MEMORY II“ & Copyright) vollständig aus allen Screens herausbrechen. Ein eigenständiges, wiederverwendbares UI-Widget entwerfen, das von `Table` erbt und in jedem Screen per flachem Einzeiler (`add(GameHeader())`) injiziert werden kann.
     - [ ] **Google-Dienste aktualisieren:** Google Plus (G+) restlos aus dem UI entfernen. Die Google-Play-Buttons so überarbeiten, dass sie am Desktop unsichtbar sind und nur unter Android aktiv schalten.
     - [ ] **Versionsinfo im Hauptmenü:** Die Anzeige der Versionsnummer auch unten im Hauptmenü (`MenuLayout`) einbauen.
-- [ ] **`SettingsScreen.kt` (Einstellungen)**
-    - [ ] UI-Slider, Checkboxen und Layout-Tabellen auf KTX-DSL-Syntax umstellen.
-    - [ ] Die Steuerung sauber an das neue `GamePreferences`-Singleton koppeln.
-    - [ ] Das Logging auf `ktx-log` umrüsten.
 - [ ] **`ScoreScreen.kt` (Highscore-Tafel)**
     - [ ] Die Ausrichtung finalisieren und an das neue `ScoreList`-Design anbinden.
 - [ ] **`CreditsScreen.kt` (Abspann)**
@@ -38,7 +28,7 @@ Ziel: Alten Java-Layout-Boilerplate-Code entfernen, anonyme Listener durch flach
 
 ---
 
-## 🟩 Priorität 3 — Target: [2.0.0-alpha.3] (Spätere Alpha-Phase / Core-Logik & Objekt-Splits)
+## 🟩 Nächste Entwicklungsphase — Target: [2.0.0-alpha.3] (Core-Logik & Objekt-Splits)
 Ziel: Speicherfressende Strukturen optimieren, Google Play Games Services v2 auf den neuesten Stand bringen und Spielobjekte sauber entkoppeln.
 
 - [ ] **`GameController.kt` (UI-Entkopplung)**
@@ -58,6 +48,8 @@ Ziel: Speicherfressende Strukturen optimieren, Google Play Games Services v2 auf
 ---
 
 ## 🏆 Erledigte Meilensteine (Wall of Fame)
+
+### 🟥 Version [2.0.0-alpha.1] — Veröffentlicht am 28.09.2026
 - [x] **`GamePreferences.kt` runderneuert**: Die Einstellungs-Klasse vollständig in ein echtes Kotlin-**`object`** umgewandelt, das alte `Companion.instance`-Muster eliminiert, `by lazy`-Injektion für das Preferences-Backend integriert und ungenutzte Achievement-Kommentare entfernt.
 - [x] Das gesamte Build-System erfolgreich auf **Kotlin DSL (`.gradle.kts`)** umgestellt.
 - [x] Veralteten LWJGL2-Desktop-Launcher durch eine moderne **LWJGL3-Engine** ersetzt.

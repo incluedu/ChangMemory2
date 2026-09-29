@@ -3,6 +3,11 @@
 * `[c]` Refactored and optimized **`GameHUD.kt`** typography layout scales, shifting general stats onto the compact `FONT_S` token to maximize vertical screen real estate.
 * `[c]` Enhanced critical timer states within the HUD gameplay loop by dynamically injecting aggressive color triggers (`Color.RED`) beneath the 30-second boundary.
 * `[c]` Standardized all internal component alignments, colors, and layout classes inside the HUD overlay context using clean, prefixless static named imports.
+* `[c]` Fully overhauled **`SettingsScreen.kt`** using declarative KTX Scene2D DSL syntax and local extension properties (`val KTableWidget.build... get()`) to flatten the layout hierarchy.
+* `[c]` Removed legacy inner class listener structures (`MyChangeListener`) in favor of hocheffiziente, flat KTX `.onChange` lambda injectors.
+* `[c]` Implemented dynamic visual states by coupling checkbox flags straight into the `.isDisabled` slider properties to freeze audio widgets when deactivated.
+* `[c]` Eradicated all hardcoded magic strings inside settings components by linking asset pathways onto compile-time constants (`BACKGROUND_4`, `BACKGROUND_6`).
+* `[c]` Synchronized preference data bridges within **`GamePreferences.kt`** straight onto the unified `Constants.Prefs.FILE_NAME` registry.
 
 ## [2.0.0-alpha.1] - 2026-09-28
 ### Added

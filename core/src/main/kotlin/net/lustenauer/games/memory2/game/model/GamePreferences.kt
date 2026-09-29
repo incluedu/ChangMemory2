@@ -4,7 +4,7 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Preferences
 import com.badlogic.gdx.math.MathUtils
 import ktx.log.logger
-import net.lustenauer.games.memory2.utils.Constants.SkinConfig.WINDOW
+import net.lustenauer.games.memory2.utils.Constants
 
 /**
  * Native thread-safe storage registry managing local user options and configurations.
@@ -25,11 +25,11 @@ object GamePreferences {
     var googleSignIn: Boolean = false
 
     /**
-     * Lazy-initialized libGDX preference backend handle.
+     * Lazy-initialized libGDX preference backend handle bound directly onto the central storage filename constant.
      * Guarantees safe framework bindings even during early initialization cycles.
      */
     val prefs: Preferences by lazy {
-        Gdx.app.getPreferences(WINDOW.replace(".json", ".prefs"))
+        Gdx.app.getPreferences(Constants.Prefs.FILE_NAME)
     }
 
     /**

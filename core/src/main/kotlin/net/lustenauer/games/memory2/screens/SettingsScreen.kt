@@ -3,22 +3,23 @@ package net.lustenauer.games.memory2.screens
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input.Keys
 import com.badlogic.gdx.Input.Keys.BACK
-import com.badlogic.gdx.graphics.Color
-import com.badlogic.gdx.scenes.scene2d.Actor
-import com.badlogic.gdx.scenes.scene2d.EventListener
+import com.badlogic.gdx.graphics.Color.LIGHT_GRAY
+import com.badlogic.gdx.graphics.Color.WHITE
+import com.badlogic.gdx.graphics.Color.YELLOW
+import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.CheckBox
-import com.badlogic.gdx.scenes.scene2d.ui.Image
 import com.badlogic.gdx.scenes.scene2d.ui.Label
-import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.scenes.scene2d.ui.Slider
-import com.badlogic.gdx.scenes.scene2d.ui.Stack
-import com.badlogic.gdx.scenes.scene2d.ui.Table
-import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener
-import com.badlogic.gdx.utils.Align
+import com.badlogic.gdx.utils.Align.left
+import com.badlogic.gdx.utils.Align.topLeft
 import com.badlogic.gdx.utils.viewport.StretchViewport
+import ktx.actors.onChange
+import ktx.log.logger
+import ktx.scene2d.*
 import net.lustenauer.games.memory2.ChangMemory
 import net.lustenauer.games.memory2.game.Assets
+import net.lustenauer.games.memory2.game.model.GamePreferences
 import net.lustenauer.games.memory2.ui.actors.BtnBack
 import net.lustenauer.games.memory2.ui.actors.BtnGooglePlusSignIn
 import net.lustenauer.games.memory2.ui.actors.BtnGooglePlusSignOut
@@ -26,217 +27,249 @@ import net.lustenauer.games.memory2.utils.AudioManager
 import net.lustenauer.games.memory2.utils.Constants.Fonts.FONT_M
 import net.lustenauer.games.memory2.utils.Constants.Fonts.FONT_S
 import net.lustenauer.games.memory2.utils.Constants.Fonts.FONT_XL
+import net.lustenauer.games.memory2.utils.Constants.Skins.BACKGROUND_4
+import net.lustenauer.games.memory2.utils.Constants.Skins.BACKGROUND_6
 import net.lustenauer.games.memory2.utils.Constants.Viewport
-import net.lustenauer.games.memory2.game.model.GamePreferences
+import net.lustenauer.games.memory2.utils.Constants.Viewport.GUI_HEIGHT
+import net.lustenauer.games.memory2.utils.Constants.Viewport.GUI_WIDTH
 
+/**
+ * Responsive settings configuration screen powered by KTX Scene2D DSL syntax.
+ * Harmonizes sound and music volume boundaries directly with [GamePreferences] and hardware engines.
+ *
+ * Provides granular structural partitioning by leveraging tailored, local extension properties
+ * to maintain a flat and readable layout declaration graph.
+ *
+ * @author Patric Hollenstein
+ */
 class SettingsScreen(game: ChangMemory) : AbstractScreen(game) {
-    private val TAG: String = this.javaClass.getName()
 
-    private var stage: Stage? = null
-    private var skinWindow: Skin? = null
-    private var lblSoundPercent: Label? = null
-    private var lblMusicPercent: Label? = null
+    private val log = logger<SettingsScreen>()
 
+    /** The centralized scene2d staging ground rendering all layout components. */
+    private lateinit var stage: Stage
+
+    /** Text metric tracking and displaying the active sound effects volume percentage scaling. */
+    private lateinit var lblSoundPercent: Label
+
+    /** Text metric tracking and displaying the active background music volume percentage scaling. */
+    private lateinit var lblMusicPercent: Label
+
+    /** Interactive checkbox widget monitoring global sound effect execution toggles. */
     private lateinit var chkSound: CheckBox
+
+    /** Manual scroll bar controlling sound effect gain calibrations. */
     private lateinit var sldSound: Slider
+
+    /** Interactive checkbox widget monitoring global background music stream toggles. */
     private lateinit var chkMusic: CheckBox
+
+    /** Manual scroll bar controlling background music stream gain calibrations. */
     private lateinit var sldMusic: Slider
 
-
-    private val myChangeListener: EventListener?
-
-    init {
-        myChangeListener = MyChangeListener()
-    }
-
+    /**
+     * Wipes background frame content and commands attached staging layers to act and draw.
+     */
     override fun render(deltaTime: Float) {
         Gdx.gl.glClearColor(0.0f, 0.0f, 0.0f, 1.0f)
-        Gdx.gl.glClear(com.badlogic.gdx.graphics.GL20.GL_COLOR_BUFFER_BIT)
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
 
-        update()
-        stage!!.act(deltaTime)
-        stage!!.draw()
+        updateInputs()
+        stage.act(deltaTime)
+        stage.draw()
     }
 
+    /**
+     * Fits the inner viewport metrics proportionally to fresh hardware window sizes.
+     */
     override fun resize(width: Int, height: Int) {
-        stage!!.viewport.update(width, height, true)
+        stage.viewport.update(width, height, true)
     }
 
+    /**
+     * Initializes structural framework listeners, locks mobile hardware back buttons,
+     * hooks up input processing streams, and triggers the core layout compilation tree.
+     */
     override fun show() {
-        Gdx.app.debug(TAG, "show()")
-        ChangMemory.instance.actionResolver?.setTrackerScreenName(TAG)
-        stage = Stage(
-            StretchViewport(
-                Viewport.GUI_WIDTH,
-                Viewport.GUI_HEIGHT
-            )
-        )
+        log.info { "Displaying configuration screen layers" }
+        ChangMemory.instance.actionResolver?.setTrackerScreenName(this::class.java.name)
+
+        stage = Stage(StretchViewport(GUI_WIDTH, GUI_HEIGHT))
         Gdx.input.setCatchKey(BACK, true)
         Gdx.input.inputProcessor = stage
 
-        init()
+        Scene2DSkin.defaultSkin = Assets.skinWindow
+
+        buildUiLayout()
+        syncPreferences()
     }
 
+    /**
+     * Releases memory buffers locked by attached staging actors during visibility shifts.
+     */
     override fun hide() {
-        stage!!.dispose()
+        stage.dispose()
     }
 
-    override fun pause() {
-    }
+    override fun pause() {}
 
-    private fun init() {
-        skinWindow = Assets.skinWindow
+    /**
+     * Constructs the responsive multi-layered layout utilizing the KTX stack builder tree.
+     */
+    private fun buildUiLayout() {
+        stage.clear()
 
-        val layerBackground: Actor = buildLayerBackground()
-        val layerLogo: Actor = buildLayerLogo()
-        val layerControls: Actor = buildLayerControls()
+        stage.actors {
+            stack {
+                setSize(GUI_WIDTH, GUI_HEIGHT)
 
-        stage!!.clear()
-        val stack = Stack()
-        stage!!.addActor(stack)
-        stack.setSize(Viewport.GUI_WIDTH, Viewport.GUI_HEIGHT)
-        stack.add(layerBackground)
-        stack.add(layerLogo)
-        stack.add(layerControls)
-    }
-
-    private fun update() {
-        updateInputs()
-    }
-
-    private fun updateInputs() {
-        // return to menu Screen
-        if (Gdx.input.isKeyJustPressed(Keys.ESCAPE) or Gdx.input.isKeyPressed(BACK)) {
-            game.setScreen(ChangMemory.prevScreen)
+                table().buildLayerBackground
+                table().buildLayerHeader
+                table().buildLayerSettingsAndControls
+            }
         }
     }
 
-    private fun buildLayerBackground(): Table {
-        val layer = Table()
-        val imgBackground = Image(skinWindow, "background4")
-        layer.add(imgBackground)
-        return layer
+    /**
+     * Extends the [KTableWidget] to embed the standard screen canvas background graphic region.
+     */
+    private val @Scene2dDsl KTableWidget.buildLayerBackground: KTableWidget
+        get() {
+            image(BACKGROUND_4)
+            return this
+        }
+
+    /**
+     * Extends the [KTableWidget] to cleanly mount the static yellow chalkboard screen branding title texts.
+     */
+    private val @Scene2dDsl KTableWidget.buildLayerHeader: KTableWidget
+        get() {
+            top().padTop(40f)
+            label("CHANG MEMORY II", style = FONT_XL) { color = YELLOW }
+            row()
+            label("(c) 2015 - 2026 BY lustenauer.net", style = FONT_M) { color = YELLOW }
+            return this
+        }
+
+    /**
+     * Extends the [KTableWidget] to coordinate nested structural grids including settings cells and action links.
+     */
+    private val @Scene2dDsl KTableWidget.buildLayerSettingsAndControls: KTableWidget
+        get() {
+            bottom().padBottom(30f)
+            table().buildTableSettings.cell(width = 400f, height = 400f, padBottom = 20f)
+            row()
+            table().buildControlsWidget
+            return this
+        }
+
+    /**
+     * Extends the [KTableWidget] to compile the specific audio preference cells inside the chalkboard box.
+     */
+    private val @Scene2dDsl KTableWidget.buildTableSettings: KTableWidget
+        get() {
+            background = skin.getDrawable(BACKGROUND_6)
+            align(topLeft)
+            pad(20f)
+
+            label("Audio", style = FONT_M) { color = WHITE }
+                .cell(colspan = 4, align = left, padBottom = 15f)
+            row()
+
+            // --- SOUND SETTINGS ROW ---
+            add(buildSoundCheckBox()).padRight(10f)
+            add(Label("Sound", skin, FONT_S).apply { color = LIGHT_GRAY }).padRight(10f)
+            add(buildSoundSlider()).width(190f).padRight(10f)
+            add(buildSoundPercentLabel()).align(left)
+            row()
+
+            // --- MUSIC SETTINGS ROW ---
+            add(buildMusicCheckBox()).padRight(10f).padTop(15f)
+            add(Label("Music", skin, FONT_S).apply { color = LIGHT_GRAY }).padRight(10f).padTop(15f)
+            add(buildMusicSlider()).width(190f).padRight(10f).padTop(15f)
+            add(buildMusicPercentLabel()).align(left).padTop(15f)
+            row()
+            return this
+        }
+
+    /**
+     * Extends the [KTableWidget] to line up the unified platform action buttons horizontally.
+     */
+    private val @Scene2dDsl KTableWidget.buildControlsWidget: KTableWidget
+        get() {
+            add(BtnBack(ChangMemory.prevScreen)).padRight(10f)
+            add(BtnGooglePlusSignIn()).padRight(10f)
+            add(BtnGooglePlusSignOut())
+            return this
+        }
+
+    // --- LOGICAL WIDGET FACTORIES ---
+
+    /** Builds the interactive sound effects checkbox widget mapped onto the configuration synchronization blocks. */
+    private fun buildSoundCheckBox() = CheckBox("", Assets.skinWindow).apply {
+        isChecked = GamePreferences.sound
+        chkSound = this
+        onChange { syncPreferences() }
     }
 
-    private fun buildLayerControls(): Actor {
-        val layer = Table().bottom()
-
-        layer.addActor(buildWindowSettings())
-        layer.addActor(BtnBack(ChangMemory.prevScreen))
-        layer.addActor(BtnGooglePlusSignIn())
-        layer.addActor(BtnGooglePlusSignOut())
-
-        return layer
+    /** Builds the manual sound volume adjustment slider widget mapped onto the configuration synchronization blocks. */
+    private fun buildSoundSlider() = Slider(0.0f, 1.0f, 0.1f, false, Assets.skinWindow).apply {
+        value = GamePreferences.volSound
+        sldSound = this
+        onChange { syncPreferences() }
     }
 
-    private fun buildLayerLogo(): Table {
-        val layer = Table()
-
-        var lbl = Label(
-            "CHANG MEMORY II",
-            skinWindow,
-            FONT_XL,
-            Color.YELLOW
-        )
-        lbl.setPosition((Viewport.GUI_WIDTH - lbl.getWidth()) / 2, 700f)
-        layer.addActor(lbl)
-
-        lbl = Label(
-            "(c) 2015 - 2026 BY lustenauer.net",
-            skinWindow,
-            FONT_M,
-            Color.YELLOW
-        )
-        lbl.setPosition((Viewport.GUI_WIDTH - lbl.getWidth()) / 2, 660f)
-        layer.addActor(lbl)
-
-        return layer
+    /** Builds the localized text label monitoring active sound playback percentage states. */
+    private fun buildSoundPercentLabel() = Label("${(GamePreferences.volSound * 100).toInt()}%", Assets.skinWindow, FONT_S).apply {
+        color = LIGHT_GRAY
+        lblSoundPercent = this
     }
 
-    private fun buildWindowSettings(): Table {
-
-        val tbl = Table(skinWindow)
-        tbl.setBackground("background6")
-        tbl.setSize(400f, 400f)
-        tbl.setPosition(40f, 200f)
-        tbl.align(Align.topLeft)
-        tbl.pad(20f)
-
-        val lblAudio = Label(
-            "Audio",
-            skinWindow,
-            FONT_M,
-            Color.WHITE
-        )
-
-        chkSound = CheckBox("", skinWindow)
-        val lblSound = Label(
-            "Sound",
-            skinWindow,
-            FONT_S,
-            Color.LIGHT_GRAY
-        )
-        lblSoundPercent = Label(
-            "${(GamePreferences.volSound * 100).toInt()}%",
-            skinWindow,
-            FONT_S,
-            Color.LIGHT_GRAY
-        )
-        sldSound = Slider(0.0f, 1.0f, 0.1f, false, skinWindow)
-
-        chkSound.setChecked(GamePreferences.sound)
-        sldSound.setValue(GamePreferences.volSound)
-
-        chkSound.addListener(myChangeListener)
-        sldSound.addListener(myChangeListener)
-
-        chkMusic = CheckBox("", skinWindow)
-        val lblMusic = Label(
-            "Music",
-            skinWindow,
-            FONT_S,
-            Color.LIGHT_GRAY
-        )
-        lblMusicPercent = Label(
-            "${(GamePreferences.volMusic * 100).toInt()}%",
-            skinWindow,
-            FONT_S,
-            Color.LIGHT_GRAY
-        )
-        sldMusic = Slider(0.0f, 1.0f, 0.1f, false, skinWindow)
-
-        chkMusic.setChecked(GamePreferences.music)
-        sldMusic.setValue(GamePreferences.volMusic)
-
-        chkMusic.addListener(myChangeListener)
-        sldMusic.addListener(myChangeListener)
-
-        tbl.add(lblAudio).colspan(3).left().row()
-
-        tbl.add(chkSound).padRight(10f)
-        tbl.add(lblSound).padRight(10f)
-        tbl.add(sldSound).padRight(10f)
-        tbl.add<Label?>(lblSoundPercent).left().row()
-
-        tbl.add(chkMusic).padRight(10f)
-        tbl.add(lblMusic).padRight(10f)
-        tbl.add(sldMusic).padRight(10f)
-        tbl.add<Label?>(lblMusicPercent).left().row()
-
-        return tbl
+    /** Builds the interactive music playback checkbox widget mapped onto the configuration synchronization blocks. */
+    private fun buildMusicCheckBox() = CheckBox("", Assets.skinWindow).apply {
+        isChecked = GamePreferences.music
+        chkMusic = this
+        onChange { syncPreferences() }
     }
 
-    private inner class MyChangeListener : ChangeListener() {
-        override fun changed(event: ChangeEvent?, actor: Actor?) {
-            GamePreferences.music = chkMusic.isChecked()
-            GamePreferences.sound = chkSound.isChecked()
-            GamePreferences.volMusic = sldMusic.value
-            GamePreferences.volSound = sldSound.value
+    /** Builds the manual music volume adjustment slider widget mapped onto the configuration synchronization blocks. */
+    private fun buildMusicSlider() = Slider(0.0f, 1.0f, 0.1f, false, Assets.skinWindow).apply {
+        value = GamePreferences.volMusic
+        sldMusic = this
+        onChange { syncPreferences() }
+    }
 
-            AudioManager.onSettingsUpdated()
+    /** Builds the localized text label monitoring active music playback percentage states. */
+    private fun buildMusicPercentLabel() = Label("${(GamePreferences.volMusic * 100).toInt()}%", Assets.skinWindow, FONT_S).apply {
+        color = LIGHT_GRAY
+        lblMusicPercent = this
+    }
 
-            lblMusicPercent!!.setText((sldMusic.value * 100).toInt().toString() + "%")
-            lblSoundPercent!!.setText((sldSound.value * 100).toInt().toString() + "%")
+    /**
+     * Synchronizes active UI widget modifications straight back into [GamePreferences].
+     * Evaluates volume limits and updates percentage labels safely without allocation overhead.
+     */
+    private fun syncPreferences() {
+        GamePreferences.sound = chkSound.isChecked
+        GamePreferences.music = chkMusic.isChecked
+        GamePreferences.volSound = sldSound.value
+        GamePreferences.volMusic = sldMusic.value
+
+        AudioManager.onSettingsUpdated()
+
+        sldSound.isDisabled = !chkSound.isChecked
+        sldMusic.isDisabled = !chkMusic.isChecked
+
+        lblSoundPercent.setText("${(sldSound.value * 100).toInt()}%")
+        lblMusicPercent.setText("${(sldMusic.value * 100).toInt()}%")
+    }
+
+    /**
+     * Traps hardware and keyboard polling actions to cleanly reroute execution flows to preceding screen stacks.
+     */
+    private fun updateInputs() {
+        if (Gdx.input.isKeyJustPressed(Keys.ESCAPE) || Gdx.input.isKeyPressed(BACK)) {
+            game.screen = ChangMemory.prevScreen
         }
     }
 }

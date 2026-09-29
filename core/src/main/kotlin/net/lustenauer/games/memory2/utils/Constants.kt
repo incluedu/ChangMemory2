@@ -49,7 +49,7 @@ object Constants {
         const val FONT_XS = "FONT_XS"
 
         /** Base crisp hand-drawn vector typography segment for generic UI texts. (Size: 16px) */
-        const val FONT_S =  "FONT_S"
+        const val FONT_S = "FONT_S"
 
         /** Enhanced vector typography slice mapped onto standard sub-headers. (Size: 24px) */
         const val FONT_M = "FONT_M"
@@ -89,6 +89,3 @@ object Constants {
         const val FILE_NAME = "changmemory.prefs"
     }
 }
-
-
-
