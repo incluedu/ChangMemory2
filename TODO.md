@@ -7,9 +7,13 @@ Diese Liste dokumentiert die verbleibenden Schritte, um *ChangMemory II* auf ein
 ## 🟨 Aktuelle Entwicklungsphase — Target: [2.0.0-alpha.2] (UI-Konsistenz & Modul-Splits)
 Ziel: Alten Java-Layout-Boilerplate-Code entfernen, anonyme Listener durch flache Kotlin-Lambdas ersetzen und komplexe Riesen-Klassen entkoppeln.
 
-- [x] **`SettingsScreen.kt` (Einstellungen)**: Vollständig auf modernste **KTX Scene2D DSL**-Syntax umgerüstet! Die ehemals tiefe Verschachtelung wurde über rein deklarative Kotlin-Extension-Properties (`val KTableWidget.build... get()`) flach gebrochen, anonyme Listener durch flache Lambdas ersetzt und die Speicherzugriffe sicher an das neue `GamePreferences`-Object gekoppelt mitsamt Konstanten-Parität.
+- [x] **`SettingsScreen.kt` (Einstellungen)**: Vollständig auf modernste **KTX Scene2D DSL**-Syntax umgerüstet mitsamt smarter Eigenschafts-Kapselung.
+- [x] **`CreditsScreen.kt` (Abspann-Framework)**: Die komplette UI-Infrastruktur steht, nutzt den Schiefertafel-Hintergrund und läuft absolut crash-sicher im KTX-Grid.
+- [ ] **`CreditsScreen.kt` (Abspann-Inhalte & Typografie modernisieren)**
+    - [ ] **Content-Optimierung:** Die unschönen Fragezeichen (`???`) bei `bird.ogg` und `pig.ogg` in der `credits.txt` auflösen (Quellen validieren oder Assets austauschen).
+    - [ ] **DSL-Parser:** Den Text nicht als Riesenblock laden, sondern zeilenweise einlesen. Überschriften (z.B. `=== Music ===`) automatisch erkennen und über KTX fett/größer formatieren, um eine echte, optisch ansprechende Film-Credits-Rolle zu erzeugen. Am Dateiende einen künstlichen Padding-Puffer einbauen, damit der Text elegant aus dem Bild gleitet.
 - [ ] **`Assets.kt` (Asset-Zentrale entflechten)**
-    - [ ] **Klassen-Split:** Die "Gott-Klasse" auflösen. Trennung des asynchronen Kern-Lademanagers von der dynamischen TrueType-Schriftgenerierung (`UiSkinFactory`) und der spielspezifischen Karten-Initialisierung (`CardAssetFactory`).
+    - [ ] **Klassen-Split:** Die "Gott-Klasse" auflösen. Trennung des asynchronen Kern-Lademanagers von der dynamic TrueType-Schriftgenerierung (`UiSkinFactory`) und der spielspezifischen Karten-Initialisierung (`CardAssetFactory`).
 - [ ] **`ScoreList.kt` & `ScorePane.kt` (Highscore-Logik splitten)**
     - [ ] **Klassen-Split:** Die Daten- und Speicherverwaltung strikt vom UI-Layout trennen. Die KTX-Tabelle `scorePane` aus der Datenklasse heraustrennen und als eigenständige UI-Komponente im `ui`-Paket verankern.
 - [ ] **`CardScreen.kt` (Spiel-Hauptbildschirm splitten)**
@@ -20,9 +24,6 @@ Ziel: Alten Java-Layout-Boilerplate-Code entfernen, anonyme Listener durch flach
     - [ ] **Versionsinfo im Hauptmenü:** Die Anzeige der Versionsnummer auch unten im Hauptmenü (`MenuLayout`) einbauen.
 - [ ] **`ScoreScreen.kt` (Highscore-Tafel)**
     - [ ] Die Ausrichtung finalisieren und an das neue `ScoreList`-Design anbinden.
-- [ ] **`CreditsScreen.kt` (Abspann)**
-    - [ ] **Hintergrund-Fix:** Dem Credits-Screen ebenfalls die grüne Schiefertafel (`Skins.BACKGROUND_6`) als Hintergrund verpassen.
-    - [ ] Den Screen komplett modernisieren und das Logging auf `ktx-log` umrüsten.
 - [ ] **Scoreboard-Typografie verfeinern (Optisches Upgrade)**
     - [ ] Eine passende Kreide-Schriftart im **Monospace-Format** (.ttf) einbinden, damit die Zahlenkolonnen auf der Tafel exakt vertikal untereinander fluchten.
 

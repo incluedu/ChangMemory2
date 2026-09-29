@@ -8,6 +8,10 @@
 * `[c]` Implemented dynamic visual states by coupling checkbox flags straight into the `.isDisabled` slider properties to freeze audio widgets when deactivated.
 * `[c]` Eradicated all hardcoded magic strings inside settings components by linking asset pathways onto compile-time constants (`BACKGROUND_4`, `BACKGROUND_6`).
 * `[c]` Synchronized preference data bridges within **`GamePreferences.kt`** straight onto the unified `Constants.Prefs.FILE_NAME` registry.
+* `[c]` Fully overhauled **`CreditsScreen.kt`** using declarative KTX Scene2D DSL syntax and local extension properties.
+* `[c]` Fixed a critical layout input bug where the controls layer encapsulated the entire viewport, blocking back-button click actions.
+* `[c]` Swapped out the legacy background mapping for the official green chalkboard design (`BACKGROUND_6`).
+* `[c]` Eliminated premature runtime initialization crashes within the autoscrolling tick handler by injecting atomic Kotlin lifecycle validation hooks (`::scrollPane.isInitialized`).
 
 ## [2.0.0-alpha.1] - 2026-09-28
 ### Added
