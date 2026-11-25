@@ -17,10 +17,10 @@ Ziel: Alten Java-Layout-Boilerplate-Code entfernen, anonyme Listener durch flach
 - [ ] **`ScoreList.kt` & `ScorePane.kt` (Highscore-Logik splitten)**
     - [ ] **Klassen-Split:** Die Daten- und Speicherverwaltung strikt vom UI-Layout trennen. Die KTX-Tabelle `scorePane` aus der Datenklasse heraustrennen und als eigenständige UI-Komponente im `ui`-Paket verankern.
 - [ ] **`CardScreen.kt` (Spiel-Hauptbildschirm splitten)**
-    - [ ] **Klassen-Split:** Den riesigen `CardScreen` radikal aufteilen! Trennung der Core-Spielsteuerung von den HUD-Elementen und Scene2D-Tabellenlayoutern, um die Datei übersichtlich und modular zu halten. *(Teilweise erledigt – GameHUD erfolgreich entkoppelt und typografisch optimiert)*
+    - [ ] **Klassen-Split:** Den riesigen `CardScreen` radikal aufteilen! Trennung der Core-Spielsteuerung von den HUD-Elementen und Scene2D-Tabellenlayoutern, um die Datei übersichtlich und modular zu halten. *(In Arbeit: `GameHUD` entkoppelt und typografisch optimiert; `CommandListener` aus `WindowPause`, `WindowGameOver` und `CardScreen` auf flache Kotlin-Lambdas umgestellt.)*
 - [ ] **Globales UI- & Header-Refactoring (Konsistenz-Upgrade)**
     - [ ] **Zentraler Header (`GameHeader.kt`):** Den sich ständig wiederholenden Header („CHANG MEMORY II“ & Copyright) vollständig aus allen Screens herausbrechen. Ein eigenständiges, wiederverwendbares UI-Widget entwerfen, das von `Table` erbt und in jedem Screen per flachem Einzeiler (`add(GameHeader())`) injiziert werden kann.
-    - [ ] **Zentraler Footer (`GameFooter.kt`):** Den fehlera nfälligen Steuerungs-Wildwuchs beenden! Eine wiederverwendbare, plattform-smarte Footer-Komponente für alle Unterbildschirme (`SettingsScreen`, `ScoreScreen`, `CreditsScreen`) entwickeln. Der Footer regelt die proportionale Ausrichtung von Zurück- und Google-Buttons zentral und schaltet die Google-Leiste auf Desktop-Systemen vollautomatisch unsichtbar.
+    - [ ] **Zentraler Footer (`GameFooter.kt`):** Den fehleranfälligen Steuerungs-Wildwuchs beenden! Eine wiederverwendbare, plattform-smarte Footer-Komponente für alle Unterbildschirme (`SettingsScreen`, `ScoreScreen`, `CreditsScreen`) entwickeln. Der Footer regelt die proportionale Ausrichtung von Zurück- und Google-Buttons zentral und schaltet die Google-Leiste auf Desktop-Systemen vollautomatisch unsichtbar.
     - [ ] **Google-Dienste aktualisieren:** Google Plus (G+) restlos aus dem UI entfernen. Die Google-Play-Buttons so überarbeiten, dass sie am Desktop unsichtbar sind und nur unter Android aktiv schalten.
     - [ ] **Versionsinfo im Hauptmenü:** Die Anzeige der Versionsnummer auch unten im Hauptmenü (`MenuLayout`) einbauen.
 - [ ] **`ScoreScreen.kt` (Highscore-Tafel)**
@@ -42,7 +42,7 @@ Ziel: Speicherfressende Strukturen optimieren, Google Play Games Services v2 auf
 - [ ] **`FlashLabel.kt` (UI-Paketierung)**
     - [ ] **Paket-Verschiebung:** Das blinkende Textfeld aus dem Logikkern `game.objects` entfernen und an seinen rechtmäßigen Platz im visuellen Paket `ui.actors` verschieben.
 - [ ] **Build-System finalisieren (Groovy-zu-KTS Migration)**
-    - [ ] Die verbleibenden Build-Skripte von `lwjgl3/build.gradle` and `android/build.gradle` auf das moderne Kotlin DSL-Format (`.gradle.kts`) umstellen.
+    - [ ] Die verbleibenden Build-Skripte von `lwjgl3/build.gradle` und `android/build.gradle` auf das moderne Kotlin DSL-Format (`.gradle.kts`) umstellen.
 - [ ] **Google Play Games Services (GPGS) v2 einbinden**
     - [ ] Die aktuelle Google Play Games v2 SDK-Abhängigkeit einbinden.
     - [ ] Den modernen `PlayGames.getLeaderboardsClient(this)` und `getAchievementsClient(this)` in der `AndroidLauncher.kt` aktivieren.

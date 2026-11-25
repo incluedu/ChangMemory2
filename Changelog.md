@@ -1,21 +1,22 @@
 ## [2.0.0-alpha.2] - In Development (Unreleased)
 ### Changed
-* `[c]` Refactored and optimized **`GameHUD.kt`** typography layout scales, shifting general stats onto the compact `FONT_S` token to maximize vertical screen real estate.
-* `[c]` Enhanced critical timer states within the HUD gameplay loop by dynamically injecting aggressive color triggers (`Color.RED`) beneath the 30-second boundary.
-* `[c]` Standardized all internal component alignments, colors, and layout classes inside the HUD overlay context using clean, prefixless static named imports.
-* `[c]` Fully overhauled **`SettingsScreen.kt`** using declarative KTX Scene2D DSL syntax and local extension properties (`val KTableWidget.build... get()`) to flatten the layout hierarchy.
-* `[c]` Removed legacy inner class listener structures (`MyChangeListener`) in favor of hocheffiziente, flat KTX `.onChange` lambda injectors.
-* `[c]` Implemented dynamic visual states by coupling checkbox flags straight into the `.isDisabled` slider properties to freeze audio widgets when deactivated.
-* `[c]` Eradicated all hardcoded magic strings inside settings components by linking asset pathways onto compile-time constants (`BACKGROUND_4`, `BACKGROUND_6`).
-* `[c]` Synchronized preference data bridges within **`GamePreferences.kt`** straight onto the unified `Constants.Prefs.FILE_NAME` registry.
-* `[c]` Fully overhauled **`CreditsScreen.kt`** using declarative KTX Scene2D DSL syntax and local extension properties.
-* `[c]` Fixed a critical layout input bug where the controls layer encapsulated the entire viewport, blocking back-button click actions.
-* `[c]` Swapped out the legacy background mapping for the official green chalkboard design (`BACKGROUND_6`).
-* `[c]` Eliminated premature runtime initialization crashes within the autoscrolling tick handler by injecting atomic Kotlin lifecycle validation hooks (`::scrollPane.isInitialized`).
-* `[+]` Upgraded the authentication interface by replacing legacy Google Plus widgets with platform-aware **`BtnGoogleSignIn`** and **`BtnGoogleSignOut`** components.
-* `[c]` Refactored **`MenuLayout.kt`**, **`SettingsScreen.kt`**, and **`CreditsScreen.kt`** to consume the modernized Google Play Games lifecycle layers, automatically cloud-hiding ecosystem icons inside desktop runtime environments via native `Gdx.app.type` evaluation.
-* `[c]` Stabilized **`ScoreScreen.kt`** button arrangements by replacing legacy, overlapping `.addActor()` positioning with fluid, row-based KTX table grid cell controls.
-* `[-]` Permanently eradicated all obsolete Google Plus API social network classes and hardcoded pixel coordinates to secure pure responsive layout alignments.
+- `[c]` Refactored and optimized **`GameHUD.kt`** typography layout scales, shifting general stats onto the compact `FONT_S` token to maximize vertical screen real estate.
+- `[c]` Enhanced critical timer states within the HUD gameplay loop by dynamically injecting aggressive color triggers (`Color.RED`) beneath the 30-second boundary.
+- `[c]` Standardized all internal component alignments, colors, and layout classes inside the HUD overlay context using clean, prefixless static named imports.
+- `[c]` Fully overhauled **`SettingsScreen.kt`** using declarative KTX Scene2D DSL syntax and local extension properties (`val KTableWidget.build... get()`) to flatten the layout hierarchy.
+- `[c]` Removed legacy inner class listener structures (`MyChangeListener`) in favor of hocheffiziente, flat KTX `.onChange` lambda injectors.
+- `[c]` Implemented dynamic visual states by coupling checkbox flags straight into the `.isDisabled` slider properties to freeze audio widgets when deactivated.
+- `[c]` Eradicated all hardcoded magic strings inside settings components by linking asset pathways onto compile-time constants (`BACKGROUND_4`, `BACKGROUND_6`).
+- `[c]` Synchronized preference data bridges within **`GamePreferences.kt`** straight onto the unified `Constants.Prefs.FILE_NAME` registry.
+- `[c]` Fully overhauled **`CreditsScreen.kt`** using declarative KTX Scene2D DSL syntax and local extension properties.
+- `[c]` Fixed a critical layout input bug where the controls layer encapsulated the entire viewport, blocking back-button click actions.
+- `[c]` Swapped out the legacy background mapping for the official green chalkboard design (`BACKGROUND_6`).
+- `[c]` Eliminated premature runtime initialization crashes within the autoscrolling tick handler by injecting atomic Kotlin lifecycle validation hooks (`::scrollPane.isInitialized`).
+- `[+]` Upgraded the authentication interface by replacing legacy Google Plus widgets with platform-aware **`BtnGoogleSignIn`** and **`BtnGoogleSignOut`** components.
+- `[c]` Refactored **`MenuLayout.kt`**, **`SettingsScreen.kt`**, and **`CreditsScreen.kt`** to consume the modernized Google Play Games lifecycle layers, automatically cloud-hiding ecosystem icons inside desktop runtime environments via native `Gdx.app.type` evaluation.
+- `[c]` Stabilized **`ScoreScreen.kt`** button arrangements by replacing legacy, overlapping `.addActor()` positioning with fluid, row-based KTX table grid cell controls.
+- `[c]` Decoupled **`CommandListener`** wiring from **`CardScreen.kt`**, **`WindowPause.kt`**, and **`WindowGameOver.kt`** by replacing `CommandEvent` dispatch blocks with direct, flat Kotlin lambda callbacks (`() -> Unit`).
+- `[-]` Permanently eradicated all obsolete Google Plus API social network classes and hardcoded pixel coordinates to secure pure responsive layout alignments.
 
 ## [2.0.0-alpha.1] - 2026-09-28
 ### Added

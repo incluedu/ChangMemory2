@@ -13,28 +13,23 @@ import net.lustenauer.games.memory2.utils.Constants.Skins.BTN_BLUE
 import net.lustenauer.games.memory2.utils.Constants.Skins.BTN_BLUE_BIG
 import net.lustenauer.games.memory2.utils.Constants.Skins.IMG_BUTTERFLY
 import net.lustenauer.games.memory2.utils.Constants.Skins.IMG_FROG
-import net.lustenauer.games.memory2.enums.GameCommand.MENU
-import net.lustenauer.games.memory2.enums.GameCommand.RESTART
-import net.lustenauer.games.memory2.enums.GameCommand.RESUME
-import net.lustenauer.games.memory2.enums.GameCommand.SETTINGS
-import net.lustenauer.games.memory2.ui.CommandListener
-import net.lustenauer.games.memory2.ui.CommandListener.CommandEvent
 
 /**
  * An overlay window displayed when the game is paused.
  *
  * Provides UI controls for resuming, restarting, opening settings, or returning to the main menu.
- * Communicates actions back to the controller via a [CommandListener].
+ * Communicates actions directly via flat Kotlin lambda callbacks.
  *
  * @author Patric Hollenstein
  */
-class WindowPause(cmdListener: CommandListener?) : Table(Assets.skinWindow) {
+class WindowPause(
+    onResume: () -> Unit,
+    onRestart: () -> Unit,
+    onMenu: () -> Unit,
+    onSettings: () -> Unit
+) : Table(Assets.skinWindow) {
 
     init {
-        if (cmdListener != null) {
-            addListener(cmdListener)
-        }
-
         background = skin.getDrawable(BACKGROUND_3)
 
         isVisible = false
@@ -62,25 +57,25 @@ class WindowPause(cmdListener: CommandListener?) : Table(Assets.skinWindow) {
         addActor(Button(skin, BTN_BLUE_BIG).apply {
             add(TEXT_BTN_RESUME)
             setPosition(20f, 200f)
-            onClick { fire(CommandEvent(RESUME)) }
+            onClick { onResume() }
         })
 
         addActor(Button(skin, BTN_BLUE).apply {
             add(TEXT_BTN_RESTART)
             setPosition(20f, 120f)
-            onClick { fire(CommandEvent(RESTART)) }
+            onClick { onRestart() }
         })
 
         addActor(Button(skin, BTN_BLUE).apply {
             add(TEXT_BTN_MENU)
             setPosition(20f, 70f)
-            onClick { fire(CommandEvent(MENU)) }
+            onClick { onMenu() }
         })
 
         addActor(Button(skin, BTN_BLUE).apply {
             add(TEXT_BTN_SETTINGS)
             setPosition(20f, 20f)
-            onClick { fire(CommandEvent(SETTINGS)) }
+            onClick { onSettings() }
         })
     }
 

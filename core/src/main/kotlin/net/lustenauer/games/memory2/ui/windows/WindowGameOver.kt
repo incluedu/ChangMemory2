@@ -7,40 +7,35 @@ import com.badlogic.gdx.scenes.scene2d.ui.Button
 import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import ktx.actors.onClick
+import net.lustenauer.games.memory2.extensions.toTimeString
 import net.lustenauer.games.memory2.game.Assets
-import net.lustenauer.games.memory2.ui.CommandListener
-import net.lustenauer.games.memory2.ui.CommandListener.CommandEvent
 import net.lustenauer.games.memory2.utils.Constants.Fonts.FONT_M
 import net.lustenauer.games.memory2.utils.Constants.Fonts.FONT_XS
 import net.lustenauer.games.memory2.utils.Constants.Skins.BACKGROUND_3
 import net.lustenauer.games.memory2.utils.Constants.Skins.BTN_BLUE
-import net.lustenauer.games.memory2.enums.GameCommand.MENU
-import net.lustenauer.games.memory2.enums.GameCommand.RESTART
-import net.lustenauer.games.memory2.enums.GameCommand.SCORE
-import net.lustenauer.games.memory2.extensions.toTimeString
 
 /**
  * An overlay window displayed when the game finishes or the player loses.
  *
  * Displays final game statistics (score, time, cards flipped/solved, lucky strikes)
  * and provides navigation buttons to view scores, return to the menu, or restart.
- * Communicates actions back to the controller via a [CommandListener].
+ * Communicates actions directly via flat Kotlin lambda callbacks.
  *
  * @author Patric Hollenstein
  */
-class WindowGameOver(cmdListener: CommandListener?) : Table(Assets.skinWindow) {
+class WindowGameOver(
+    onRestart: () -> Unit,
+    onMenu: () -> Unit,
+    onScore: () -> Unit
+) : Table(Assets.skinWindow) {
 
     private val lblScore: Label
-    private var lblTime: Label
+    private val lblTime: Label
     private val lblCardFlippedCount: Label
     private val lblCardSolvedCount: Label
     private val lblLuckyStrikeCount: Label
 
     init {
-        if (cmdListener != null) {
-            addListener(cmdListener)
-        }
-
         background = skin.getDrawable(BACKGROUND_3)
         isVisible = false
         setSize(400f, 250f)
@@ -52,19 +47,19 @@ class WindowGameOver(cmdListener: CommandListener?) : Table(Assets.skinWindow) {
         addActor(Button(skin, BTN_BLUE).apply {
             add(TEXT_BTN_SCORES)
             setPosition(20f, 20f)
-            onClick { fire(CommandEvent(SCORE)) }
+            onClick { onScore() }
         })
 
         addActor(Button(skin, BTN_BLUE).apply {
             add(TEXT_BTN_MENU)
             setPosition(20f, 70f)
-            onClick { fire(CommandEvent(MENU)) }
+            onClick { onMenu() }
         })
 
         addActor(Button(skin, BTN_BLUE).apply {
             add(TEXT_BTN_RESTART)
             setPosition(20f, 120f)
-            onClick { fire(CommandEvent(RESTART)) }
+            onClick { onRestart() }
         })
 
         lblScore = buildStatRow(TEXT_STAT_SCORE, 140f, 140f)

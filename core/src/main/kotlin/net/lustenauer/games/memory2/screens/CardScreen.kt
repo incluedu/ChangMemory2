@@ -17,10 +17,12 @@ import com.badlogic.gdx.utils.viewport.StretchViewport
 import ktx.actors.onClick
 import ktx.log.logger
 import net.lustenauer.games.memory2.ChangMemory
-import net.lustenauer.games.memory2.game.objects.AssetSound
 import net.lustenauer.games.memory2.game.Assets
+import net.lustenauer.games.memory2.game.GameController
 import net.lustenauer.games.memory2.game.InfoList
+import net.lustenauer.games.memory2.game.objects.AssetSound
 import net.lustenauer.games.memory2.game.objects.Card
+import net.lustenauer.games.memory2.ui.components.GameHUD
 import net.lustenauer.games.memory2.ui.windows.WindowGameOver
 import net.lustenauer.games.memory2.ui.windows.WindowPause
 import net.lustenauer.games.memory2.utils.AchievementEntry
@@ -28,10 +30,6 @@ import net.lustenauer.games.memory2.utils.AchievementManager
 import net.lustenauer.games.memory2.utils.AudioManager
 import net.lustenauer.games.memory2.utils.Constants.Skins.BACKGROUND_4
 import net.lustenauer.games.memory2.utils.Constants.Viewport
-import net.lustenauer.games.memory2.enums.GameCommand
-import net.lustenauer.games.memory2.game.GameController
-import net.lustenauer.games.memory2.ui.CommandListener
-import net.lustenauer.games.memory2.ui.components.GameHUD
 import com.badlogic.gdx.utils.Array as GdxArray
 
 /**
@@ -232,37 +230,31 @@ class CardScreen(game: ChangMemory) : AbstractScreen(game) {
     }
 
     /**
-     * Initializes the [WindowGameOver] overlay container layer and registers its interactive UI command routing.
+     * Initializes the [WindowGameOver] overlay container layer and binds its navigation callbacks.
      */
     private fun initWindowGameOver() {
         log.debug { "initWindowGameOver" }
 
-        windowGameOver = WindowGameOver(CommandListener { event ->
-            when (event?.command) {
-                GameCommand.RESTART -> doGameRestart()
-                GameCommand.MENU -> doShowMenuScreen()
-                GameCommand.SCORE -> doShowScoreScreen()
-                else -> log.error { "Unhandled GameCommand event in WindowGameOver scope: ${event?.command}" }
-            }
-        })
+        windowGameOver = WindowGameOver(
+            onRestart = { doGameRestart() },
+            onMenu = { doShowMenuScreen() },
+            onScore = { doShowScoreScreen() }
+        )
         hudStage.addActor(windowGameOver)
     }
 
     /**
-     * Initializes the [WindowPause] overlay container layer and registers its interactive UI command routing.
+     * Initializes the [WindowPause] overlay container layer and binds its control callbacks.
      */
     private fun initWindowPause() {
         log.debug { "initWindowPause" }
 
-        windowPause = WindowPause(CommandListener { event ->
-            when (event?.command) {
-                GameCommand.RESTART -> doGameRestart()
-                GameCommand.MENU -> doShowMenuScreen()
-                GameCommand.SETTINGS -> doShowSettingsScreen()
-                GameCommand.RESUME -> doGameResume()
-                else -> log.error { "Unhandled GameCommand event in WindowPause scope: ${event?.command}" }
-            }
-        })
+        windowPause = WindowPause(
+            onResume = { doGameResume() },
+            onRestart = { doGameRestart() },
+            onMenu = { doShowMenuScreen() },
+            onSettings = { doShowSettingsScreen() }
+        )
         stage.addActor(windowPause)
     }
 
