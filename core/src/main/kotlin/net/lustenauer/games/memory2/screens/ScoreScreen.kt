@@ -5,22 +5,14 @@ import com.badlogic.gdx.Input
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.scenes.scene2d.Stage
-import com.badlogic.gdx.scenes.scene2d.ui.Image
-import com.badlogic.gdx.scenes.scene2d.ui.Label
-import com.badlogic.gdx.scenes.scene2d.ui.Skin
-import com.badlogic.gdx.scenes.scene2d.ui.Stack
-import com.badlogic.gdx.scenes.scene2d.ui.Table
+import com.badlogic.gdx.scenes.scene2d.ui.*
 import com.badlogic.gdx.utils.Array
 import com.badlogic.gdx.utils.viewport.StretchViewport
 import ktx.log.logger
 import net.lustenauer.games.memory2.ChangMemory
 import net.lustenauer.games.memory2.game.Assets
 import net.lustenauer.games.memory2.game.model.ScoreList
-import net.lustenauer.games.memory2.ui.actors.BtnBack
-import net.lustenauer.games.memory2.ui.actors.BtnGooglePlusSignIn
-import net.lustenauer.games.memory2.ui.actors.BtnGooglePlusSignOut
-import net.lustenauer.games.memory2.ui.actors.BtnPlayAchievements
-import net.lustenauer.games.memory2.ui.actors.BtnPlayLeaderboards
+import net.lustenauer.games.memory2.ui.actors.*
 import net.lustenauer.games.memory2.utils.AchievementEntry
 import net.lustenauer.games.memory2.utils.AchievementManager
 import net.lustenauer.games.memory2.utils.Constants
@@ -129,19 +121,24 @@ class ScoreScreen(game: ChangMemory) : AbstractScreen(game) {
         return layer
     }
 
+    /**
+     * Constructs the bottom interactive control layer compiling navigation and cloud ecosystem anchors.
+     */
     private fun buildLayerControls(): Table {
-        val layer = Table().bottom()
+        val layer = Table().bottom().padBottom(30f)
 
         btnAchievements = BtnPlayAchievements()
         btnLeaderboards = BtnPlayLeaderboards()
 
-        layer.addActor(ScoreList.scorePane)
+        layer.add(ScoreList.scorePane).colspan(5).padBottom(30f).row()
 
-        layer.addActor(BtnBack(ChangMemory.prevScreen))
-        layer.addActor(btnAchievements)
-        layer.addActor(btnLeaderboards)
-        layer.addActor(BtnGooglePlusSignIn())
-        layer.addActor(BtnGooglePlusSignOut())
+        layer.add(BtnBack(ChangMemory.prevScreen)).width(60f).height(60f).padRight(15f)
+        layer.add(btnAchievements).width(60f).height(60f).padRight(15f)
+        layer.add(btnLeaderboards).width(60f).height(60f).padRight(15f)
+
+        layer.add(BtnGoogleSignIn()).padRight(10f)
+        layer.add(BtnGoogleSignOut())
+
         return layer
     }
 

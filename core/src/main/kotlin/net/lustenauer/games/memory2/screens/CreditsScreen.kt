@@ -15,7 +15,7 @@ import ktx.scene2d.*
 import net.lustenauer.games.memory2.ChangMemory
 import net.lustenauer.games.memory2.game.Assets
 import net.lustenauer.games.memory2.ui.actors.BtnBack
-import net.lustenauer.games.memory2.ui.actors.BtnGooglePlusSignIn
+import net.lustenauer.games.memory2.ui.actors.BtnGoogleSignIn
 import net.lustenauer.games.memory2.utils.Constants.Fonts.FONT_M
 import net.lustenauer.games.memory2.utils.Constants.Fonts.FONT_XL
 import net.lustenauer.games.memory2.utils.Constants.Fonts.FONT_XXS
@@ -164,7 +164,7 @@ class CreditsScreen(game: ChangMemory) : AbstractScreen(game) {
 
             table {
                 add(BtnBack(ChangMemory.prevScreen)).padRight(15f)
-                add(BtnGooglePlusSignIn())
+                add(BtnGoogleSignIn())
             }
             return this
         }

@@ -21,15 +21,14 @@ import net.lustenauer.games.memory2.ChangMemory
 import net.lustenauer.games.memory2.game.Assets
 import net.lustenauer.games.memory2.game.model.GamePreferences
 import net.lustenauer.games.memory2.ui.actors.BtnBack
-import net.lustenauer.games.memory2.ui.actors.BtnGooglePlusSignIn
-import net.lustenauer.games.memory2.ui.actors.BtnGooglePlusSignOut
+import net.lustenauer.games.memory2.ui.actors.BtnGoogleSignIn
+import net.lustenauer.games.memory2.ui.actors.BtnGoogleSignOut
 import net.lustenauer.games.memory2.utils.AudioManager
 import net.lustenauer.games.memory2.utils.Constants.Fonts.FONT_M
 import net.lustenauer.games.memory2.utils.Constants.Fonts.FONT_S
 import net.lustenauer.games.memory2.utils.Constants.Fonts.FONT_XL
 import net.lustenauer.games.memory2.utils.Constants.Skins.BACKGROUND_4
 import net.lustenauer.games.memory2.utils.Constants.Skins.BACKGROUND_6
-import net.lustenauer.games.memory2.utils.Constants.Viewport
 import net.lustenauer.games.memory2.utils.Constants.Viewport.GUI_HEIGHT
 import net.lustenauer.games.memory2.utils.Constants.Viewport.GUI_WIDTH
 
@@ -198,8 +197,8 @@ class SettingsScreen(game: ChangMemory) : AbstractScreen(game) {
     private val @Scene2dDsl KTableWidget.buildControlsWidget: KTableWidget
         get() {
             add(BtnBack(ChangMemory.prevScreen)).padRight(10f)
-            add(BtnGooglePlusSignIn()).padRight(10f)
-            add(BtnGooglePlusSignOut())
+            add(BtnGoogleSignIn()).padRight(10f)
+            add(BtnGoogleSignOut())
             return this
         }
 
@@ -220,10 +219,11 @@ class SettingsScreen(game: ChangMemory) : AbstractScreen(game) {
     }
 
     /** Builds the localized text label monitoring active sound playback percentage states. */
-    private fun buildSoundPercentLabel() = Label("${(GamePreferences.volSound * 100).toInt()}%", Assets.skinWindow, FONT_S).apply {
-        color = LIGHT_GRAY
-        lblSoundPercent = this
-    }
+    private fun buildSoundPercentLabel() =
+        Label("${(GamePreferences.volSound * 100).toInt()}%", Assets.skinWindow, FONT_S).apply {
+            color = LIGHT_GRAY
+            lblSoundPercent = this
+        }
 
     /** Builds the interactive music playback checkbox widget mapped onto the configuration synchronization blocks. */
     private fun buildMusicCheckBox() = CheckBox("", Assets.skinWindow).apply {
@@ -240,10 +240,11 @@ class SettingsScreen(game: ChangMemory) : AbstractScreen(game) {
     }
 
     /** Builds the localized text label monitoring active music playback percentage states. */
-    private fun buildMusicPercentLabel() = Label("${(GamePreferences.volMusic * 100).toInt()}%", Assets.skinWindow, FONT_S).apply {
-        color = LIGHT_GRAY
-        lblMusicPercent = this
-    }
+    private fun buildMusicPercentLabel() =
+        Label("${(GamePreferences.volMusic * 100).toInt()}%", Assets.skinWindow, FONT_S).apply {
+            color = LIGHT_GRAY
+            lblMusicPercent = this
+        }
 
     /**
      * Synchronizes active UI widget modifications straight back into [GamePreferences].

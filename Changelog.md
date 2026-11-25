@@ -12,6 +12,10 @@
 * `[c]` Fixed a critical layout input bug where the controls layer encapsulated the entire viewport, blocking back-button click actions.
 * `[c]` Swapped out the legacy background mapping for the official green chalkboard design (`BACKGROUND_6`).
 * `[c]` Eliminated premature runtime initialization crashes within the autoscrolling tick handler by injecting atomic Kotlin lifecycle validation hooks (`::scrollPane.isInitialized`).
+* `[+]` Upgraded the authentication interface by replacing legacy Google Plus widgets with platform-aware **`BtnGoogleSignIn`** and **`BtnGoogleSignOut`** components.
+* `[c]` Refactored **`MenuLayout.kt`**, **`SettingsScreen.kt`**, and **`CreditsScreen.kt`** to consume the modernized Google Play Games lifecycle layers, automatically cloud-hiding ecosystem icons inside desktop runtime environments via native `Gdx.app.type` evaluation.
+* `[c]` Stabilized **`ScoreScreen.kt`** button arrangements by replacing legacy, overlapping `.addActor()` positioning with fluid, row-based KTX table grid cell controls.
+* `[-]` Permanently eradicated all obsolete Google Plus API social network classes and hardcoded pixel coordinates to secure pure responsive layout alignments.
 
 ## [2.0.0-alpha.1] - 2026-09-28
 ### Added
